@@ -2,7 +2,7 @@
 title: Hystrix Samples
 email: alexander.schwartz@gmx.net
 description: "Showing what Hystrix can do for you."
-baseurl: ""
+baseurl: "/hystrix-samples"
 url: "http://www.ahus1.de"
 twitter_username: ahus1de
 github_username:  ahus1
