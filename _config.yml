@@ -1,0 +1,12 @@
+# Site settings
+title: Hystrix Samples
+email: alexander.schwartz@gmx.net
+description: "Showing what Hystrix can do for you."
+baseurl: ""
+url: "http://www.ahus1.de"
+twitter_username: ahus1de
+github_username:  ahus1
+
+# Build settings
+markdown: kramdown
+permalink: pretty
