@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="Asciidoctor 0.1.4">
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.0">
 <title>Hystrix Samples - and a little bit more</title>
-<link rel="stylesheet" href="css/asciidoctor.css">
-<link rel="stylesheet" href="css/asciidoctor-coderay.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
+<link rel="stylesheet" href="css//asciidoctor.css">
+<link rel="stylesheet" href="css//coderay-asciidoctor.css">
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
@@ -14,12 +16,27 @@
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_hystrix_make_your_applications_resilient">Hystrix: Make your applications resilient</a></li>
-<li>
+<li><a href="#_hystrix_make_your_applications_resilient">1. Hystrix: Make your applications resilient</a>
 <ul class="sectlevel2">
-<li><a href="#_idea_of_hystrix">Idea of Hystrix</a></li>
+<li><a href="#_build_you_application_to_handle_the_failure_of_your_external_services">1.1. Build you application to handle the failure of your external services</a></li>
+<li><a href="#_what_hystrix_has_built_in_ready_to_use">1.2. What Hystrix has built in ready-to-use</a></li>
+<li><a href="#_seeing_hystrix_at_work">1.3. Seeing Hystrix at work</a></li>
 </ul>
 </li>
+<li><a href="#_scenario_to_challenge_hystrix_external_bank_validation">2. Scenario to challenge Hystrix: External Bank validation</a>
+<ul class="sectlevel2">
+<li><a href="#_iban_and_bic_validations">2.1. IBAN and BIC validations</a></li>
+<li><a href="#_simulating_an_external_iban_bic_validation_service">2.2. Simulating an external IBAN/BIC validation service</a></li>
+</ul>
+</li>
+<li><a href="#_writing_a_real_application_with_jax_rs_and_resteasy">3. Writing a real application with JAX-RS and RESTeasy</a>
+<ul class="sectlevel2">
+<li><a href="#_jax_rs_as_a_standard_for_enterprise_restful_web_application">3.1. JAX-RS as a standard for enterprise RESTful web application</a></li>
+<li><a href="#_resteasy_as_portable_jax_rs_implementation">3.2. RESTeasy as portable JAX-RS implementation</a></li>
+<li><a href="#_overview_of_classes_to_implement_a_jax_rs_service">3.3. Overview of classes to implement a JAX-RS service</a></li>
+</ul>
+</li>
+<li><a href="#archaius">4. Runtime Configuration with Archaius</a></li>
 </ul>
 </div>
 </div>
@@ -34,10 +51,10 @@ and see what might fit your development environment.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hystrix_make_your_applications_resilient">Hystrix: Make your applications resilient</h2>
+<h2 id="_hystrix_make_your_applications_resilient">1. Hystrix: Make your applications resilient</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_idea_of_hystrix">Idea of Hystrix</h3>
+<h3 id="_build_you_application_to_handle_the_failure_of_your_external_services">1.1. Build you application to handle the failure of your external services</h3>
 <div class="paragraph">
 <p>Your application has external runtime dependencies, like an external
 validating service for data your user has entered, or the central CRM
@@ -53,20 +70,302 @@ system doesn&#8217;t return with a response. Users and IT operations will call y
 because they think it&#8217;s your fault and don&#8217;t suspect the external service.</p>
 </div>
 <div class="paragraph">
-<p>But what should your application do, when this service is unavailable?</p>
+<p>But what should your application do, when the external service is unavailable?</p>
 </div>
-<div class="literalblock">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>provide timely responses to the users</p>
+</li>
+<li>
+<p>give a detailed error message to the users</p>
+</li>
+<li>
+<p>provide fall backs when the other service is down</p>
+</li>
+<li>
+<p>hooks for IT operations for monitoring to pin-point the problematic service</p>
+</li>
+<li>
+<p>prevent overloading of the problematic service to avoid domino effects</p>
+</li>
+<li>
+<p>automatic recovery once the problematic service is online again</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_hystrix_has_built_in_ready_to_use">1.2. What Hystrix has built in ready-to-use</h3>
+<div class="paragraph">
+<p>These problems are not new. Netflix has solved them for their video on demand service. In 2012 they made their solution open source.</p>
+</div>
+<div class="paragraph">
+<p>To deliver the above, Hystrix has built in the following defaults:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>timeout for every request to an external system (default: 1000 ms)</p>
+</li>
+<li>
+<p>limit of concurrent requests for external system (default: 10)</p>
+</li>
+<li>
+<p>circuit breaker to avoid further requests (default: when more than 50% of all requests fail)</p>
+</li>
+<li>
+<p>retry of a single request after circuit breaker has triggered (default: every 5 seconds)</p>
+</li>
+<li>
+<p>interfaces to retrieve runtime information on request and aggregate level (there&#8217;s even a ready-to-use realtime dashboard for it)</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>It also shows you where you can place you fallback code.</p>
+</div>
+<div class="paragraph">
+<p>Providing a detailed error message is then still a task for you.</p>
+</div>
+<div class="paragraph">
+<p>For more details please have a look at <a href="http://hystrix.github.com" class="bare">http://hystrix.github.com</a>. The <a href="https://github.com/Netflix/Hystrix/wiki">wiki</a> gives detailed information how to use it and the mechanisms inside.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_seeing_hystrix_at_work">1.3. Seeing Hystrix at work</h3>
+<div class="paragraph">
+<p>To seek Hystrix at work in an example application I&#8217;ve built a REST application that will be put under load soon. Let&#8217;s start out with the scenario first.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scenario_to_challenge_hystrix_external_bank_validation">2. Scenario to challenge Hystrix: External Bank validation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_iban_and_bic_validations">2.1. IBAN and BIC validations</h3>
+<div class="paragraph">
+<p>Most of Europe have changed to SEPA in early 2014. Instead of national account number and bank sorting code you now have a <a href="http://en.wikipedia.org/wiki/IBAN">IBAN</a> (International Bank Account Number) and <a href="http://en.wikipedia.org/wiki/ISO_9362">BIC</a> (Bank Identifier Code).</p>
+</div>
+<div class="paragraph">
+<p>When customers enter their bank details on your website, you want to validate these. As the IBAN includes a check digit, you can implement this check.
+The BIC doesn&#8217;t have a check digit, so you can only verify it by lookup in a dictionary.</p>
+</div>
+<div class="paragraph">
+<p>Things get messy as the BIC might not match the IBAN, or the IBAN might
+not be valid for direct debit/clearing.</p>
+</div>
+<div class="paragraph">
+<p>The good news: there are external services that do the validation for you.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_simulating_an_external_iban_bic_validation_service">2.2. Simulating an external IBAN/BIC validation service</h3>
+<div class="paragraph">
+<p>As we want to show what Hystrix can do for us, we need a IBAN/BIC
+validation service. We simulate the behaviour with a small Java procedure:</p>
+</div>
+<div class="listingblock">
+<div class="title">IBANValidator.java</div>
 <div class="content">
-<pre>1.</pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">IBANValidator</span> {
+
+    <span class="directive">private</span> <span class="directive">static</span> <span class="predefined-type">Logger</span> LOG = LoggerFactory.getLogger(IBANValidator.class);
+
+    <span class="directive">private</span> <span class="directive">static</span> DynamicLongProperty timeToWait = DynamicPropertyFactory.getInstance().getLongProperty(
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">hystrixdemo.sleep</span><span class="delimiter">&quot;</span></span>, <span class="integer">100</span>);
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">synchronized</span> <span class="type">boolean</span> isValid(Account account) <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        <span class="keyword">if</span> (<span class="predefined-type">Thread</span>.currentThread().isInterrupted()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="exception">InterruptedException</span>();
+        }
+        <span class="type">long</span> t = timeToWait.get();
+        LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">waiting {} ms</span><span class="delimiter">&quot;</span></span>, t);
+        <span class="keyword">if</span> (t &gt; <span class="integer">0</span>) {
+            <span class="predefined-type">Thread</span>.sleep(t);
+        }
+        <span class="keyword">return</span> <span class="predefined-constant">true</span>;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The core of the simulation is the static <code>isValid()</code> method. As it is synchronized, it will validate one account at a time.</p>
+</div>
+<div class="paragraph">
+<p>To simulate the processing, we use <code>Thread.sleep()</code>. The delay is by default 100 ms. This can be configured at runtime using an <code>DynamicLongProperty</code>. See the chapter <a href="#archaius">Runtime Configuration with Archaius</a> below. Changing the delay at runtime will help us later to try out different scenarios.</p>
+</div>
+<div class="paragraph">
+<p>When someone interrupts the Thread while waiting for the <code>synchronized</code> lock or for <code>Thread.sleep()</code>, the method will throw an <code>InterruptedException</code>.</p>
 </div>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_writing_a_real_application_with_jax_rs_and_resteasy">3. Writing a real application with JAX-RS and RESTeasy</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_jax_rs_as_a_standard_for_enterprise_restful_web_application">3.1. JAX-RS as a standard for enterprise RESTful web application</h3>
+<div class="paragraph">
+<p>JAX-RS is part of the JavaEE Standard. It defines how a JavaEE
+application needs to be structured to respond to HTTP-REST-Calls.</p>
+</div>
+<div class="paragraph">
+<p>REST calls have the following advantages:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>with their JSON-interface they can be interfaced easily from JavaScript clients</p>
+</li>
+<li>
+<p>The REST API can also be easily tested for functional and load testing (see <a href="#soapui">[soapui]</a> and <a href="#jmeter">[jmeter]</a> below).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resteasy_as_portable_jax_rs_implementation">3.2. RESTeasy as portable JAX-RS implementation</h3>
+<div class="paragraph">
+<p><a href="http://resteasy.jboss.org/">RESTEasy</a> by JBoss is a portable implementation of the standard. It adds also several enterprise
+features like authentication and signatures.</p>
+</div>
+<div class="paragraph">
+<p>As a portable implementation I can easily deploy it to a tomcat
+application server later.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_overview_of_classes_to_implement_a_jax_rs_service">3.3. Overview of classes to implement a JAX-RS service</h3>
+<div class="paragraph">
+<p>You find the example application in the folder <code>hystrix-application</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="__code_application_code_as_the_starting_point">3.3.1. <code>Application</code> as the starting point</h4>
+<div class="paragraph">
+<p>JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend <code>javax.ws.rs.core.Application</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">HystrixApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ApplicationPath</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/api</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HystrixApplication</span> <span class="directive">extends</span> Application {
+    <span class="directive">private</span> <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Object</span>&gt; singletons = <span class="keyword">new</span> <span class="predefined-type">HashSet</span>&lt;<span class="predefined-type">Object</span>&gt;();
+
+    <span class="directive">public</span> HystrixApplication() {
+        singletons.add(<span class="keyword">new</span> SimpleSaveAccount());
+        singletons.add(<span class="keyword">new</span> HystrixSaveAccount());
+        singletons.add(<span class="keyword">new</span> ValidationExceptionMapper());
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Object</span>&gt; getSingletons() {
+        <span class="keyword">return</span> singletons;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This very basic setup lists lists the two REST endpoints <code>SimpleSaveAccount</code> and <code>HystrixSaveAccount</code> we will
+lot at later plus an exception handler <code>ValidationExceptionMapper</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__code_application_code_as_the_starting_point_2">3.3.2. <code>Application</code> as the starting point</h4>
+<div class="paragraph">
+<p>JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend <code>javax.ws.rs.core.Application</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">HystrixApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ApplicationPath</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/api</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HystrixApplication</span> <span class="directive">extends</span> Application {
+    <span class="directive">private</span> <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Object</span>&gt; singletons = <span class="keyword">new</span> <span class="predefined-type">HashSet</span>&lt;<span class="predefined-type">Object</span>&gt;();
+
+    <span class="directive">public</span> HystrixApplication() {
+        singletons.add(<span class="keyword">new</span> SimpleSaveAccount());
+        singletons.add(<span class="keyword">new</span> HystrixSaveAccount());
+        singletons.add(<span class="keyword">new</span> ValidationExceptionMapper());
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Object</span>&gt; getSingletons() {
+        <span class="keyword">return</span> singletons;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This very basic setup lists lists the two REST endpoints <code>SimpleSaveAccount</code> and <code>HystrixSaveAccount</code> we will
+lot at later plus an exception handler <code>ValidationExceptionMapper</code>.</p>
+</div>
+<div class="paragraph">
+<p>It also defines that the URL <code>/api</code> will be used for all JAX-RS requests relative to the application.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_simplesaveaccount_as_rest_endpoint">3.3.3. SimpleSaveAccount as REST endpoint</h4>
+<div class="paragraph">
+<p>JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend <code>javax.ws.rs.core.Application</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">SimpleSaveAccount.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Path</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/simple</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SimpleSaveAccount</span> <span class="directive">extends</span> AbstractSaveAccount {
+
+    <span class="annotation">@GET</span>
+    <span class="directive">public</span> Response hello() {
+        <span class="keyword">return</span> Response.status(Status.OK).build();
+    }
+
+    <span class="annotation">@POST</span>
+    <span class="directive">public</span> Response save(Account account) <span class="directive">throws</span> ValidationException, <span class="exception">InterruptedException</span> {
+        <span class="keyword">if</span> (!IBANValidator.isValid(account)) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> ValidationException(<span class="string"><span class="delimiter">&quot;</span><span class="content">invalid</span><span class="delimiter">&quot;</span></span>);
+        }
+        <span class="local-variable">super</span>.saveToDatabase(account);
+        <span class="keyword">return</span> Response.status(Status.OK).build();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This defines for the URL <code>/simple</code> relative to the application defined above how to react on <code>GET</code> and <code>POST</code> requests.</p>
+</div>
+<div class="paragraph">
+<p>A <code>GET</code>-Request will return with an empty <code>200 OK</code> response. This enables us to use a simple browser request to test the successful deployment of our application.</p>
+</div>
+<div class="paragraph">
+<p>A <code>POST</code>-Request will have a parameter of type <code>Account</code>. If the account is invalid, it will throw an exception. Otherwise it will save the account. In our sample application this is a dummy implementation that does nothing. After the save returned, the response is <code>200 OK</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_exceptionmappers_to_handle_exceptions">3.3.4. ExceptionMappers to handle Exceptions</h4>
+<div class="paragraph">
+<p>Unhandled exceptions result in the application server to present a standard <code>500</code> error page that (depending on the application servers&#8217;s configuration) might also include a stack trace of the application.</p>
+</div>
+<div class="paragraph">
+<p>To avoid this and to return REST-ful error messages exceptions are mapped by an <code>ExceptionMapper</code>.</p>
+</div>
+<div class="paragraph">
+<p>/// TODO: map also interrupted exceptions</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="archaius">4. Runtime Configuration with Archaius</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-14 10:00:13 Mitteleuropäische Sommerzeit
+Last updated 2014-08-14 21:43:40 Mitteleuropäische Sommerzeit
 </div>
 </div>
 </body>
