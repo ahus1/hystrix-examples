@@ -1,0 +1,105 @@
+:imagesdir: manual
+:javasourcedir: ../hystrix-application/src/main/java
+
+== Starting up the application container
+
+=== Apache Tomcat is is an easy to use servlet container
+
+http://tomcat.apache.org[Apache Tomcat] is a servlet container. It can run JavaEE Web applications like our JAX-RS applications.
+
+Tomcat Version 8 is implementing the JavaEE 7 standard supporting
+the latest APIs.
+
+=== Installing and running Apache Tomcat
+
+Installation is straight forward: After the download only few
+configuration steps are necessary.
+
+All of these have been prepared in the script `tools/tomcat/run-tomcat.bat`. When you start it the first time, the the script will download the installation archive, unzip it and update the configuration.
+
+==== Activated Apache Tomcat features
+
+The following features are being set up using the automatic installation:
+
+In `setenv.bat`:
+
+. Allow Java remote debugging on port 1044 +
+[source]
+-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044
+
+In `context.xml`:
+
+. Activate `antiResourceLocking` to allow hot-deployment of applications when running Microsoft Windows as operating system
+
+In `tomcat-users.xml`:
+
+. Setup an user `deploy` with password `deploy` to automatically deploy an application
+. Setup an user `tomcat` with password `tomcat` to allow login on the management GUI
+
+==== Testing the Apache Tomcat installation
+
+To teste the application point your browser at http://localhost:8080. You should see an Apache Tomcat start page with the welcome message (see figure <<img-tomcatwelcome>>).
+
+[[img-tomcatwelcome]]
+.Apache Tomcat Welcome Message
+image::tomcatwelcome.png[Tomcat Welcome Message]
+
+Click on the button *Manager App* and you will be asked for a user name and password. Use the user `tomcat` with the password stated above to log in.
+
+[[archaius]]
+== Using Netflixx Archaius for runtime configuration
+
+=== Runtime configuration will get you credits from your IT Ops
+
+If you would write applications that would require a restart every
+time you change a setting, it will deter your users as you will have
+a downtime.
+
+How nice if you could change all your settings at runtime!
+
+Hystrix is integrated already with  https://github.com/Netflix/archaius[Archaius^] that handles runtime
+configuration for you. When implementing our `IBANValidator` you've seen the dynamic property we introduced:
+
+[source,java]
+.IBANValidator.java
+----
+include::../{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
+----
+
+This will create a dynamic property. When we access it, it will always return the most up to date value for it. When the external configuration doesn't define a value the default of 100 will be returned.
+
+In more advanced situations you can also register a callback to be notified whenever a configuration changes. Please refer to the https://github.com/Netflix/archaius/wiki[Archaius Wiki^] to find out more about it.
+
+=== How runtime configuration works in this project
+
+Archaius supports multiple backends to store configuration data. In our setup all configuration is stored in a Java properties file. Archaius checks this file every second.
+
+This is configured as follows:
+
+[source]
+.setenv.bat
+----
+-Darchaius.configurationSource.additionalUrls=file:///%CATALINA_HOME%/../archaius.properties
+-Darchaius.fixedDelayPollingScheduler.delayMills=1000
+-Darchaius.fixedDelayPollingScheduler.initialDelayMills=1000
+----
+
+This allows you change the dynamic property above
+
+[source]
+.archaius.properties
+hystrixdemo.sleep=10
+
+This will override the default setting with 10.
+
+=== Configuring the Hystrix command via Archaius
+
+All Hystrix settings can be configured on default and on command level. Please refer to the https://github.com/Netflix/Hystrix/wiki/Configuration[Configuration Wiki of Hystrix] for an in-depth discussion. This will now show the core parameters:
+
+[source]
+.archaius.properties
+----
+include::archaius.properties[tags=hystrixcommand]
+----
+
+To give these parameters a try you should set up a load test. You'll see in the next chapter how you can do this. But first deploy the application to this freshly installed Tomcat!

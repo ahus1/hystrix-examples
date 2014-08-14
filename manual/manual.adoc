@@ -1,0 +1,98 @@
+= Hystrix Samples - and a little bit more
+:toc: left
+:linkcss:
+:stylesdir: css/
+:source-highlighter: coderay
+:numbered:
+:icons: font
+:javasourcedir: ../hystrix-application/src/main/java
+:imagesdir: manual
+
+This started as a show case for Hystrix. As more tools have been added it might
+also look for you as a walk through for different tools. Take a look around
+and see what might fit your development environment.
+
+== Hystrix: Make your applications resilient
+
+=== Build you application to handle the failure of your external services
+
+Your application has external runtime dependencies, like an external
+validating service for data your user has entered, or the central CRM
+of your company.
+
+What will happen to your application when this external service has a problem?
+
+In the worst case your application will become unavailable as well: The
+screens of your application will freeze and not respond as the external
+system doesn't return with a response. Users and IT operations will call you
+because they think it's your fault and don't suspect the external service.
+
+But what should your application do, when the external service is unavailable?
+
+. provide timely responses to the users
+. give a detailed error message to the users
+. provide fall backs when the other service is down
+. hooks for IT operations for monitoring to pin-point the problematic service
+. prevent overloading of the problematic service to avoid domino effects
+. automatic recovery once the problematic service is online again
+
+=== What Hystrix has built in ready-to-use
+
+These problems are not new. Netflix has solved them for their video on demand service. In 2012 they made their solution open source.
+
+To deliver the above, Hystrix has built in the following defaults:
+
+. timeout for every request to an external system (default: 1000 ms)
+. limit of concurrent requests for external system (default: 10)
+. circuit breaker to avoid further requests (default: when more than 50% of all requests fail)
+. retry of a single request after circuit breaker has triggered (default: every 5 seconds)
+. interfaces to retrieve runtime information on request and aggregate level (there's even a ready-to-use realtime dashboard for it)
+
+It also shows you where you can place you fallback code.
+
+Providing a detailed error message is then still a task for you.
+
+For more details please have a look at http://hystrix.github.com. The https://github.com/Netflix/Hystrix/wiki[wiki] gives detailed information how to use it and the mechanisms inside.
+
+=== Seeing Hystrix at work
+
+To seek Hystrix at work in an example application I've built a REST application that will be put under load soon. Let's start out with the scenario first.
+
+== Scenario to challenge Hystrix: External Bank validation
+
+=== IBAN and BIC validations
+
+Most of Europe have changed to SEPA in early 2014. Instead of national account number and bank sorting code you now have a http://en.wikipedia.org/wiki/IBAN[IBAN] (International Bank Account Number) and http://en.wikipedia.org/wiki/ISO_9362[BIC] (Bank Identifier Code).
+
+When customers enter their bank details on your website, you want to validate these. As the IBAN includes a check digit, you can implement this check.
+The BIC doesn't have a check digit, so you can only verify it by lookup in a dictionary.
+
+Things get messy as the BIC might not match the IBAN, or the IBAN might
+not be valid for direct debit/clearing.
+
+The good news: there are external services that do the validation for you.
+
+=== Simulating an external IBAN/BIC validation service
+
+As we want to show what Hystrix can do for us, we need a IBAN/BIC
+validation service. We simulate the behaviour with a small Java procedure:
+
+[source,java]
+.IBANValidator.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=classdef]
+----
+
+The core of the simulation is the static `isValid()` method. As it is synchronized, it will validate one account at a time.
+
+To simulate the processing, we use `Thread.sleep()`. The delay is by default 100 ms. This can be configured at runtime using an `DynamicLongProperty`. See the chapter <<archaius>> below. Changing the delay at runtime will help us later to try out different scenarios.
+
+When someone interrupts the Thread while waiting for the `synchronized` lock or for `Thread.sleep()`, the method will throw an `InterruptedException`.
+
+include::../hystrix-application/README.adoc[]
+
+include::../tools/tomcat/README.adoc[]
+
+include::../tools/maven/README.adoc[]
+
+include::../tools/jmeter/README.adoc[]

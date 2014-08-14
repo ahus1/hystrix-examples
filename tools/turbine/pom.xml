@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.ahus1.hystrix</groupId>
+	<artifactId>turbine</artifactId>
+	<version>0.4.2-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Turbine</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.netflix.turbine</groupId>
+			<artifactId>turbine-web</artifactId>
+			<type>war</type>
+			<version>0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.turbine</groupId>
+			<artifactId>turbine-core</artifactId>
+			<version>0.4</version>
+		</dependency>
+		<dependency>
+			<artifactId>servlet-api</artifactId>
+			<groupId>javax.servlet</groupId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<finalName>turbine</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>1.4.2</version>
+					<configuration>
+						<container>
+							<containerId>tomcat7x</containerId>
+							<type>remote</type>
+						</container>
+						<configuration>
+							<type>runtime</type>
+							<properties>
+								<cargo.remote.uri>
+									http://localhost:8080/manager/text
+								</cargo.remote.uri>
+								<cargo.remote.username>
+									deploy
+								</cargo.remote.username>
+								<cargo.remote.password>
+									deploy
+								</cargo.remote.password>
+							</properties>
+						</configuration>
+						<deployer>
+							<type>remote</type>
+						</deployer>
+						<deployables>
+							<deployable>
+							</deployable>
+						</deployables>
+
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<overlays>
+							<overlay>
+								<!-- empty groupId/artifactId represents the current build -->
+							</overlay>
+							<overlay>
+								<groupId>com.netflix.turbine</groupId>
+								<artifactId>turbine-web</artifactId>
+								<excludes>
+									<!-- it violates the JEE spec to include this -->
+									<exclude>WEB-INF/lib/servlet-api-2.5.jar</exclude>
+								</excludes>
+							</overlay>
+						</overlays>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

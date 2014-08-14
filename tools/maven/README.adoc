@@ -1,0 +1,35 @@
+
+== Building and deploying the application using Apache Maven
+
+=== Build Configuration based on conventions
+
+http://maven.apache.org/[Apache Maven^] as a build system you the following advantages:
+
+. Project layout based on conventions (i.e. your source files are in `src/main/java`)
+. Management of binary artefacts including transitive dependencies
+. A lot of plugins to automate your build
+
+=== Installing Apache Maven
+
+This process has been automated for you. The first time you start `tools/maven/run-maven.bat` Maven is downloaded and installed.
+
+The following confiugration is applied:
+
+. By adding `-Djava.net.useSystemProxies=true` to the maven parameters Maven will use your Windows proxy settings
+. All dependencies will be downloaded to the folder `tools/maven/m2`. This folder will be used as a cache: All dependencies will be only downloaded once.
+
+=== Packaging and deploying your application to Tomcat
+
+To do this run `hystrix-application/maven-package-deploy.bat`. *Please ensure that your Apache Tomcat is running,* as Maven will deploy your application into the running Apache Tomcat.
+
+The steps executed by Maven `mvn clean package cargo:redeploy` included in the Batch-file:
+
+. Clean up the build folder `target`
+. Download all dependencies from public Maven repositories if they haven't been downloaded yet +
+(this might take a while depending on the speed of your Internet connection)
+. Compile all Java sources
+. Package a WAR file in the `target` folder
+. Deploy it to your running Tomcat instance.
+
+To test that your application has been deployed successfully, open the URL http://localhost:8080/hystrixapp/api/simple[http://localhost:8080/hystrixapp/api/simple^] in your browser.
+You should get the response `Hello world` to show you that everything has been set up correctly.

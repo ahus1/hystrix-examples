@@ -1,0 +1,100 @@
+:source-highlighter: coderay
+
+== Writing a real application with JAX-RS and RESTeasy
+
+=== JAX-RS as a standard for enterprise RESTful web application
+
+JAX-RS is part of the JavaEE Standard. It defines how a JavaEE
+application needs to be structured to respond to HTTP-REST-Calls.
+
+REST calls have the following advantages:
+
+. with their JSON-interface they can be interfaced easily from JavaScript clients
+. The REST API can also be easily tested for functional and load testing (see <<soapui>> and <<jmeter>> below).
+
+=== RESTeasy as portable JAX-RS implementation
+
+http://resteasy.jboss.org/[RESTEasy] by JBoss is a portable implementation of the standard. It adds also several enterprise
+features like authentication and signatures.
+
+As a portable implementation I can easily deploy it to a tomcat
+application server later.
+
+=== Overview of classes to implement a JAX-RS service
+
+You find the example application in the folder `hystrix-application`.
+
+==== `Application` as the starting point
+
+JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
+
+[source,java]
+.HystrixApplication.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
+----
+
+This very basic setup lists lists the two REST endpoints `SimpleSaveAccount` and `HystrixSaveAccount` we will
+lot at later plus an exception handler `ValidationExceptionMapper`.
+
+==== Application as the starting point
+
+JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
+
+[source,java]
+.HystrixApplication.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
+----
+
+This very basic setup lists lists the two REST endpoints `SimpleSaveAccount` and `HystrixSaveAccount` we will
+lot at later plus an exception handler `ValidationExceptionMapper`.
+
+It also defines that the URL `/api` will be used for all JAX-RS requests relative to the application.
+
+==== SimpleSaveAccount as REST endpoint
+
+JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
+
+[source,java]
+.SimpleSaveAccount.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/rest/SimpleSaveAccount.java[tags=classdef]
+----
+
+This defines for the URL `/simple` relative to the application defined above how to react on `GET` and `POST` requests.
+
+A `GET`-Request will return with an empty `200 OK` response. This enables us to use a simple browser request to test the successful deployment of our application.
+
+A `POST`-Request will have a parameter of type `Account`. If the account is invalid, it will throw an exception. Otherwise it will save the account. In our sample application this is a dummy implementation that does nothing. After the save returned, the response is `200 OK`.
+
+==== ExceptionMappers to handle Exceptions
+
+Unhandled exceptions result in the application server to present a standard `500` error page that (depending on the application servers's configuration) might also include a stack trace of the application.
+
+To avoid this and to return REST-ful error messages exceptions are mapped by an `ExceptionMapper`.
+
+[source,java]
+.IBANValidator.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
+----
+
+== Equip your application with Hystrix
+
+=== Wrap external interfaces as a Hystrix Command
+
+The core of the application is now set up. To benefit from Hystrix each call needs to be wrapped as a Hystrix command.
+
+[source,java]
+.HystrixSaveAccount.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/rest/HystrixSaveAccount.java[tags=hystrix]
+----
+<1> constructing the wrapper
+<2> memorizing the parameters
+<3> calling the original code
+<4> taking care of the additional runtime exception that originates from an exception of the services, or from the resilence functionality of Hystrix
+
+[TIP]
+In case the remote service not being available there is the additional runtime Exception. This could easily be missed when converting your code. Any exception that could have been thrown by the original code is now wrapped as a `HystrixRuntimeException` and needs to be unwrapped. But there are also additional Hystrix exception that will be thrown once the service is considered unavailable.

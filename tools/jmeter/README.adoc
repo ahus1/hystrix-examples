@@ -1,0 +1,40 @@
+:imagesdir: manual
+
+== Putting your application under load with JMeter
+
+=== Apache JMeter is free and open source load testing
+
+http://jmeter.apache.org/[Apache JMeter^] allows you to create
+and run load tests simulating the load of multiple users using
+a single PC.
+
+=== Installing Apache JMeter
+
+This process has been automated for you. The first time you start `tools/maven/run-jmeter.bat` JMeter is downloaded and installed.
+
+The following defaults are applied:
+
+. Whenever you run JMeter using the script above, the load testing script `hystrixSaveAccount.jmx` is opened.
+
+You will see the <<img-jmeterwelcome>>.
+
+[[img-jmeterwelcome]]
+.Apache JMeter Start Screen
+image::jmeterwelcome.png[JMeter Start Screen]
+
+=== Simulating multiple users
+
+You can vary the number of simulated users by changing the number of threads. In this script the number of users is configured to be 20.
+
+A test with JMeter has the following steps:
+
+. choose the number of users (aka threads)
+. press the play image:jmeter-play.png[Play, title="Play"] button to start the workers
+. press the stop image:jmeter-stop.png[Stop, title="Stop"] button to stop the workers
+. Watch the summary report to see the timing of the requests and how many requests succeed and fail
+. Watch the log file of Apache Tomcat for exceptions and other log messages
+. Change the Archais runtime configuration and see how the behaviour of the system changes (see section <<archaius>> for the details).
+. press the clean image:jmeter-clean.png[Clean, title="Clean"] button to clear the results from JMeter
+
+[IMPORTANT]
+When you change the number of users (aka threads) this will become effective only after you stop/start the workers
