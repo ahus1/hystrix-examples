@@ -28,7 +28,7 @@ You find the example application in the folder `hystrix-application`.
 
 JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
 
-[source,java]
+[source,java,indent=0]
 .HystrixApplication.java
 ----
 include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
@@ -41,7 +41,7 @@ lot at later plus an exception handler `ValidationExceptionMapper`.
 
 JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
 
-[source,java]
+[source,java,indent=0]
 .HystrixApplication.java
 ----
 include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
@@ -56,7 +56,7 @@ It also defines that the URL `/api` will be used for all JAX-RS requests relativ
 
 JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
 
-[source,java]
+[source,java,indent=0]
 .SimpleSaveAccount.java
 ----
 include::{javasourcedir}/de/ahus1/hystrix/rest/SimpleSaveAccount.java[tags=classdef]
@@ -74,7 +74,7 @@ Unhandled exceptions result in the application server to present a standard `500
 
 To avoid this and to return REST-ful error messages exceptions are mapped by an `ExceptionMapper`.
 
-[source,java]
+[source,java,indent=0]
 .IBANValidator.java
 ----
 include::{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
@@ -82,11 +82,33 @@ include::{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
 
 == Equip your application with Hystrix
 
+=== Ensuring a clean startup and shutdown or Hystrix in your application
+
+When you want to run code at the start and at the end of a JEE Web application, the place for this is `@WebListener`. The servlet container will scan for classes with this annotation and run their `contextInitialized()` and `contextDestroyed()` methods.
+
+To start up Hystrix there is nothing to do; you can just go ahead and use it.
+
+I recommend a shutdown of Hystrix as it starts several thread pools to do its job. Just add the line
+
+[source,java,indent=0]
+.HystrixSetupListener.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/util/HystrixSetupListener.java[tags=hystrixstop]
+----
+
+As we have also included Archaius as a default to reconfigure our application and Hystrix, we should shutdown this as well.
+
+[source,java,indent=0]
+.HystrixSetupListener.java
+----
+include::{javasourcedir}/de/ahus1/hystrix/util/HystrixSetupListener.java[tags=archaiusstop]
+----
+
 === Wrap external interfaces as a Hystrix Command
 
 The core of the application is now set up. To benefit from Hystrix each call needs to be wrapped as a Hystrix command.
 
-[source,java]
+[source,java,indent=0]
 .HystrixSaveAccount.java
 ----
 include::{javasourcedir}/de/ahus1/hystrix/rest/HystrixSaveAccount.java[tags=hystrix]

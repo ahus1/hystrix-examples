@@ -11,7 +11,11 @@ If (-not (Test-Path "apache-tomcat-$version")) {
   # see if ZIP file exists
   If (-not (Test-Path "apache-tomcat-$version.zip")) {
     "downloading installation archive from $url"
-    $webclient = New-Object System.Net.WebClient
+#   proxy setting not needed, will do this automatically
+#    $proxy = [System.Net.WebRequest]::GetSystemWebProxy()
+#    $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials    #
+	$webclient = New-Object System.Net.WebClient
+#	$webclient.proxy = $proxy
     $webclient.DownloadFile($url,"apache-tomcat-$version.zip")
   }
 

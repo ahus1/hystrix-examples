@@ -1,0 +1,51 @@
+== Aggregating Hystrix runtime information in a cluster with Turbine
+
+=== Turbine aggregates runtime information
+
+https://github.com/Netflix/Turbine[Netflix Turbine] is a web application that connects to instances of your Hystrix application in a cluster and aggregates the information.
+
+=== Installing and running Turbine
+
+The installation has been scripted for you: you need to run `tools/turbine/maven-package-deploy.bat`.
+
+The current installation will re-package the 0.4 version of Turbine and add to it the latest (yet unreleased) changes to allow easy re-deployment. Please have a look into `pom.xml` to see how you can adopt an already packaged WAR file to your environment.
+
+You can open the URL http://localhost:8080/turbine/turbine.stream in a Google Chrome browser to see the stream of events. If there are no Hystrix requests, you'll see only "ping" messages. You can't test this with Mozilla Firefox or Microsoft Internet Explorer as they will open only a file download dialogue.
+
+=== Configuration for Turbine
+
+==== Configuration Turbine metadata
+
+Turbine uses the same confiuguration mechanism as Hystrix: Archaius. See chapter "<<archaius>> for more information. The following confiuguration has already been set up for you in `archaius.properties`:
+
+[source]
+.archaius.properties
+----
+include::../tomcat/archaius.properties[tags=turbine]
+----
+
+`turbine.instanceUrlSuffix`: This URL suffix needs to be the same for all applications in the cluster. Turbine uses this Endpoint to receive a stream of runtime information.
+
+`turbine.ConfigPropertyBasedDiscovery.default.instances`: This lists the hosts Turbine should poll information from. In a production system there are mechanisms to discover hosts automatically. In our test scenario a list is sufficient as we have only one host.
+
+==== Preparing your application for Turbine
+
+To have you application publishing the information on the URL suffix above, you'll need to add a servlet to your application. This has already been packaged for you. You'll just need to include as a dependency of your application in `pom.xml`:
+
+[source,xml,indent=0]
+.pom.xml
+----
+include::../../hystrix-application/pom.xml[tags=turbine]
+----
+
+The you register it in `web.xml` as a servlet:
+
+[source,xml,indent=0]
+.web.xml
+----
+include::../../hystrix-application/src/main/webapp/WEB-INF/web.xml[tags=turbine]
+----
+
+You can open the URL http://localhost:8080/hystrixapp/hystrix.stream in a Google Chrome browser to see the stream of events. If there are no Hystrix requests, you'll see only "ping" messages. You can't test this with Mozilla Firefox or Microsoft Internet Explorer as they will open only a file download dialogue.
+
+To visualize it, see the next chapter about Hystrix dashboard.

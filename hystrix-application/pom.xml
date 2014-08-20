@@ -42,11 +42,18 @@
 			<artifactId>hystrix-core</artifactId>
 			<version>${hystrix}</version>
 		</dependency>
+
+        <!-- https://github.com/asciidoctor/asciidoctor/issues/1072 -->
+		<!-- tag::turbine[] 
+		<!- include metrics event stream -->
 		<dependency>
 			<groupId>com.netflix.hystrix</groupId>
 			<artifactId>hystrix-metrics-event-stream</artifactId>
 			<version>${hystrix}</version>
 		</dependency>
+		<!-- end::turbine[] 
+		-->
+
 		<dependency>
 			<groupId>com.netflix.hystrix</groupId>
 			<artifactId>hystrix-metrics-event-stream</artifactId>

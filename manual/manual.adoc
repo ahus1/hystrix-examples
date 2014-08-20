@@ -7,6 +7,8 @@
 :icons: font
 :javasourcedir: ../hystrix-application/src/main/java
 :imagesdir: manual
+// using experimental to support btn: macro
+:experimental:
 
 This started as a show case for Hystrix. As more tools have been added it might
 also look for you as a walk through for different tools. Take a look around
@@ -58,6 +60,49 @@ For more details please have a look at http://hystrix.github.com. The https://gi
 
 To seek Hystrix at work in an example application I've built a REST application that will be put under load soon. Let's start out with the scenario first.
 
+== Prerequisites for this tutorial
+
+=== Java SDK installed
+
+In order to run this application you'll need to have Java installed. The minimum recommended version is Java JDK 7. I have performed my tests with Java JDK 8. Please download it from http://www.oracle.com/technetwork/java/javase/downloads/index.html[Oracle Java SE Download page^].
+
+=== Internet Connection for additional downloads
+
+In the process of the turorial you'll need to download additional files from the internet. This includes i.e. Apache Tomcat and Apache Maven. All installations are scripted using small Powershell scripts. Expect a download an additional 100 MB during the tutorial.
+
+=== Proxy settings
+
+When using Maven behind a proxy, please setup your proxy for protocols http and https in `tools\maven\apache-maven-3.2.x\conf\settings.xml`. You should specify the username and password only when this is necessary in your configuration. Please leave it blank otherwise. Please ensure that `localhost` is listed in `nonProxyHosts` otherwise the automatic deployment to the locally installed tomcat might not work.
+
+[source,xml,indent=0]
+.settings.xml
+----
+<proxy>
+  <id>optional</id>
+  <active>true</active>
+  <protocol>http</protocol>
+  <username>proxyuser</username>
+  <password>proxypass</password>
+  <host>proxy.host.net</host>
+  <port>80</port>
+  <nonProxyHosts>localhost|local.net|some.host.com</nonProxyHosts>
+</proxy>
+<proxy>
+  <id>optional</id>
+  <active>true</active>
+  <protocol>http</protocol>
+  <username>proxyuser</username>
+  <password>proxypass</password>
+  <host>proxy.host.net</host>
+  <port>80</port>
+  <nonProxyHosts>localhost|local.net|some.host.com</nonProxyHosts>
+</proxy>
+----
+
+=== Virtual Box and Vagrant
+
+To show advanced dashboards and monitoring you'll need to install both http://virtualbox.org/[Oracle Virtual^] Box and http://www.vagrantup.com/[HashiCorp Vagrant^]. These will allow you to spin up virtual machines to run both Zabbix and Riemann on your local machine. Expect to download an additional 1-1.5 GB for the two tools, an image of a virtual machine and additional packages.
+
 == Scenario to challenge Hystrix: External Bank validation
 
 === IBAN and BIC validations
@@ -96,3 +141,7 @@ include::../tools/tomcat/README.adoc[]
 include::../tools/maven/README.adoc[]
 
 include::../tools/jmeter/README.adoc[]
+
+include::../tools/turbine/README.adoc[]
+
+include::../tools/hystrix-dashboard/README.adoc[]

@@ -1,7 +1,7 @@
 # change version number and hash code as shown on Apache download page
 # http://maven.apache.org/download.cgi
-$version="3.2.2"
-$masterhash = "49c3d724dee3608982ad74341d9ba852"
+$version="3.2.3"
+$masterhash = "463d02b4a31ab2862c295e67e46dee1e"
 
 $url = "http://www.eu.apache.org/dist/maven/maven-3/$version/binaries/apache-maven-$version-bin.zip"
 

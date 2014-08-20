@@ -42,7 +42,8 @@ public class HystrixSetupListener implements ServletContextListener {
             .getLogger(ZabbixCommandMetricsProvider.class);
 
     /** for register and un-register. */
-    static final String OBJ_NAME_LOG4J_BEAN = "de.ahus1.archaius:type=ArchaiusMBean";
+    static final String OBJ_NAME_LOG4J_BEAN =
+            "de.ahus1.archaius:type=ArchaiusMBean";
 
     /** Object name for JMX binding. */
     private ObjectName name;
@@ -64,8 +65,9 @@ public class HystrixSetupListener implements ServletContextListener {
 
         // register Archaius as MBean to allow runtime configuration.
         try {
-            name = new ObjectName(OBJ_NAME_LOG4J_BEAN
-                    + sce.getServletContext().getContextPath());
+            name =
+                    new ObjectName(OBJ_NAME_LOG4J_BEAN
+                            + sce.getServletContext().getContextPath());
             BaseConfigMBean bean = new BaseConfigMBean(conf);
             StandardMBean mbean = new StandardMBean(bean, ConfigMBean.class);
             mbs.registerMBean(mbean, name);
@@ -118,7 +120,7 @@ public class HystrixSetupListener implements ServletContextListener {
             zabbix.stop();
         }
 
-        // de-register MBean
+        // de-register Archaius MBean
         if (name != null) {
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
             try {
@@ -128,23 +130,28 @@ public class HystrixSetupListener implements ServletContextListener {
             }
         }
 
+        // tag::hystrixstop[]
         // shutdown all thread pools; waiting a little time for shutdown
         Hystrix.reset(1, TimeUnit.SECONDS);
+        // end::hystrixstop[]
 
+        // tag::archaiusstop[]
         // shutdown configuration listeners that might have been activated by
         // Archaius
         if (ConfigurationManager.getConfigInstance() instanceof DynamicConfiguration) {
             ((DynamicConfiguration) ConfigurationManager.getConfigInstance())
                     .stopLoading();
         } else if (ConfigurationManager.getConfigInstance() instanceof ConcurrentCompositeConfiguration) {
-            ConcurrentCompositeConfiguration config = ((ConcurrentCompositeConfiguration) ConfigurationManager
-                    .getConfigInstance());
+            ConcurrentCompositeConfiguration config =
+                    ((ConcurrentCompositeConfiguration) ConfigurationManager
+                            .getConfigInstance());
             for (AbstractConfiguration innerConfig : config.getConfigurations()) {
                 if (innerConfig instanceof DynamicConfiguration) {
                     ((DynamicConfiguration) innerConfig).stopLoading();
                 }
             }
         }
+        // end::archaiusstop[]
 
     }
 }

@@ -60,7 +60,7 @@ How nice if you could change all your settings at runtime!
 Hystrix is integrated already with  https://github.com/Netflix/archaius[Archaius^] that handles runtime
 configuration for you. When implementing our `IBANValidator` you've seen the dynamic property we introduced:
 
-[source,java]
+[source,java,indent=0]
 .IBANValidator.java
 ----
 include::../{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
