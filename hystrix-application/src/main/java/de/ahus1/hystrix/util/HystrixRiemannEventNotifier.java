@@ -21,16 +21,15 @@ public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
 
     private RiemannClient c;
 
-    public HystrixRiemannEventNotifier() throws IOException {
-        c = RiemannClient.tcp("localhost", 5555);
-        c.connect();
-    }
+    private volatile boolean started;
 
     @Override
     public void markEvent(HystrixEventType eventType, HystrixCommandKey key) {
         try {
-            c.event().service(key.name()).state(eventType.name()).send()
-                    .deref(10, TimeUnit.SECONDS);
+            if (started) {
+                c.event().service(key.name()).state(eventType.name()).send()
+                        .deref(10, TimeUnit.SECONDS);
+            }
         } catch (IOException e) {
             LOG.error("unable to send event", e);
         }
@@ -41,8 +40,10 @@ public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
             ExecutionIsolationStrategy isolationStrategy, int duration,
             List<HystrixEventType> eventsDuringExecution) {
         try {
-            c.event().service(key.name()).metric(duration).send()
-                    .deref(10, TimeUnit.SECONDS);
+            if (started) {
+                c.event().service(key.name()).metric(duration).send().deref(10,
+                        TimeUnit.SECONDS);
+            }
         } catch (IOException e) {
             LOG.error("unable to send event", e);
         }
@@ -50,8 +51,20 @@ public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
                 eventsDuringExecution);
     }
 
-    public void stop() throws IOException {
-        c.disconnect();
+    public synchronized void start() throws IOException {
+        if (!started) {
+            c = RiemannClient.tcp("localhost", 5555);
+            c.connect();
+            started = true;
+        }
+    }
+
+    public synchronized void stop() throws IOException {
+        if (started) {
+            c.disconnect();
+            c = null;
+            started = false;
+        }
     }
 
 }

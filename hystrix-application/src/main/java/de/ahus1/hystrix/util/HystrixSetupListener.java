@@ -22,7 +22,9 @@ import org.slf4j.LoggerFactory;
 
 import com.netflix.config.ConcurrentCompositeConfiguration;
 import com.netflix.config.ConfigurationManager;
+import com.netflix.config.DynamicBooleanProperty;
 import com.netflix.config.DynamicConfiguration;
+import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.jmx.BaseConfigMBean;
 import com.netflix.config.jmx.ConfigMBean;
 import com.netflix.hystrix.Hystrix;
@@ -48,7 +50,15 @@ public class HystrixSetupListener implements ServletContextListener {
     /** Object name for JMX binding. */
     private ObjectName name;
 
+    private final static DynamicBooleanProperty enablezabbix =
+            DynamicPropertyFactory.getInstance().getBooleanProperty(
+                    "hystrixdemo.enablezabbix", false);
+
     private HystrixZabbixMetricsPublisher zabbix;
+
+    private final static DynamicBooleanProperty enableriemann =
+            DynamicPropertyFactory.getInstance().getBooleanProperty(
+                    "hystrixdemo.enableriemann", false);
 
     private HystrixRiemannEventNotifier riemann;
 
@@ -80,24 +90,77 @@ public class HystrixSetupListener implements ServletContextListener {
         // HystrixPlugins.getInstance().registerMetricsPublisher(
         // HystrixServoMetricsPublisher.getInstance());
 
+        setupZabbix();
+
+        setupRiemann();
+
+    }
+
+    private void setupRiemann() {
+        riemann = new HystrixRiemannEventNotifier();
+        HystrixPlugins.getInstance().registerEventNotifier(riemann);
+
+        enableriemann.addCallback(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (enableriemann.getValue()) {
+                        LOG.info("starting riemann");
+                        riemann.start();
+                    } else {
+                        LOG.info("stopping riemann");
+                        riemann.stop();
+                    }
+                } catch (Exception e) {
+                    LOG.warn("exception", e);
+                }
+            }
+        });
+
+        if (enableriemann.getValue() == true) {
+            try {
+                riemann.start();
+            } catch (IOException e) {
+                /*
+                 * TODO: find a way for lazy registration as soon as Riemann is
+                 * up and running
+                 */
+                LOG.error("unable to register Riemann listener", e);
+            }
+        }
+    }
+
+    private void setupZabbix() {
         try {
             zabbix = new HystrixZabbixMetricsPublisher();
-            zabbix.start();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        HystrixPlugins.getInstance().registerMetricsPublisher(zabbix);
+        enablezabbix.addCallback(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (enablezabbix.getValue()) {
+                        LOG.info("starting zabbix");
+                        zabbix.start();
+                    } else {
+                        LOG.info("stopping zabbix");
+                        zabbix.stop();
+                    }
+                } catch (Exception e) {
+                    LOG.warn("exception", e);
+                }
+            }
+        });
 
-        try {
-            riemann = new HystrixRiemannEventNotifier();
-            HystrixPlugins.getInstance().registerEventNotifier(riemann);
-        } catch (IOException e) {
-            // TODO: find a way for lazy registration as soon as Riemann is up
-            // and running
-            LOG.error("unable to register Riemann listener", e);
+        if (enablezabbix.getValue()) {
+            try {
+                zabbix.start();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-
     }
 
     /**

@@ -145,3 +145,87 @@ include::../tools/jmeter/README.adoc[]
 include::../tools/turbine/README.adoc[]
 
 include::../tools/hystrix-dashboard/README.adoc[]
+
+== Behaviour of Hystrix under load
+
+=== Introduction to Load Scenarios for Hystrix
+
+Now we have a complete setup: an application, a driver for the load, and a realtime dashboard. You are now ready to see the behaviour of Hystrix.
+
+The number of threads in JMeter will remain constant for all scenarios. The scenarios will differ only in their setting of `hystrixdemo.sleep` in `archaius.properties`. This will simulate a n IBAN/BIC validation that is gradually getting slower and slower.
+
+The delay between requests in the thread pool is 1 second. The time of the service to respond is not compensated by the delay: the longer the response time is, the fewer requests per second we will see. When there is no delay at all, we would see 20 requests per second, as we have 20 workers.
+
+=== A fast response: 10 ms
+
+Starting with a response time of 10 ms we see a very well behaving system: The throughput is about 18 requests per second.
+
+The number of active threads is idling between one and two. The median service time is about 10 ms, the mean slightly above.
+
+.Hystrix Dashboard: 10 ms service delay
+image::dashboard_10ms.png[Hystrix Dashboard: 10 ms service delay]
+
+=== A medium response: 70 ms
+
+Now change the delay to 70 ms. Save the file. Archaius will pick up the new value within a seconds. Our IBAN/BIC service will get slower.
+
+You will see an immediate effect on the Dashboard. After a short time the values in the dashboard will be re-calculated.
+
+.Hystrix Dashboard: 70 ms service delay
+image::dashboard_70ms.png[Hystrix Dashboard: 70 ms service delay]
+
+With 13.6 requests per second and a delay of 70 ms in the service the serive is now saturated. 13.7 req/s multiplied with 70 ms is almost 1 second working time per second.
+
+You also see that the number of active threads has increased to 6.
+
+=== A late response: 100 ms
+
+Change the delay to 100 ms. Save the file. You'll see the dashboard change.
+
+.Hystrix Dashboard: 100 ms service delay
+image::dashboard_100ms.png[Hystrix Dashboard: 100 ms service delay]
+
+The number of active threads iterates between 9 and 10. (Please ignore the "queue size", this is not active as queueing is disabled by default). Indicated as a yellow number some requests receive a timeout while they are waiting at the synchronized lock on the simulated IBAN server. Purple indicates the number of requests that are rejected when there is no space in the queue.
+
+The dashboard shows you that 26 percent of all requests fail.
+
+If the service wouldn't have been wrapped as a service, we would see an overload situation and with long response times. With Hystrix the response times in the 99 percent tier are still around one second for the successful requests.
+
+The circuit is closed, meaning that Hystrix considers the service to be functional (although some requests are rejected).
+
+=== A critical response: 200 ms
+
+Now try 200 ms. Save the file. The dashboard will change again.
+
+That you see is a that the Circuit changes between open and closed. Therefore the following picture is a combination of two screen shots.
+
+.Hystrix Dashboard: 200 ms service delay
+image::dashboard_200ms.png[Hystrix Dashboard: 200 ms service delay]
+
+The ratio of failed commands is now more than 50 percent, therefore the circuit breaker kicks in. Every five seconds it tries on request (that is answered within 200 ms), resets the statistics and then closes again.
+
+As the statistics are reset on each opening circuit, you can't trust the dashboard. Please have a look in JMeter in the Summary report. Reset it (as it will by now contain results from the previous setups), and wait a short time. It will show you that about 65 percent of the requests fail.
+
+=== An eternity: 1500 ms
+
+The final setting: 1500 ms. Save the file. Watch the dashboard.
+
+.Hystrix Dashboard: 1500 ms service delay
+image::dashboard_1500ms.png[Hystrix Dashboard: 1500 ms service delay]
+
+As the timeout is 1000 ms for the commands, 100 percent of the requests fail. The circuit is no permanently open. Even the retry every 5 seconds will not close it again as this single request is too slow.
+
+=== Hystrix: Don waste resources by queueing requests
+
+The examples show that Hystrix does its job very effectively:
+
+. It  will forward as many requests as possible to the service to process them.
+. Any other requests are returned to the sender as unsuccessful as early as possible.
+. No caller waits longer than the 1 second timeout for a response
+. Queues require resources, and Hystrix efficiently minimizes queueing inside the system. It is limited to the ten concurrent requests processed by the thread pool.
+. A burst in requests is reflected at the earliest boundary instead of overloading the backend service
+. When the backend services are overloaded for one or the other reason, the circuit breaker in front will give the backend services a break to recover.
+
+Well done, Hystrix!
+
+Please feel free to try your own variations: enable queueing, change the number of threads, or try out any other Hystrix setting.

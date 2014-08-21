@@ -35,6 +35,7 @@ import com.quigley.zabbixj.agent.ZabbixAgent;
 public class HystrixZabbixMetricsPublisher extends HystrixMetricsPublisher {
     private ZabbixAgent agent;
     private ZabbixCommandMetricsProvider commandProvider;
+    boolean started;
 
     public HystrixZabbixMetricsPublisher() throws Exception {
         agent = new ZabbixAgent();
@@ -49,12 +50,18 @@ public class HystrixZabbixMetricsPublisher extends HystrixMetricsPublisher {
 
     }
 
-    public void start() throws Exception {
-        agent.start();
+    public synchronized void start() throws Exception {
+        if (!started) {
+            agent.start();
+            started = true;
+        }
     }
 
-    public void stop() {
-        agent.stop();
+    public synchronized void stop() {
+        if (started) {
+            agent.stop();
+            started = false;
+        }
     }
 
     @Override
