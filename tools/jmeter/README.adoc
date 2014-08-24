@@ -1,6 +1,7 @@
 :imagesdir: manual
 
-== Putting your application under load with JMeter
+[[jmeter]]
+== Putting your application under load
 
 === Apache JMeter is free and open source load testing
 
@@ -33,7 +34,7 @@ A test with JMeter has the following steps:
 . press the stop image:jmeter-stop.png[Stop, title="Stop"] button to stop the workers
 . Watch the summary report to see the timing of the requests and how many requests succeed and fail
 . Watch the log file of Apache Tomcat for exceptions and other log messages
-. Change the Archais runtime configuration and see how the behaviour of the system changes (see section <<archaius>> for the details).
+. Change the Archaius runtime configuration and see how the behaviour of the system changes (see section <<archaius>> for the details).
 . press the clean image:jmeter-clean.png[Clean, title="Clean"] button to clear the results from JMeter
 
 [IMPORTANT]

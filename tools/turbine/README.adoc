@@ -1,8 +1,10 @@
-== Aggregating Hystrix runtime information in a cluster with Turbine
+== Aggregating Hystrix runtime information in a cluster
 
 === Turbine aggregates runtime information
 
 https://github.com/Netflix/Turbine[Netflix Turbine] is a web application that connects to instances of your Hystrix application in a cluster and aggregates the information.
+
+It does this in real time. The results will be updated every 0.5 seconds.
 
 === Installing and running Turbine
 
@@ -16,7 +18,7 @@ You can open the URL http://localhost:8080/turbine/turbine.stream in a Google Ch
 
 ==== Configuration Turbine metadata
 
-Turbine uses the same confiuguration mechanism as Hystrix: Archaius. See chapter "<<archaius>> for more information. The following confiuguration has already been set up for you in `archaius.properties`:
+Turbine uses the same configuration mechanism as Hystrix: Archaius. See chapter "<<archaius>> for more information. The following configuration has already been set up for you in `archaius.properties`:
 
 [source]
 .archaius.properties
@@ -38,7 +40,7 @@ To have you application publishing the information on the URL suffix above, you'
 include::../../hystrix-application/pom.xml[tags=turbine]
 ----
 
-The you register it in `web.xml` as a servlet:
+Then you register it in `web.xml` as a servlet:
 
 [source,xml,indent=0]
 .web.xml

@@ -1,4 +1,11 @@
-= Hystrix Samples - and a little bit more
+= Hystrix Examples -- and a little bit more
+
+This started as a show case for Hystrix. As more tools have been added it might
+also look for you as a walk through for different tools. Take a look around
+and see what might fit your development environment.
+
+-- Alexander Schwartz (alexander.schwartz@gmx.net)
+
 :toc: left
 :linkcss:
 :stylesdir: css/
@@ -10,13 +17,9 @@
 // using experimental to support btn: macro
 :experimental:
 
-This started as a show case for Hystrix. As more tools have been added it might
-also look for you as a walk through for different tools. Take a look around
-and see what might fit your development environment.
+== Hystrix: Make your application resilient
 
-== Hystrix: Make your applications resilient
-
-=== Build you application to handle the failure of your external services
+=== Build you application to handle the failure of external services
 
 Your application has external runtime dependencies, like an external
 validating service for data your user has entered, or the central CRM
@@ -50,13 +53,13 @@ To deliver the above, Hystrix has built in the following defaults:
 . retry of a single request after circuit breaker has triggered (default: every 5 seconds)
 . interfaces to retrieve runtime information on request and aggregate level (there's even a ready-to-use realtime dashboard for it)
 
-It also shows you where you can place you fallback code.
+It also shows you where you can place you fall back code.
 
 Providing a detailed error message is then still a task for you.
 
 For more details please have a look at http://hystrix.github.com. The https://github.com/Netflix/Hystrix/wiki[wiki] gives detailed information how to use it and the mechanisms inside.
 
-=== Seeing Hystrix at work
+=== Hystrix at work
 
 To seek Hystrix at work in an example application I've built a REST application that will be put under load soon. Let's start out with the scenario first.
 
@@ -99,9 +102,13 @@ When using Maven behind a proxy, please setup your proxy for protocols http and 
 </proxy>
 ----
 
+///////
+
 === Virtual Box and Vagrant
 
 To show advanced dashboards and monitoring you'll need to install both http://virtualbox.org/[Oracle Virtual^] Box and http://www.vagrantup.com/[HashiCorp Vagrant^]. These will allow you to spin up virtual machines to run both Zabbix and Riemann on your local machine. Expect to download an additional 1-1.5 GB for the two tools, an image of a virtual machine and additional packages.
+
+///////
 
 == Scenario to challenge Hystrix: External Bank validation
 
@@ -134,6 +141,10 @@ To simulate the processing, we use `Thread.sleep()`. The delay is by default 100
 
 When someone interrupts the Thread while waiting for the `synchronized` lock or for `Thread.sleep()`, the method will throw an `InterruptedException`.
 
+This is a standard Java feature that will be used by Hystrix to notify a service call that is taking too long.
+
+You find this source code in the `hystrix-application` folder.
+
 include::../hystrix-application/README.adoc[]
 
 include::../tools/tomcat/README.adoc[]
@@ -150,7 +161,7 @@ include::../tools/hystrix-dashboard/README.adoc[]
 
 === Introduction to Load Scenarios for Hystrix
 
-Now we have a complete setup: an application, a driver for the load, and a realtime dashboard. You are now ready to see the behaviour of Hystrix.
+Now we have a complete setup: an application, a driver for the load, and a real time dashboard. You are now ready to see the behaviour of Hystrix.
 
 The number of threads in JMeter will remain constant for all scenarios. The scenarios will differ only in their setting of `hystrixdemo.sleep` in `archaius.properties`. This will simulate a n IBAN/BIC validation that is gradually getting slower and slower.
 
@@ -174,7 +185,7 @@ You will see an immediate effect on the Dashboard. After a short time the values
 .Hystrix Dashboard: 70 ms service delay
 image::dashboard_70ms.png[Hystrix Dashboard: 70 ms service delay]
 
-With 13.6 requests per second and a delay of 70 ms in the service the serive is now saturated. 13.7 req/s multiplied with 70 ms is almost 1 second working time per second.
+With 13.6 requests per second and a delay of 70 ms in the service is now saturated. 13.7 req/s multiplied with 70 ms is almost 1 second working time per second.
 
 You also see that the number of active threads has increased to 6.
 
@@ -185,7 +196,7 @@ Change the delay to 100 ms. Save the file. You'll see the dashboard change.
 .Hystrix Dashboard: 100 ms service delay
 image::dashboard_100ms.png[Hystrix Dashboard: 100 ms service delay]
 
-The number of active threads iterates between 9 and 10. (Please ignore the "queue size", this is not active as queueing is disabled by default). Indicated as a yellow number some requests receive a timeout while they are waiting at the synchronized lock on the simulated IBAN server. Purple indicates the number of requests that are rejected when there is no space in the queue.
+The number of active threads iterates between 9 and 10. (Please ignore the "queue size", this is not active as queueing is disabled by default). Indicated as a yellow number some requests receive a time out while they are waiting at the synchronized lock on the simulated IBAN server. Purple indicates the number of requests that are rejected when there is no space in the queue.
 
 The dashboard shows you that 26 percent of all requests fail.
 
@@ -213,18 +224,18 @@ The final setting: 1500 ms. Save the file. Watch the dashboard.
 .Hystrix Dashboard: 1500 ms service delay
 image::dashboard_1500ms.png[Hystrix Dashboard: 1500 ms service delay]
 
-As the timeout is 1000 ms for the commands, 100 percent of the requests fail. The circuit is no permanently open. Even the retry every 5 seconds will not close it again as this single request is too slow.
+As the time out is 1000 ms for the commands, 100 percent of the requests fail. The circuit is no permanently open. Even the retry every 5 seconds will not close it again as this single request is too slow.
 
-=== Hystrix: Don waste resources by queueing requests
+=== Hystrix: Don't waste resources by queueing requests
 
 The examples show that Hystrix does its job very effectively:
 
 . It  will forward as many requests as possible to the service to process them.
 . Any other requests are returned to the sender as unsuccessful as early as possible.
-. No caller waits longer than the 1 second timeout for a response
+. No caller waits longer than the 1 second time out for a response
 . Queues require resources, and Hystrix efficiently minimizes queueing inside the system. It is limited to the ten concurrent requests processed by the thread pool.
 . A burst in requests is reflected at the earliest boundary instead of overloading the backend service
-. When the backend services are overloaded for one or the other reason, the circuit breaker in front will give the backend services a break to recover.
+. When the back end services are overloaded for one or the other reason, the circuit breaker in front will give the backend services a break to recover.
 
 Well done, Hystrix!
 

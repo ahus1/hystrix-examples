@@ -1,6 +1,6 @@
 :source-highlighter: coderay
 
-== Writing a real application with JAX-RS and RESTeasy
+== Writing a real application with JAX-RS
 
 === JAX-RS as a standard for enterprise RESTful web application
 
@@ -9,33 +9,20 @@ application needs to be structured to respond to HTTP-REST-Calls.
 
 REST calls have the following advantages:
 
-. with their JSON-interface they can be interfaced easily from JavaScript clients
-. The REST API can also be easily tested for functional and load testing (see <<soapui>> and <<jmeter>> below).
+. With their JSON-interface they can be interfaced easily from JavaScript clients.
+. The REST API can also be easily tested for functional and load testing (see <<jmeter>> below).
 
 === RESTeasy as portable JAX-RS implementation
 
 http://resteasy.jboss.org/[RESTEasy] by JBoss is a portable implementation of the standard. It adds also several enterprise
 features like authentication and signatures.
 
-As a portable implementation I can easily deploy it to a tomcat
+As a portable implementation I can easily deploy it to a Tomcat
 application server later.
 
 === Overview of classes to implement a JAX-RS service
 
 You find the example application in the folder `hystrix-application`.
-
-==== `Application` as the starting point
-
-JAX-RS requires you to name all classes related to the REST part of your application. This class needs to extend `javax.ws.rs.core.Application`:
-
-[source,java,indent=0]
-.HystrixApplication.java
-----
-include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
-----
-
-This very basic setup lists lists the two REST endpoints `SimpleSaveAccount` and `HystrixSaveAccount` we will
-lot at later plus an exception handler `ValidationExceptionMapper`.
 
 ==== Application as the starting point
 
@@ -66,7 +53,7 @@ This defines for the URL `/simple` relative to the application defined above how
 
 A `GET`-Request will return with an empty `200 OK` response. This enables us to use a simple browser request to test the successful deployment of our application.
 
-A `POST`-Request will have a parameter of type `Account`. If the account is invalid, it will throw an exception. Otherwise it will save the account. In our sample application this is a dummy implementation that does nothing. After the save returned, the response is `200 OK`.
+A `POST`-Request will have a parameter of type `Account`. If the account is invalid, it will throw an exception. Otherwise it will save the account. In our sample application the save operation is a dummy implementation that does nothing. After the save returned, the response is `200 OK`.
 
 ==== ExceptionMappers to handle Exceptions
 
@@ -75,20 +62,20 @@ Unhandled exceptions result in the application server to present a standard `500
 To avoid this and to return REST-ful error messages exceptions are mapped by an `ExceptionMapper`.
 
 [source,java,indent=0]
-.IBANValidator.java
+.ValidationExceptionMapper.java
 ----
-include::{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
+include::{javasourcedir}/de/ahus1/hystrix/base/ValidationExceptionMapper.java[tags=classdef]
 ----
 
 == Equip your application with Hystrix
 
-=== Ensuring a clean startup and shutdown or Hystrix in your application
+=== Ensuring a clean start up and shut down of Hystrix
 
 When you want to run code at the start and at the end of a JEE Web application, the place for this is `@WebListener`. The servlet container will scan for classes with this annotation and run their `contextInitialized()` and `contextDestroyed()` methods.
 
 To start up Hystrix there is nothing to do; you can just go ahead and use it.
 
-I recommend a shutdown of Hystrix as it starts several thread pools to do its job. Just add the line
+I recommend a shut down of Hystrix as it starts several thread pools to do its job. Just add the line
 
 [source,java,indent=0]
 .HystrixSetupListener.java
@@ -96,7 +83,7 @@ I recommend a shutdown of Hystrix as it starts several thread pools to do its jo
 include::{javasourcedir}/de/ahus1/hystrix/util/HystrixSetupListener.java[tags=hystrixstop]
 ----
 
-As we have also included Archaius as a default to reconfigure our application and Hystrix, we should shutdown this as well.
+As Hystrix uses Archaius as a default for runtime configuration, we should shut down it as well.
 
 [source,java,indent=0]
 .HystrixSetupListener.java
@@ -116,7 +103,12 @@ include::{javasourcedir}/de/ahus1/hystrix/rest/HystrixSaveAccount.java[tags=hyst
 <1> constructing the wrapper
 <2> memorizing the parameters
 <3> calling the original code
-<4> taking care of the additional runtime exception that originates from an exception of the services, or from the resilence functionality of Hystrix
+<4> taking care of the additional runtime exception that originates from an exception of the services, or from the resilience functionality of Hystrix
+
+When there is a problem with the Hystrix command there will be a HystrixRuntimeException. This will occor in two cases:
+
+. Hystrix circuit breaker or time out handler are activated.
+. The original command throws an exception.
 
 [TIP]
-In case the remote service not being available there is the additional runtime Exception. This could easily be missed when converting your code. Any exception that could have been thrown by the original code is now wrapped as a `HystrixRuntimeException` and needs to be unwrapped. But there are also additional Hystrix exception that will be thrown once the service is considered unavailable.
+If you want to handle the exceptions of your service as before, you will need to unwrap them.

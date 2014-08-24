@@ -2,7 +2,7 @@
 
 === Hystrix Dashboard displays a Realtime Dashboard
 
-https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard[Hystrix Dashboard^] is part of the Hystrix distribution. It displays runtime information about every Hystrix command and thread pool for the last minutes.
+https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard[Hystrix Dashboard^] is part of the Hystrix distribution. It displays runtime information about every Hystrix command and thread pool for the last few minutes.
 
 === Installing and running Hystrix Dashboard
 

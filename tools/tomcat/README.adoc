@@ -38,7 +38,7 @@ In `tomcat-users.xml`:
 
 ==== Testing the Apache Tomcat installation
 
-To teste the application point your browser at http://localhost:8080. You should see an Apache Tomcat start page with the welcome message (see figure <<img-tomcatwelcome>>).
+To test the application point your browser at http://localhost:8080. You should see an Apache Tomcat start page with the welcome message (see figure <<img-tomcatwelcome>>).
 
 [[img-tomcatwelcome]]
 .Apache Tomcat Welcome Message
@@ -47,15 +47,17 @@ image::tomcatwelcome.png[Tomcat Welcome Message]
 Click on the button *Manager App* and you will be asked for a user name and password. Use the user `tomcat` with the password stated above to log in.
 
 [[archaius]]
-== Using Netflixx Archaius for runtime configuration
+== Using runtime configuration
 
-=== Runtime configuration will get you credits from your IT Ops
+=== Runtime configuration will get you credits
 
 If you would write applications that would require a restart every
 time you change a setting, it will deter your users as you will have
 a downtime.
 
-How nice if you could change all your settings at runtime!
+How nice if you could change all your settings at runtime! No more night shifts for IT operating to change parameters and restart the services!
+
+=== Netflixx Archaius to the rescue
 
 Hystrix is integrated already with  https://github.com/Netflix/archaius[Archaius^] that handles runtime
 configuration for you. When implementing our `IBANValidator` you've seen the dynamic property we introduced:
@@ -72,7 +74,7 @@ In more advanced situations you can also register a callback to be notified when
 
 === How runtime configuration works in this project
 
-Archaius supports multiple backends to store configuration data. In our setup all configuration is stored in a Java properties file. Archaius checks this file every second.
+Archaius supports multiple back ends to store configuration data. In our setup all configuration is stored in a Java properties file. Archaius checks this file every second.
 
 This is configured as follows:
 
@@ -94,7 +96,7 @@ This will override the default setting with 10.
 
 === Configuring the Hystrix command via Archaius
 
-All Hystrix settings can be configured on default and on command level. Please refer to the https://github.com/Netflix/Hystrix/wiki/Configuration[Configuration Wiki of Hystrix] for an in-depth discussion. This will now show the core parameters:
+All Hystrix settings can be configured on default and on command level. Please refer to the https://github.com/Netflix/Hystrix/wiki/Configuration[Configuration Wiki of Hystrix] for an in-depth discussion. This will now show the core parameters and configure them on default level:
 
 [source]
 .archaius.properties

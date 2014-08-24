@@ -59,7 +59,7 @@ public class HystrixSaveAccount extends AbstractSaveAccount {
             if (e.getCause() instanceof InterruptedException) {
                 throw (InterruptedException) e.getCause();
             }
-            LOG.info("problem", e);
+            LOG.error("problem", e);
             return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
         super.saveToDatabase(account);
