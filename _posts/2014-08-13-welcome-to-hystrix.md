@@ -7,4 +7,4 @@ categories: hystrix update
 
 This is the start: Over the next few months there I'll give some presentations about Hystrix. The [github repo][hystrixsamples-gh] will cover simple and advanced use cases of Hystrix. Let's see where this will lead us... 
 
-[hystrixsamples-gh]: https://github.com/ahus1/hystrix-samples
+[hystrixsamples-gh]: https://github.com/ahus1/hystrix-examples
