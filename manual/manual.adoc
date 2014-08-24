@@ -1,11 +1,3 @@
-= Hystrix Examples -- and a little bit more
-
-This started as a show case for Hystrix. As more tools have been added it might
-also look for you as a walk through for different tools. Take a look around
-and see what might fit your development environment.
-
--- Alexander Schwartz (alexander.schwartz@gmx.net)
-
 :toc: left
 :linkcss:
 :stylesdir: css/
@@ -17,9 +9,17 @@ and see what might fit your development environment.
 // using experimental to support btn: macro
 :experimental:
 
+= Hystrix Examples -- and a little bit more
+
+This started as a show case for Hystrix. As more tools have been added it might
+also look for you as a walk through for different tools. Take a look around
+and see what might fit your development environment.
+
+-- Alexander Schwartz (alexander.schwartz@gmx.net)
+
 == Hystrix: Make your application resilient
 
-=== Build you application to handle the failure of external services
+=== Build your application to handle the failure of external services
 
 Your application has external runtime dependencies, like an external
 validating service for data your user has entered, or the central CRM
@@ -34,12 +34,12 @@ because they think it's your fault and don't suspect the external service.
 
 But what should your application do, when the external service is unavailable?
 
-. provide timely responses to the users
-. give a detailed error message to the users
-. provide fall backs when the other service is down
-. hooks for IT operations for monitoring to pin-point the problematic service
-. prevent overloading of the problematic service to avoid domino effects
-. automatic recovery once the problematic service is online again
+. Provide timely responses to the users.
+. Give a detailed error message to the users.
+. Provide fall backs when the other service is down.
+. Hooks for IT operations for monitoring to pin-point the problematic service.
+. Prevent overloading of the problematic service to avoid domino effects.
+. Automatic recovery once the problematic service is online again.
 
 === What Hystrix has built in ready-to-use
 
@@ -47,11 +47,11 @@ These problems are not new. Netflix has solved them for their video on demand se
 
 To deliver the above, Hystrix has built in the following defaults:
 
-. timeout for every request to an external system (default: 1000 ms)
-. limit of concurrent requests for external system (default: 10)
-. circuit breaker to avoid further requests (default: when more than 50% of all requests fail)
-. retry of a single request after circuit breaker has triggered (default: every 5 seconds)
-. interfaces to retrieve runtime information on request and aggregate level (there's even a ready-to-use realtime dashboard for it)
+. Timeout for every request to an external system (default: 1000 ms)
+. Limit of concurrent requests for external system (default: 10)
+. Circuit breaker to avoid further requests (default: when more than 50% of all requests fail)
+. Retry of a single request after circuit breaker has triggered (default: every 5 seconds)
+. Interfaces to retrieve runtime information on request and aggregate level (there's even a ready-to-use realtime dashboard for it)
 
 It also shows you where you can place you fall back code.
 
@@ -122,7 +122,7 @@ The BIC doesn't have a check digit, so you can only verify it by lookup in a dic
 Things get messy as the BIC might not match the IBAN, or the IBAN might
 not be valid for direct debit/clearing.
 
-The good news: there are external services that do the validation for you.
+The good news: There are external services that do the validation for you.
 
 === Simulating an external IBAN/BIC validation service
 
@@ -139,7 +139,7 @@ The core of the simulation is the static `isValid()` method. As it is synchroniz
 
 To simulate the processing, we use `Thread.sleep()`. The delay is by default 100 ms. This can be configured at runtime using an `DynamicLongProperty`. See the chapter <<archaius>> below. Changing the delay at runtime will help us later to try out different scenarios.
 
-When someone interrupts the Thread while waiting for the `synchronized` lock or for `Thread.sleep()`, the method will throw an `InterruptedException`.
+When someone interrupts the thread while waiting for the `synchronized` lock or for `Thread.sleep()`, the method will throw an `InterruptedException`.
 
 This is a standard Java feature that will be used by Hystrix to notify a service call that is taking too long.
 
@@ -161,11 +161,11 @@ include::../tools/hystrix-dashboard/README.adoc[]
 
 === Introduction to Load Scenarios for Hystrix
 
-Now we have a complete setup: an application, a driver for the load, and a real time dashboard. You are now ready to see the behaviour of Hystrix.
+Now we have a complete setup: an application, a driver for the load and a real time dashboard. You are now ready to see the behaviour of Hystrix.
 
-The number of threads in JMeter will remain constant for all scenarios. The scenarios will differ only in their setting of `hystrixdemo.sleep` in `archaius.properties`. This will simulate a n IBAN/BIC validation that is gradually getting slower and slower.
+The number of threads in JMeter will remain constant for all scenarios. The scenarios will differ only in their setting of `hystrixdemo.sleep` in `archaius.properties`. This will simulate an IBAN/BIC validation that is gradually getting slower and slower.
 
-The delay between requests in the thread pool is 1 second. The time of the service to respond is not compensated by the delay: the longer the response time is, the fewer requests per second we will see. When there is no delay at all, we would see 20 requests per second, as we have 20 workers.
+The delay between requests in the thread pool is 1 second. The time of the service to respond is not compensated by the delay: The longer the response time is, the fewer requests per second we will see. When there is no delay at all, we would see 20 requests per second, as we have 20 workers.
 
 === A fast response: 10 ms
 
@@ -178,7 +178,7 @@ image::dashboard_10ms.png[Hystrix Dashboard: 10 ms service delay]
 
 === A medium response: 70 ms
 
-Now change the delay to 70 ms. Save the file. Archaius will pick up the new value within a seconds. Our IBAN/BIC service will get slower.
+Now change the delay to 70 ms. Save the file. Archaius will pick up the new value within a second. Our IBAN/BIC service will get slower.
 
 You will see an immediate effect on the Dashboard. After a short time the values in the dashboard will be re-calculated.
 
@@ -208,14 +208,14 @@ The circuit is closed, meaning that Hystrix considers the service to be function
 
 Now try 200 ms. Save the file. The dashboard will change again.
 
-That you see is a that the Circuit changes between open and closed. Therefore the following picture is a combination of two screen shots.
+You'll see that the Circuit changes between open and closed. Therefore the following picture is a combination of two screen shots.
 
 .Hystrix Dashboard: 200 ms service delay
 image::dashboard_200ms.png[Hystrix Dashboard: 200 ms service delay]
 
 The ratio of failed commands is now more than 50 percent, therefore the circuit breaker kicks in. Every five seconds it tries on request (that is answered within 200 ms), resets the statistics and then closes again.
 
-As the statistics are reset on each opening circuit, you can't trust the dashboard. Please have a look in JMeter in the Summary report. Reset it (as it will by now contain results from the previous setups), and wait a short time. It will show you that about 65 percent of the requests fail.
+As the statistics are reset on each opening circuit, you can't trust the dashboard. Please have a look in JMeter in the Summary report. Reset it (as it will by now contain results from the previous setups) and wait a short time. It will show you that about 65 percent of the requests fail.
 
 === An eternity: 1500 ms
 
@@ -224,7 +224,7 @@ The final setting: 1500 ms. Save the file. Watch the dashboard.
 .Hystrix Dashboard: 1500 ms service delay
 image::dashboard_1500ms.png[Hystrix Dashboard: 1500 ms service delay]
 
-As the time out is 1000 ms for the commands, 100 percent of the requests fail. The circuit is no permanently open. Even the retry every 5 seconds will not close it again as this single request is too slow.
+As the time out is 1000 ms for the commands, 100 percent of the requests fail. The circuit is now permanently open. Even the retry every 5 seconds will not close it again as this single request is too slow.
 
 === Hystrix: Don't waste resources by queueing requests
 
@@ -232,9 +232,9 @@ The examples show that Hystrix does its job very effectively:
 
 . It  will forward as many requests as possible to the service to process them.
 . Any other requests are returned to the sender as unsuccessful as early as possible.
-. No caller waits longer than the 1 second time out for a response
-. Queues require resources, and Hystrix efficiently minimizes queueing inside the system. It is limited to the ten concurrent requests processed by the thread pool.
-. A burst in requests is reflected at the earliest boundary instead of overloading the backend service
+. No caller waits longer than the 1 second time out for a response.
+. Queues require resources and Hystrix efficiently minimizes queueing inside the system. It is limited by default to ten concurrent requests processed by the thread pool.
+. A burst in requests is reflected at the earliest boundary instead of overloading the backend service.
 . When the back end services are overloaded for one or the other reason, the circuit breaker in front will give the backend services a break to recover.
 
 Well done, Hystrix!

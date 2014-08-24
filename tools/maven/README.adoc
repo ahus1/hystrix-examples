@@ -17,7 +17,7 @@ The following configuration is applied:
 
 . All dependencies will be downloaded to the folder `tools/maven/m2`. This folder will be used as a cache: All dependencies will be only downloaded once.
 
-=== Packaging and deploying your application to Tomcat
+=== Packaging and deploying your application to Apache Tomcat
 
 To do this run `hystrix-application/maven-package-deploy.bat`. *Please ensure that your Apache Tomcat is running,* as Maven will deploy your application into the running Apache Tomcat.
 
@@ -25,7 +25,7 @@ The steps executed by Maven `mvn clean package cargo:redeploy` included in the B
 
 . Clean up the build folder `target`,
 . download all dependencies from public Maven repositories if they haven't been downloaded yet, +
-(This might take a while on the first run depending on the speed of your Internet connection.)
+(this might take a while on the first run depending on the speed of your Internet connection)
 . compile all Java sources,
 . package a WAR file in the `target` folder,
 . deploy it to your running Tomcat instance.

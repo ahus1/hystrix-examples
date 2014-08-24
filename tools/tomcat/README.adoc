@@ -33,8 +33,8 @@ In `context.xml`:
 
 In `tomcat-users.xml`:
 
-. Setup an user `deploy` with password `deploy` to automatically deploy an application
-. Setup an user `tomcat` with password `tomcat` to allow login on the management GUI
+. Setup an user `deploy` with password `deploy` to automatically deploy an application.
+. Setup an user `tomcat` with password `tomcat` to allow login on the management GUI.
 
 ==== Testing the Apache Tomcat installation
 
@@ -60,7 +60,7 @@ How nice if you could change all your settings at runtime! No more night shifts 
 === Netflixx Archaius to the rescue
 
 Hystrix is integrated already with  https://github.com/Netflix/archaius[Archaius^] that handles runtime
-configuration for you. When implementing our `IBANValidator` you've seen the dynamic property we introduced:
+configuration for you. When implementing `IBANValidator` you've seen the dynamic property being introduced:
 
 [source,java,indent=0]
 .IBANValidator.java
@@ -68,13 +68,13 @@ configuration for you. When implementing our `IBANValidator` you've seen the dyn
 include::../{javasourcedir}/de/ahus1/hystrix/base/IBANValidator.java[tags=dynprop]
 ----
 
-This will create a dynamic property. When we access it, it will always return the most up to date value for it. When the external configuration doesn't define a value the default of 100 will be returned.
+This will create a dynamic property. When it's being accessed, it will always return the most up to date value for it. When the external configuration doesn't define a value the default of 100 will be returned.
 
 In more advanced situations you can also register a callback to be notified whenever a configuration changes. Please refer to the https://github.com/Netflix/archaius/wiki[Archaius Wiki^] to find out more about it.
 
 === How runtime configuration works in this project
 
-Archaius supports multiple back ends to store configuration data. In our setup all configuration is stored in a Java properties file. Archaius checks this file every second.
+Archaius supports multiple back ends to store configuration data. In this setup all configuration is stored in a Java properties file. Archaius checks this file every second.
 
 This is configured as follows:
 
@@ -86,7 +86,7 @@ This is configured as follows:
 -Darchaius.fixedDelayPollingScheduler.initialDelayMills=1000
 ----
 
-This allows you change the dynamic property above
+This allows you to change the dynamic:
 
 [source]
 .archaius.properties

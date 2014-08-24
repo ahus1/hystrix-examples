@@ -34,8 +34,8 @@ JAX-RS requires you to name all classes related to the REST part of your applica
 include::{javasourcedir}/de/ahus1/hystrix/base/HystrixApplication.java[tags=classdef]
 ----
 
-This very basic setup lists lists the two REST endpoints `SimpleSaveAccount` and `HystrixSaveAccount` we will
-lot at later plus an exception handler `ValidationExceptionMapper`.
+This very basic setup lists the two REST endpoints `SimpleSaveAccount` and `HystrixSaveAccount` we will
+look at later plus two exception handlers `ValidationExceptionMapper` and `InterruptedExceptionMapper`.
 
 It also defines that the URL `/api` will be used for all JAX-RS requests relative to the application.
 
@@ -105,7 +105,7 @@ include::{javasourcedir}/de/ahus1/hystrix/rest/HystrixSaveAccount.java[tags=hyst
 <3> calling the original code
 <4> taking care of the additional runtime exception that originates from an exception of the services, or from the resilience functionality of Hystrix
 
-When there is a problem with the Hystrix command there will be a HystrixRuntimeException. This will occor in two cases:
+When there is a problem with the Hystrix command there will be a `HystrixRuntimeException`. This will occur in two cases:
 
 . Hystrix circuit breaker or time out handler are activated.
 . The original command throws an exception.

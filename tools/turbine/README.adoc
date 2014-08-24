@@ -8,7 +8,7 @@ It does this in real time. The results will be updated every 0.5 seconds.
 
 === Installing and running Turbine
 
-The installation has been scripted for you: you need to run `tools/turbine/maven-package-deploy.bat`.
+The installation has been scripted for you: You need to run `tools/turbine/maven-package-deploy.bat`.
 
 The current installation will re-package the 0.4 version of Turbine and add to it the latest (yet unreleased) changes to allow easy re-deployment. Please have a look into `pom.xml` to see how you can adopt an already packaged WAR file to your environment.
 
@@ -26,13 +26,13 @@ Turbine uses the same configuration mechanism as Hystrix: Archaius. See chapter 
 include::../tomcat/archaius.properties[tags=turbine]
 ----
 
-`turbine.instanceUrlSuffix`: This URL suffix needs to be the same for all applications in the cluster. Turbine uses this Endpoint to receive a stream of runtime information.
+`turbine.instanceUrlSuffix`: This URL suffix needs to be the same for all applications in the cluster. Turbine uses this endpoint to receive a stream of runtime information.
 
 `turbine.ConfigPropertyBasedDiscovery.default.instances`: This lists the hosts Turbine should poll information from. In a production system there are mechanisms to discover hosts automatically. In our test scenario a list is sufficient as we have only one host.
 
 ==== Preparing your application for Turbine
 
-To have you application publishing the information on the URL suffix above, you'll need to add a servlet to your application. This has already been packaged for you. You'll just need to include as a dependency of your application in `pom.xml`:
+To have your application publishing the information on the URL suffix above, you'll need to add a servlet to your application. This has already been packaged for you. You'll just need to include as a dependency of your application in `pom.xml`:
 
 [source,xml,indent=0]
 .pom.xml

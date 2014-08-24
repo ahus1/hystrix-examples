@@ -38,4 +38,4 @@ A test with JMeter has the following steps:
 . press the clean image:jmeter-clean.png[Clean, title="Clean"] button to clear the results from JMeter
 
 [IMPORTANT]
-When you change the number of users (aka threads) this will become effective only after you stop/start the workers
+When you change the number of users (aka threads) it will become effective only after you stop/start the workers.
