@@ -1,5 +1,5 @@
 # Site settings
-title: Hystrix Samples
+title: Hystrix Examples
 email: alexander.schwartz@gmx.net
 description: "Showing what Hystrix can do for you."
 baseurl: "/hystrix-examples"
