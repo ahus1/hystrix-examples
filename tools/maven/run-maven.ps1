@@ -20,7 +20,7 @@ If (-not (Test-Path "$scriptPath/apache-maven-$version")) {
   # create a md5 hash code from ZIP file and normalize it
   "verifying hash code"
   $md5 = new-object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
-  $hash = [System.BitConverter]::ToString($md5.ComputeHash([System.IO.File]::ReadAllBytes("apache-maven-$version.zip")))
+  $hash = [System.BitConverter]::ToString($md5.ComputeHash([System.IO.File]::ReadAllBytes("$scriptPath/apache-maven-$version.zip")))
   $hash = $hash.replace("-","").toLower()
 
   # check if hash codes match
