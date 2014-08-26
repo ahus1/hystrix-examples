@@ -15,6 +15,10 @@ import com.netflix.hystrix.strategy.eventnotifier.HystrixEventNotifier;
 
 import de.ahus1.hystrix.base.IBANValidator;
 
+/**
+ * TODO: the events should be queued and sent from another thread (ideally in a
+ * batched mode every 100 ms).
+ */
 public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
 
     private static Logger LOG = LoggerFactory.getLogger(IBANValidator.class);
