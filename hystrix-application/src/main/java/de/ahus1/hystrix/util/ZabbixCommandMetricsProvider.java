@@ -46,6 +46,11 @@ public class ZabbixCommandMetricsProvider implements MetricsProvider {
 
     Map<String, HystrixZabbixMetricsPublisherCommand> map = new HashMap<>();
 
+    /**
+     * Return a metric for a given key. If the command is unknown, return 0 as a
+     * neutral value, as Hystrix will register them only at the first command
+     * run.
+     */
     @Override
     public Object getValue(MetricsKey key) throws MetricsException {
         if (key.getKey().equals("discovery")) {
@@ -64,24 +69,22 @@ public class ZabbixCommandMetricsProvider implements MetricsProvider {
                 throw new MetricsException(e);
             }
         } else if (key.getKey().startsWith("count")) {
-            HystrixRollingNumberEvent event = numberEvents.get(key.getKey()
-                    .replaceFirst("count", ""));
+            HystrixRollingNumberEvent event =
+                    numberEvents.get(key.getKey().replaceFirst("count", ""));
             if (event == null) {
                 throw new MetricsException("unknown key " + key);
             }
-            HystrixZabbixMetricsPublisherCommand command = map.get(key
-                    .getParameters()[0]);
+            HystrixZabbixMetricsPublisherCommand command =
+                    map.get(key.getParameters()[0]);
             if (command == null) {
-                throw new MetricsException("unknown command referenced in "
-                        + key);
+                return 0;
             }
             return command.getMetrics().getCumulativeCount(event);
         } else if (key.getKey().equals("latencyExecute")) {
-            HystrixZabbixMetricsPublisherCommand command = map.get(key
-                    .getParameters()[0]);
+            HystrixZabbixMetricsPublisherCommand command =
+                    map.get(key.getParameters()[0]);
             if (command == null) {
-                throw new MetricsException("unknown command referenced in "
-                        + key);
+                return 0;
             }
             String percentile = key.getParameters()[1];
             if (percentile.equalsIgnoreCase("mean")) {
@@ -91,11 +94,10 @@ public class ZabbixCommandMetricsProvider implements MetricsProvider {
                         Double.parseDouble(percentile));
             }
         } else if (key.getKey().equals("latencyTotal")) {
-            HystrixZabbixMetricsPublisherCommand command = map.get(key
-                    .getParameters()[0]);
+            HystrixZabbixMetricsPublisherCommand command =
+                    map.get(key.getParameters()[0]);
             if (command == null) {
-                throw new MetricsException("unknown command referenced in "
-                        + key);
+                return 0;
             }
             String percentile = key.getParameters()[1];
             if (percentile.equalsIgnoreCase("mean")) {
@@ -105,11 +107,10 @@ public class ZabbixCommandMetricsProvider implements MetricsProvider {
                         Double.parseDouble(percentile));
             }
         } else if (key.getKey().equals("latencyExecute")) {
-            HystrixZabbixMetricsPublisherCommand command = map.get(key
-                    .getParameters()[0]);
+            HystrixZabbixMetricsPublisherCommand command =
+                    map.get(key.getParameters()[0]);
             if (command == null) {
-                throw new MetricsException("unknown command referenced in "
-                        + key);
+                return 0;
             }
             String percentile = key.getParameters()[1];
             if (percentile.equalsIgnoreCase("mean")) {
