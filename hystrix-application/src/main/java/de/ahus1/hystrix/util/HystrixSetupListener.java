@@ -136,6 +136,7 @@ public class HystrixSetupListener implements ServletContextListener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        HystrixPlugins.getInstance().registerMetricsPublisher(zabbix);
 
         enablezabbix.addCallback(new Runnable() {
             @Override
