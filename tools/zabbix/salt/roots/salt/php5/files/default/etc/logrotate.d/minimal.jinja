@@ -1,0 +1,20 @@
+# Managed by saltstack
+{% set pool_attr = salt['pillar.get']('php5-fpm:pools:' ~ pool) %}
+
+{%- if pool_attr['logrotate_files'] is defined %}
+  {%- for logrotate_file in pool_attr['logrotate_files'] %}
+{{ logrotate_file }}
+  {%- endfor %}
+{%- endif %}
+{
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  sharedscripts
+  postrotate
+    kill -USR1 `cat {{ salt['pillar.get']('php5-fpm:pid_file', '/var/run/php5-fpm.pid') }}` > /dev/null
+  endscript
+}

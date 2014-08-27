@@ -1,0 +1,43 @@
+; Managed by saltstack
+
+{% set pool_attr = salt['pillar.get']('php5-fpm:pools:' + pool) -%}
+[{{ pool }}]
+;prefix = /path/to/pools/$pool
+user = {{ pool_attr['user'] | d('www-data') }}
+group = {{ pool_attr['user'] | d('www-data') }}
+listen = {{ pool_attr['listen'] }}
+listen.owner = {{ pool_attr['listen.owner'] | d('www-data') }}
+listen.group = {{ pool_attr['listen.group'] | d('www-data') }}
+listen.mode = {{ pool_attr['listen.mode'] | d('0666') }}
+listen.allowed_clients = {{ pool_attr['listen_allowed_clients'] | d('127.0.0.1') }}
+pm = dynamic
+pm.max_children = {{ pool_attr['pm.max_children'] | d('10') }}
+pm.start_servers = {{ pool_attr['pm.start_servers'] | d('4') }}
+pm.min_spare_servers = {{ pool_attr['pm.min_spare_servers'] | d('2') }}
+pm.max_spare_servers = {{ pool_attr['pm.max_spare_servers'] | d('6') }}
+;pm.process_idle_timeout = 10s;
+pm.max_requests = {{ pool_attr['pm.max_requests'] | d('500') }}
+;pm.status_path = /status
+;ping.path = /ping
+;ping.response = pong
+; access.log = /var/log/php5-fpm_$pool.access.log
+;access.format = %R - %u %t "%m %r%Q%q" %s %f %{mili}d %{kilo}M %C%%
+;slowlog = log/$pool.log.slow
+;request_slowlog_timeout = 0
+;request_terminate_timeout = 0
+;rlimit_files = 1024
+;rlimit_core = 0
+;chroot =
+chdir = /
+catch_workers_output = yes
+;security.limit_extensions = .php .php3 .php4 .php5
+env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp
+;php_flag[display_errors] = off
+php_admin_value[error_log] = {{ pool_attr['log_dir'] | d('/var/log') }}/php5-fpm_$pool.error.log
+php_admin_flag[log_errors] = on
+;php_admin_value[memory_limit] = 32M
+{{ pool_attr['extra_conf'] | d('') }}

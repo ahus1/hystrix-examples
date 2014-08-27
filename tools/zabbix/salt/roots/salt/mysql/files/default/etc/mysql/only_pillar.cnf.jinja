@@ -1,0 +1,40 @@
+# Managed by saltstack
+{# This a template that creates a cnf file based just in pillar data structured
+  this way:
+
+  mysql:
+    cnf:
+      group01:
+        opt_name01: value
+        opt_name02: value
+        opt_name03
+        opt_name04: value
+      group02:
+        opt_name01: value
+        opt_name02: value
+        opt_name03
+        opt_name04: value
+#}
+
+{%- for group in salt['pillar.get']('mysql:cnf',[]) %}
+  {%- set opts = salt['pillar.get']('mysql:cnf:' ~ group, []) %}
+[{{ group }}]
+  {%- for opt in opts %}
+    {%- if opt is mapping %}
+      {%- for key in opt %}
+{{ key }} = {{ opt[key] }}
+      {%- endfor %}
+    {%- else %}
+{{ opt }}
+    {%- endif %}
+  {%- endfor %}
+{% endfor %}
+
+
+{%- for include in salt['pillar.get']('mysql:cnf_include',[]) %}
+!include {{ include }}
+{%- endfor %}
+
+{%- for includedir in salt['pillar.get']('mysql:cnf_includedir',[]) %}
+!includedir {{ includedir }}
+{%- endfor %}

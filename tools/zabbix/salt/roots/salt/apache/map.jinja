@@ -1,0 +1,14 @@
+# TODO: lookup table for additional os_family values
+
+{% set apache = salt['grains.filter_by']({
+    'Debian': {
+        'pkg': 'apache2',
+        'service': 'apache2',
+        'config': '/etc/apache2/apache2.conf',
+    },
+    'RedHat': {
+        'pkg': 'httpd',
+        'service': 'httpd',
+        'config': '/etc/httpd/httpd.conf',
+    },
+}, merge=salt['pillar.get']('apache:lookup')) %}

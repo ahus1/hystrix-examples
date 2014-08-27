@@ -1,0 +1,23 @@
+# Managed by saltstack
+{% set site_attr = salt['pillar.get']('apache:sites:' ~ site) %}
+
+{%- if site_attr['logrotate_files'] is defined %}
+  {%- for logrotate_file in site_attr['logrotate_files'] %}
+{{ logrotate_file }}
+  {%- endfor %}
+{%- else %}
+{{ '/var/log/apache2/' ~ site ~ '_access.log' }}
+{{ '/var/log/apache2/' ~ site ~ '_error.log' }}
+{%- endif %}
+ {
+        weekly
+        missingok
+        rotate 52
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                /etc/init.d/apache2 reload > /dev/null
+        endscript
+}

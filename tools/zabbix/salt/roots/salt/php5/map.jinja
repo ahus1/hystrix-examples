@@ -1,0 +1,26 @@
+{% set php5 = salt['grains.filter_by']({
+    'RedHat': {
+        'pkg': 'php',
+        'service': 'php',
+        'config': '/etc/php.conf',
+		'mysql' : {
+		    'pkg': 'php-mysql'
+		},
+        'fpm': {
+            'pkg': 'php-fpm',
+            'service': 'php-fpm'
+        },
+    },
+    'default': {
+        'pkg': 'php5',
+        'service': 'php5',
+        'config': '/etc/php5.conf',
+		'mysql' : {
+		    'pkg': 'php5-mysql'
+		},
+        'fpm': {
+            'pkg': 'php5-fpm',
+            'service': 'php5-fpm'
+        },
+    },
+}, merge=salt['pillar.get']('php5:lookup')) %}
