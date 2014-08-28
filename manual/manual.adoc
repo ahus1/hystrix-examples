@@ -240,3 +240,11 @@ The examples show that Hystrix does its job very effectively:
 Well done, Hystrix!
 
 Please feel free to try your own variations: enable queueing, change the number of threads, or try out any other Hystrix setting.
+
+include::../tools/zabbix/README.adoc[]
+
+= Appendix
+
+include::../manual/vagrant.adoc[]
+
+include::../manual/saltstack.adoc[]

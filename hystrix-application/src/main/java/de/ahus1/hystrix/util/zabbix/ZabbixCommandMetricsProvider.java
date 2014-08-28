@@ -1,4 +1,4 @@
-package de.ahus1.hystrix.util;
+package de.ahus1.hystrix.util.zabbix;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,8 @@ import com.quigley.zabbixj.metrics.MetricsKey;
 import com.quigley.zabbixj.metrics.MetricsProvider;
 
 public class ZabbixCommandMetricsProvider implements MetricsProvider {
+
+    public static String PROVIDER = "hystrixCommand";
 
     private static Logger LOG = LoggerFactory
             .getLogger(ZabbixCommandMetricsProvider.class);

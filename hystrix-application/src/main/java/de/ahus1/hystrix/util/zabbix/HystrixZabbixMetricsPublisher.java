@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ahus1.hystrix.util;
+package de.ahus1.hystrix.util.zabbix;
 
 import java.net.InetAddress;
 
@@ -46,7 +46,8 @@ public class HystrixZabbixMetricsPublisher extends HystrixMetricsPublisher {
         agent.setServerPort(10051);
 
         commandProvider = new ZabbixCommandMetricsProvider();
-        agent.addProvider("hystrixCommand", commandProvider);
+        agent.addProvider(ZabbixCommandMetricsProvider.PROVIDER,
+                commandProvider);
 
     }
 

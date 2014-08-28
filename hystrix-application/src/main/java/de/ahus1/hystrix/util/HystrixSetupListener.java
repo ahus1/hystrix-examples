@@ -30,6 +30,9 @@ import com.netflix.config.jmx.ConfigMBean;
 import com.netflix.hystrix.Hystrix;
 import com.netflix.hystrix.strategy.HystrixPlugins;
 
+import de.ahus1.hystrix.util.zabbix.HystrixZabbixMetricsPublisher;
+import de.ahus1.hystrix.util.zabbix.ZabbixCommandMetricsProvider;
+
 /**
  * Setup and teardown of Hystrix configuration at start/end of application
  * lifecycle.

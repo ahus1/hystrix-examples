@@ -1,0 +1,93 @@
+
+[[vagrant]]
+== Running virtual machines for test and development
+
+=== Vagrant manages virtual machines
+
+Virtual machines make development and test easier, as they can be started and stoped as you need them. You re-use the CPU, RAM and hard disk space on your PC. When you don't need them you shut them down and they will use only some hard drive space. Once your test or development are over you can wipe them from your hard disk.
+
+A software to provide this virtualization is the free http://virtualbox.org/[Oracle's Virtualbox^]. You can spin up as many machines as you have RAM, CPU and hard disk space on your local machine. You can set up custom networking and interact with the machines either via screen or network.
+
+But setting up a test environment would still be a manual process if you would use only Virtualbox. http://vagrantup.com[Vagrant^] builds on top of it and provides a command line and scripting for you. It also allows you to create local test instances from centrally managed ready made boxes, so you don't need to install an operating system manually.
+
+=== Installing Vagrant and useful plugins
+
+To use Vagrant please use the following steps:
+
+. Download and install Oracle's Virtualbox from http://virtualbox.org/.
+. Download and install Hashicorp's Vagrant from http://vagrantup.com.
+. Install the Vagrant Cachier Plugin (https://github.com/fgrehm/vagrant-cachier) to cache all downloaded  software packages locally. This will speed up future installations. Do this by starting from the command line:
+
+    vagrant plugin install vagrant-cachier
+
+. Install the Vagrant Guest Additions Plugin  (https://github.com/dotless-de/vagrant-vbguest) to be able to update the virtual box tools on the downloaded images automatically. Do this by starting from the command line:
+
+    vagrant plugin install vagrant-vbguest
+
+. Install the Vagrant proxy plugin  (https://github.com/tmatilai/vagrant-proxyconf) to configure the downloaded image automatically regarding its proxy settings. Do this by starting from the command line
+
+    vagrant plugin install vagrant-proxyconf
+
+=== Proxy configuration for Vagrant
+
+To be able to install any vagrant plugin behind a proxy, set the `http_proxy` environment variable. The this syntax assumes you are running a Microsoft Windows system:
+
+----
+SET HTTP_PROXY="http://username:password@proxyhost:proxyport/
+SET HTTPS_PROXY="http://username:password@proxyhost:proxyport/
+----
+
+Vagrant will not re-use your system's proxy settings. You'll need to specify them again.
+
+I recommend that you set up a common configuration for all your boxes (not individually for each box). Create (or ammend) the file `Vagrantfile` in your `%USERPROFILE%\.vagrant.d` folder.
+
+[source]
+.Vagrantfile
+----
+# URI of the local (caching) HTTP proxy
+# LOCAL_HTTP_PROXY = 'http://proxyhost:proxyport'
+LOCAL_HTTP_PROXY =
+
+# Configures vagrant-cachier and vagrant-proxyconf.
+# Should be called only on "local machine" providers.
+def configure_caching(config)
+  if Vagrant.has_plugin?('vagrant-cachier')
+    config.cache.enable :gem
+    config.cache.enable :npm
+  end
+
+  if Vagrant.has_plugin?('vagrant-proxyconf')
+    config.proxy.http     = LOCAL_HTTP_PROXY
+    config.proxy.https    = LOCAL_HTTP_PROXY
+    config.proxy.no_proxy = 'localhost,127.0.0.1'
+  end
+end
+
+Vagrant.configure('2') do |config|
+  config.vm.provider :virtualbox do |vbox, override|
+    configure_caching(override)
+  end
+end
+----
+
+Alternatively you can set the environment variables `VAGRANT_HTTP_PROXY`, `VAGRANT_HTTPS_PROXY` and `VAGRANT_NO_PROXY`.
+
+=== Managing virtual machines from the command line
+
+You can start a box with:
+
+    vagrant up
+
+You can stop a box with:
+
+    vagrant suspend
+
+You can log in to the box using:
+
+    vagrant ssh
+
+For a list of other commands start
+
+    vagrant -h
+
+By default a user `vagrant` with password `vagrant` exists every machine. You can use `ssh` to access a console. From the `vagrant` user you can use the `sudo` command to acquire root access.

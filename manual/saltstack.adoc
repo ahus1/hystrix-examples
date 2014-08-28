@@ -1,0 +1,48 @@
+[[saltstack]]
+== Automatic provisioning of machines
+
+=== Saltstack installation automation
+
+In order to provide reproducable and easy to setup development and test environments, you can script the installation of the software.
+
+There are different tools available to install and configure software once the base operating system is installed. Some of the tools used for this are Chef, Puppet, Saltstack and Ansible.
+
+I've chosen Saltstack here as it concentrates on its task to install and configure software - nothing more. For this it takes input as simple YAML files with only very little scripting.
+
+Vagrant already knowns about different provisioners, also about Saltstack. To hand over control to Saltstack only the following few lines are necessary in the `Vagrantfile` of the virtual machine you want to provision:
+
+[source,indent=0]
+.Vagrantfile
+----
+  config.vm.provision :salt do |salt|
+    salt.minion_config = "salt/minion"
+    salt.run_highstate = true
+  end
+----
+
+Vagrant will first check if Saltstack is already installed on the virtual machine. If not, it will install the latest version of Saltstack. Once this is complete it hands over control to Saltstack to install all the configured packages.
+
+To find out more about Saltstack please visit its website http://saltstack.com.
+
+=== Running Saltstack in standalone mode
+
+Saltstack can be run in two modes:
+
+. *Centrally managed configuration*: a master server stores all configuration and passes it to the clients (the clients are called "minions").
+. *Locally stored configuration*: A client will have all configuration files necessary stored locally. This setup is called "masterless" setup.
+
+The scripts will not differ in the two setups. But it simlifies development and also the setup we use here to have a masterless setup. To do this, I specied `file_client: local` in the `minion` file.
+
+(Note: this masterless setup is not unique to Saltstack, it is also available for other provisioning tools.)
+
+=== Configuration files for automatic installation
+
+You will find the configuration files in `salt/roots/salt`. They are plain text files. You can open them in a plain text editor to get a first impression. Please refer to the Salstack documentation find out more.
+
+=== Saltstack commands
+
+Provisioning via saltstack is run automatically. To run salt stack provisioning manually again (for example after you have changed a configuration file) use the following command as user `root`:
+
+    salt-call --local state.highstate
+
+Please refer to the Salstack documentation find out more.

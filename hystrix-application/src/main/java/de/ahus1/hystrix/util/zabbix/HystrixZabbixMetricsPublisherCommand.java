@@ -1,4 +1,4 @@
-package de.ahus1.hystrix.util;
+package de.ahus1.hystrix.util.zabbix;
 
 import com.netflix.hystrix.HystrixCircuitBreaker;
 import com.netflix.hystrix.HystrixCommandGroupKey;
