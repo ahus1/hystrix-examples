@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="css//coderay-asciidoctor.css">
 </head>
-<body class="article toc2 toc-left">
+<body class="book toc2 toc-left">
 <div id="header">
 <h1>Hystrix Examples&#8201;&#8212;&#8201;and a little bit more</h1>
 <div id="toc" class="toc2">
@@ -100,6 +100,37 @@
 <li><a href="#_a_critical_response_200_ms">12.5. A critical response: 200 ms</a></li>
 <li><a href="#_an_eternity_1500_ms">12.6. An eternity: 1500 ms</a></li>
 <li><a href="#_hystrix_don_t_waste_resources_by_queueing_requests">12.7. Hystrix: Don&#8217;t waste resources by queueing requests</a></li>
+</ul>
+</li>
+<li><a href="#_long_term_monitoring_of_hystrix_metrics">13. Long term monitoring of Hystrix metrics</a>
+<ul class="sectlevel2">
+<li><a href="#_zabbix_as_classic_long_term_monitoring_and_notification">13.1. Zabbix as classic long term monitoring and notification</a></li>
+<li><a href="#_installing_and_running_zabbix">13.2. Installing and running Zabbix</a></li>
+<li><a href="#_configuration_of_zabbix">13.3. Configuration of Zabbix</a></li>
+<li><a href="#_configuration_of_the_example_application">13.4. Configuration of the example application</a></li>
+<li><a href="#_zabbix_autodiscovery_at_work">13.5. Zabbix autodiscovery at work</a></li>
+<li><a href="#_java_classes_to_forward_information_from_hystrix_to_zabbix">13.6. Java classes to forward information from Hystrix to Zabbix</a></li>
+<li><a href="#_working_with_templates_in_zabbix">13.7. Working with templates in Zabbix</a></li>
+</ul>
+</li>
+<li><a href="#_appendix">Appendix</a>
+<ul class="sectlevel1">
+<li><a href="#vagrant">14. Running virtual machines for test and development</a>
+<ul class="sectlevel2">
+<li><a href="#_vagrant_manages_virtual_machines">14.1. Vagrant manages virtual machines</a></li>
+<li><a href="#_installing_vagrant_and_useful_plugins">14.2. Installing Vagrant and useful plugins</a></li>
+<li><a href="#_proxy_configuration_for_vagrant">14.3. Proxy configuration for Vagrant</a></li>
+<li><a href="#_managing_virtual_machines_from_the_command_line">14.4. Managing virtual machines from the command line</a></li>
+</ul>
+</li>
+<li><a href="#saltstack">15. Automatic provisioning of machines</a>
+<ul class="sectlevel2">
+<li><a href="#_saltstack_installation_automation">15.1. Saltstack installation automation</a></li>
+<li><a href="#_running_saltstack_in_standalone_mode">15.2. Running Saltstack in standalone mode</a></li>
+<li><a href="#_configuration_files_for_automatic_installation">15.3. Configuration files for automatic installation</a></li>
+<li><a href="#_saltstack_commands">15.4. Saltstack commands</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1205,10 +1236,382 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_long_term_monitoring_of_hystrix_metrics">13. Long term monitoring of Hystrix metrics</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_zabbix_as_classic_long_term_monitoring_and_notification">13.1. Zabbix as classic long term monitoring and notification</h3>
+<div class="paragraph">
+<p><a href="http://zabbix.com/" target="_blank">Zabbix</a> is a classic monitoring system. It is stable and it has grown over several iterations. It supports a REST API out of the box.</p>
+</div>
+<div class="paragraph">
+<p>All data is stored in a database. The server polls information from clients, runs commands or receives information from agents.</p>
+</div>
+<div class="paragraph">
+<p>A frontend service will provide a web interface that includes configuration, monitoring and graphing capabilities.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_and_running_zabbix">13.2. Installing and running Zabbix</h3>
+<div class="paragraph">
+<p>The installation has been scripted as a <a href="http://vagrantup.com" target="_blank">Vagrant</a> script. This will first download a linux image of CentOS and spin it up in <a href="http://virtualbox.org/" target="_blank">Virtualbox</a>. Then it will hand over to a provisioner, in our case this is <a href="http://saltstack.com/" target="_blank">Saltstack</a>.</p>
+</div>
+<div class="paragraph">
+<p>To install Vagrant please see <a href="#vagrant">Running virtual machines for test and development</a>. Once it is installed,
+run the follwing command in <code>tools/zabbix</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>vagrant up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: <a href="http://localhost:2280/" class="bare">http://localhost:2280/</a>.</p>
+</div>
+<div class="paragraph">
+<p>Use Username <code>Admin</code> password <code>zabbix</code> to log in (please not the capital <strong>A</strong> in the user name)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_of_zabbix">13.3. Configuration of Zabbix</h3>
+<div class="paragraph">
+<p>All configuration items could be automated using the REST API. This will be a future task for this tutorial.</p>
+</div>
+<div class="paragraph">
+<p>For now these are the manual steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Host</span></span> click on <b class="button">Create Host</b>. Enter <code>hystrix</code> as host name here. Pick <code>Discovered Hosts</code> as the Host group. Now <b class="button">Save</b>.</p>
+</li>
+<li>
+<p>In <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Templates</span></span> click on <b class="button">Import</b>. Pick the file <code>hystrix_template.xml</code> from <code>tools\zabbix</code>. Click on <b class="button">Import</b>.</p>
+</li>
+<li>
+<p>Choose <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Templates</span></span> again. You see a <code>hystrixTemplate</code> here. Click on this template to edit it. Include the host <code>hystrix</code> in group <code>Discovered Hosts</code> in the shuttle view to put it on the left side. This will apply the template to the host. Click on <b class="button">Save</b>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is all configuration that is needed: You have created a host, and you have associated it with a template that will autodiscover all Hystrix comamnds.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_of_the_example_application">13.4. Configuration of the example application</h3>
+<div class="paragraph">
+<p>As default the Zabbix agent in the application is disabled. To enable it, go to the file <code>archaius.properties</code>. Change the <code>hystrixdemo.enablezabbix</code> to be true.</p>
+</div>
+<div class="paragraph">
+<p>The change is active at runtime. This will trigger the activation in <code>HystrixSetupListener</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zabbix_autodiscovery_at_work">13.5. Zabbix autodiscovery at work</h3>
+<div class="paragraph">
+<p>The following steps will now happen automatically:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The Zabbix agent will connect to <code>127.0.0.1:10051</code> and identifies itself as host <code>hystrix</code>. In our example this is hardcoded.</p>
+</li>
+<li>
+<p>The Zabbix agent asks the server for any scheduled checks. The only check that is configured for the host <code>hystrix</code> is the <code>hystrixCommand.discovery</code> in the template.</p>
+</li>
+<li>
+<p>The agent runs the check and delivers all active Hystrix commands as a JSON object to the server.</p>
+</li>
+<li>
+<p>This will trigger the auto discovery. For every command Zabbix will create 20 items and three graphs.</p>
+</li>
+<li>
+<p>When the Zabbix agent reloads the list of checks after a minute, there will be a lot more checks. It will run them as specified in the interval of the template we imported to Zabbix.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The auto discovery rule is set to run every five seconds. Please note that the auto discovery will only find commands that have been triggered at least once during the runtime of the application. Hystrix will only notify our Zabbix agent at the first created command.</p>
+</div>
+<div class="paragraph">
+<p>Please choose <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Hosts</span></span> and you should see the number of Items change for the host <code>hystrix</code>. Please refresh your browser if necessary.</p>
+</div>
+<div class="paragraph">
+<p>Now choose <span class="menuseq"><span class="menu">Monitoring</span>&#160;&#9656; <span class="menuitem">Graphs</span></span> and choose the host <code>hystrix</code> and any of the three graphs. After a few minutes you should see the first graphs appearing.</p>
+</div>
+<div class="paragraph">
+<p>Zabbix polls for the command data every minute. Change the timing in <code>archaius.properties</code> to see information about failed requests.</p>
+</div>
+<div class="paragraph">
+<p>Click on <span class="menuseq"><span class="menu">Monitoring</span>&#160;&#9656; <span class="menuitem">Latest data</span></span> to see the latest values that the agent has sent.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_java_classes_to_forward_information_from_hystrix_to_zabbix">13.6. Java classes to forward information from Hystrix to Zabbix</h3>
+<div class="paragraph">
+<p>The property <code>hystrixdemo.enablezabbix</code> in <code>archaius.properties</code> is evaluated in the class <code>HystrixSetupListener</code>. When this property is enabled, the Zabbix agent is started.</p>
+</div>
+<div class="paragraph">
+<p>You find all additional classes in the package <code>de.ahus1.hystrix.util.zabbix</code> in the example application. The following classes work together to forward the information to Zabbix:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>ZabbixCommandMetricsProvider</code> is registered with Zabbix. It handles the connection to Zabbix. It creates a callback <code>ZabbixCommandMetricsProvider</code> that will be called by the agent when it requires data for the provider <code>hystrixCommand</code>. It creates for Zabbix on request a <code>HystrixZabbixMetricsPublisherCommand</code> when a command is created for the first time.</p>
+</li>
+<li>
+<p>Once the <code>HystrixZabbixMetricsPublisherCommand</code> initialized, it registers itself with the <code>ZabbixCommandMetricsProvider</code>.</p>
+</li>
+<li>
+<p>The <code>ZabbixCommandMetricsProvider</code> will provide a list of HystrixCommand keys when it is called with <code>hystrixCommand.discovery</code> When it is called <code>hystrixCommand.countSuccess[{#COMMAND}]</code> it returns the current count of successful Hystrix command calls.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The current implementation doesn&#8217;t return any information about thread pools yet.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_working_with_templates_in_zabbix">13.7. Working with templates in Zabbix</h3>
+<div class="paragraph">
+<p>When you change your template, the changes are applied to all hosts assigned to the template. This makes it easy to ensure a common configuration of all Hystrix commands throughout your infrastructure.</p>
+</div>
+<div class="paragraph">
+<p>You can also choose to setup triggers automatically.</p>
+</div>
+<div class="paragraph">
+<p>When a command is no longer used in your application, the auto discovery will no longer return it to Hystrix. Hystrix will remove all items that are no longer needed after 30 days. You can simulate this behaviour by stopping/starting the tomcat server and not sending any requests via JMeter. As now commands will be triggered, the list of auto-discovered commands is empty. A few seconds later Zabbix will add a yellow exclamation mark to your items and will start the 30 day countdown.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_appendix" class="sect0">Appendix</h1>
+<div class="sect1">
+<h2 id="vagrant">14. Running virtual machines for test and development</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_vagrant_manages_virtual_machines">14.1. Vagrant manages virtual machines</h3>
+<div class="paragraph">
+<p>Virtual machines make development and test easier, as they can be started and stoped as you need them. You re-use the CPU, RAM and hard disk space on your PC. When you don&#8217;t need them you shut them down and they will use only some hard drive space. Once your test or development are over you can wipe them from your hard disk.</p>
+</div>
+<div class="paragraph">
+<p>A software to provide this virtualization is the free <a href="http://virtualbox.org/" target="_blank">Oracle&#8217;s Virtualbox</a>. You can spin up as many machines as you have RAM, CPU and hard disk space on your local machine. You can set up custom networking and interact with the machines either via screen or network.</p>
+</div>
+<div class="paragraph">
+<p>But setting up a test environment would still be a manual process if you would use only Virtualbox. <a href="http://vagrantup.com" target="_blank">Vagrant</a> builds on top of it and provides a command line and scripting for you. It also allows you to create local test instances from centrally managed ready made boxes, so you don&#8217;t need to install an operating system manually.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_vagrant_and_useful_plugins">14.2. Installing Vagrant and useful plugins</h3>
+<div class="paragraph">
+<p>To use Vagrant please use the following steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download and install Oracle&#8217;s Virtualbox from <a href="http://virtualbox.org/" class="bare">http://virtualbox.org/</a>.</p>
+</li>
+<li>
+<p>Download and install Hashicorp&#8217;s Vagrant from <a href="http://vagrantup.com" class="bare">http://vagrantup.com</a>.</p>
+</li>
+<li>
+<p>Install the Vagrant Cachier Plugin (<a href="https://github.com/fgrehm/vagrant-cachier" class="bare">https://github.com/fgrehm/vagrant-cachier</a>) to cache all downloaded  software packages locally. This will speed up future installations. Do this by starting from the command line:</p>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant plugin install vagrant-cachier</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the Vagrant Guest Additions Plugin  (<a href="https://github.com/dotless-de/vagrant-vbguest" class="bare">https://github.com/dotless-de/vagrant-vbguest</a>) to be able to update the virtual box tools on the downloaded images automatically. Do this by starting from the command line:</p>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant plugin install vagrant-vbguest</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the Vagrant proxy plugin  (<a href="https://github.com/tmatilai/vagrant-proxyconf" class="bare">https://github.com/tmatilai/vagrant-proxyconf</a>) to configure the downloaded image automatically regarding its proxy settings. Do this by starting from the command line</p>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant plugin install vagrant-proxyconf</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_proxy_configuration_for_vagrant">14.3. Proxy configuration for Vagrant</h3>
+<div class="paragraph">
+<p>To be able to install any vagrant plugin behind a proxy, set the <code>http_proxy</code> environment variable. The this syntax assumes you are running a Microsoft Windows system:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>SET HTTP_PROXY="http://username:password@proxyhost:proxyport/
+SET HTTPS_PROXY="http://username:password@proxyhost:proxyport/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vagrant will not re-use your system&#8217;s proxy settings. You&#8217;ll need to specify them again.</p>
+</div>
+<div class="paragraph">
+<p>I recommend that you set up a common configuration for all your boxes (not individually for each box). Create (or ammend) the file <code>Vagrantfile</code> in your <code>%USERPROFILE%\.vagrant.d</code> folder.</p>
+</div>
+<div class="listingblock">
+<div class="title">Vagrantfile</div>
+<div class="content">
+<pre class="CodeRay highlight"><code># URI of the local (caching) HTTP proxy
+# LOCAL_HTTP_PROXY = 'http://proxyhost:proxyport'
+LOCAL_HTTP_PROXY =
+
+# Configures vagrant-cachier and vagrant-proxyconf.
+# Should be called only on "local machine" providers.
+def configure_caching(config)
+  if Vagrant.has_plugin?('vagrant-cachier')
+    config.cache.enable :gem
+    config.cache.enable :npm
+  end
+
+  if Vagrant.has_plugin?('vagrant-proxyconf')
+    config.proxy.http     = LOCAL_HTTP_PROXY
+    config.proxy.https    = LOCAL_HTTP_PROXY
+    config.proxy.no_proxy = 'localhost,127.0.0.1'
+  end
+end
+
+Vagrant.configure('2') do |config|
+  config.vm.provider :virtualbox do |vbox, override|
+    configure_caching(override)
+  end
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can set the environment variables <code>VAGRANT_HTTP_PROXY</code>, <code>VAGRANT_HTTPS_PROXY</code> and <code>VAGRANT_NO_PROXY</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_managing_virtual_machines_from_the_command_line">14.4. Managing virtual machines from the command line</h3>
+<div class="paragraph">
+<p>You can start a box with:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can stop a box with:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant suspend</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can log in to the box using:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant ssh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For a list of other commands start</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>vagrant -h</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default a user <code>vagrant</code> with password <code>vagrant</code> exists every machine. You can use <code>ssh</code> to access a console. From the <code>vagrant</code> user you can use the <code>sudo</code> command to acquire root access.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="saltstack">15. Automatic provisioning of machines</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_saltstack_installation_automation">15.1. Saltstack installation automation</h3>
+<div class="paragraph">
+<p>In order to provide reproducable and easy to setup development and test environments, you can script the installation of the software.</p>
+</div>
+<div class="paragraph">
+<p>There are different tools available to install and configure software once the base operating system is installed. Some of the tools used for this are Chef, Puppet, Saltstack and Ansible.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve chosen Saltstack here as it concentrates on its task to install and configure software - nothing more. For this it takes input as simple YAML files with only very little scripting.</p>
+</div>
+<div class="paragraph">
+<p>Vagrant already knowns about different provisioners, also about Saltstack. To hand over control to Saltstack only the following few lines are necessary in the <code>Vagrantfile</code> of the virtual machine you want to provision:</p>
+</div>
+<div class="listingblock">
+<div class="title">Vagrantfile</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>config.vm.provision :salt do |salt|
+  salt.minion_config = "salt/minion"
+  salt.run_highstate = true
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vagrant will first check if Saltstack is already installed on the virtual machine. If not, it will install the latest version of Saltstack. Once this is complete it hands over control to Saltstack to install all the configured packages.</p>
+</div>
+<div class="paragraph">
+<p>To find out more about Saltstack please visit its website <a href="http://saltstack.com" class="bare">http://saltstack.com</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_saltstack_in_standalone_mode">15.2. Running Saltstack in standalone mode</h3>
+<div class="paragraph">
+<p>Saltstack can be run in two modes:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Centrally managed configuration</strong>: a master server stores all configuration and passes it to the clients (the clients are called "minions").</p>
+</li>
+<li>
+<p><strong>Locally stored configuration</strong>: A client will have all configuration files necessary stored locally. This setup is called "masterless" setup.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The scripts will not differ in the two setups. But it simlifies development and also the setup we use here to have a masterless setup. To do this, I specied <code>file_client: local</code> in the <code>minion</code> file.</p>
+</div>
+<div class="paragraph">
+<p>(Note: this masterless setup is not unique to Saltstack, it is also available for other provisioning tools.)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_files_for_automatic_installation">15.3. Configuration files for automatic installation</h3>
+<div class="paragraph">
+<p>You will find the configuration files in <code>salt/roots/salt</code>. They are plain text files. You can open them in a plain text editor to get a first impression. Please refer to the Salstack documentation find out more.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_saltstack_commands">15.4. Saltstack commands</h3>
+<div class="paragraph">
+<p>Provisioning via saltstack is run automatically. To run salt stack provisioning manually again (for example after you have changed a configuration file) use the following command as user <code>root</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>salt-call --local state.highstate</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Please refer to the Salstack documentation find out more.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-24 21:32:26 MEZS
+Last updated 2014-08-28 14:28:20 MESZ
 </div>
 </div>
 </body>
