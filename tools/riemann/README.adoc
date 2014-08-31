@@ -1,0 +1,73 @@
+// using experimental to support btn: macro
+:experimental:
+
+== Real time monitoring of Hystrix metrics
+
+=== Riemann as cutting edge realtime event processing
+
+http://www.riemann.io/[Riemann^] is a a modern event management system. It has been designed with with performance in mind for montoring complex systems. To process the data fast it keeps the last few minutes of data in memory. All events are processed in a streaming mode.
+
+The events can be aggregated and filtered. You can also start actions like notifying IT operations of problems.
+
+Riemann comes with its own dashboard that can show you can use to show real time graphs and statistics.
+
+So far both the Hystrix Dashboard and Zabbix have been presented. You could consider Riemann for the following:
+
+. Zabbix polls existing metrics from Hystrix. You can aggregate events to deliver your own metrics using Riemann. This all happens outside of the application. This gives you a lot of flexibility.
+
+. While the Hystrix Dashboard is a great start for a dashboard, it is not configurable.  The Riemann Dashboard is highly configurable (once you understand its keyboard shortcuts) and might delivery you additional insights you might need to administer your cluster.
+
+. Assuming that Zabbix receives information every minute, this  means that you will receive alerts with a delay of one minute. After a problem disappeared (for example after you have restarted a service, or fixed a configuration problem) you will see this only after a minute or two in the Zabbix graphs. Riemann gives you the options to be notified immediately by a channel of your choice (email, SMS, chat) when the problem occurs and when it is fixed.
+
+Filtered events can be forwarded to systems like InfluxDB to be stored. These can be displayed later using tools like Grafana. But lets start with Riemann first.
+
+=== Installing and running Riemann
+
+The installation has been scripted as a http://vagrantup.com[Vagrant^] script. This will first download a linux image of CentOS and spin it up in http://virtualbox.org/[Virtualbox^]. Then it will hand over to a provisioner, in our case this is http://saltstack.com/[Saltstack^].
+
+To install Vagrant please see <<vagrant>>. Once it is installed,
+run the follwing command in `tools/riemann`:
+
+----
+vagrant up
+----
+
+This will take a while to download all the files necessary. Once it is up and running point your browser at your local Riemann installation: http://localhost:4567/.
+
+=== How Events are captures for Riemann
+
+In the example application the `HystrixSetupListener` registers the class `HystrixRiemannEventNotifier` with Hystrix. This will be notified with the detailed timinings of each run command and with the outcome of each command (successful, timeout, etc.).
+
+These events are queued in a bounded queue. The result will be forwarded to Riemann in batches every 100 ms.
+
+=== Configuring Riemann Server
+
+In this setup the information about Hystrix commands is forwarded on a level of a single command execution.
+
+We can present it on this level, but usually you want to create aggreation on top of the event stream. The first listing aggregates  the timings of the service `IBANValidatorCommand`.
+
+[source,closure,indent=0]
+.Percentiles with riemann.config
+----
+include::salt/roots/salt/riemann/files/default/etc/riemann/riemann.config[tags=percentile]
+----
+
+The second listing counts the different outcomes (SUCCESS, TIMEOUT, etc.) in every five second interval. This statement contains a statement for logging the aggregated events in the Riemann server log.
+
+[source,closure,indent=0]
+.Counting with riemann.config
+----
+include::salt/roots/salt/riemann/files/default/etc/riemann/riemann.config[tags=count]
+----
+
+=== Configuring Riemann Dashboard
+
+You can configure the frontend of Riemann in your browser. This setup installs a dashboard that shows some useful information about the example application.
+
+[[img-riemanndashboard]]
+.Riemann Dashboard
+image::riemann_dashboard.png[Riemann Dashboard]
+
+In the lower part of the screen you will see a guide how to use keyboard shortcuts to customize the dashboard.
+
+As with the Zabbix monitoring, this will only show useful information once some commands are run. Please use the JMeter load test for this.

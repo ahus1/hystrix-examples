@@ -30,6 +30,7 @@ import com.netflix.config.jmx.ConfigMBean;
 import com.netflix.hystrix.Hystrix;
 import com.netflix.hystrix.strategy.HystrixPlugins;
 
+import de.ahus1.hystrix.util.riemann.HystrixRiemannEventNotifier;
 import de.ahus1.hystrix.util.zabbix.HystrixZabbixMetricsPublisher;
 import de.ahus1.hystrix.util.zabbix.ZabbixCommandMetricsProvider;
 
@@ -122,8 +123,9 @@ public class HystrixSetupListener implements ServletContextListener {
 
         if (enableriemann.getValue() == true) {
             try {
+                LOG.info("starting riemann");
                 riemann.start();
-            } catch (IOException e) {
+            } catch (RuntimeException e) {
                 /*
                  * TODO: find a way for lazy registration as soon as Riemann is
                  * up and running

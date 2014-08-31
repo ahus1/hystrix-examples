@@ -243,6 +243,8 @@ Please feel free to try your own variations: enable queueing, change the number 
 
 include::../tools/zabbix/README.adoc[]
 
+include::../tools/riemann/README.adoc[]
+
 = Appendix
 
 include::../manual/vagrant.adoc[]
