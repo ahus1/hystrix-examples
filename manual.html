@@ -113,22 +113,31 @@
 <li><a href="#_working_with_templates_in_zabbix">13.7. Working with templates in Zabbix</a></li>
 </ul>
 </li>
-<li><a href="#_appendix">Appendix</a>
-<ul class="sectlevel1">
-<li><a href="#vagrant">14. Running virtual machines for test and development</a>
+<li><a href="#_real_time_monitoring_of_hystrix_metrics">14. Real time monitoring of Hystrix metrics</a>
 <ul class="sectlevel2">
-<li><a href="#_vagrant_manages_virtual_machines">14.1. Vagrant manages virtual machines</a></li>
-<li><a href="#_installing_vagrant_and_useful_plugins">14.2. Installing Vagrant and useful plugins</a></li>
-<li><a href="#_proxy_configuration_for_vagrant">14.3. Proxy configuration for Vagrant</a></li>
-<li><a href="#_managing_virtual_machines_from_the_command_line">14.4. Managing virtual machines from the command line</a></li>
+<li><a href="#_riemann_as_cutting_edge_realtime_event_processing">14.1. Riemann as cutting edge realtime event processing</a></li>
+<li><a href="#_installing_and_running_riemann">14.2. Installing and running Riemann</a></li>
+<li><a href="#_how_events_are_captures_for_riemann">14.3. How Events are captures for Riemann</a></li>
+<li><a href="#_configuring_riemann_server">14.4. Configuring Riemann Server</a></li>
+<li><a href="#_configuring_riemann_dashboard">14.5. Configuring Riemann Dashboard</a></li>
 </ul>
 </li>
-<li><a href="#saltstack">15. Automatic provisioning of machines</a>
+<li><a href="#_appendix">Appendix</a>
+<ul class="sectlevel1">
+<li><a href="#vagrant">15. Running virtual machines for test and development</a>
 <ul class="sectlevel2">
-<li><a href="#_saltstack_installation_automation">15.1. Saltstack installation automation</a></li>
-<li><a href="#_running_saltstack_in_standalone_mode">15.2. Running Saltstack in standalone mode</a></li>
-<li><a href="#_configuration_files_for_automatic_installation">15.3. Configuration files for automatic installation</a></li>
-<li><a href="#_saltstack_commands">15.4. Saltstack commands</a></li>
+<li><a href="#_vagrant_manages_virtual_machines">15.1. Vagrant manages virtual machines</a></li>
+<li><a href="#_installing_vagrant_and_useful_plugins">15.2. Installing Vagrant and useful plugins</a></li>
+<li><a href="#_proxy_configuration_for_vagrant">15.3. Proxy configuration for Vagrant</a></li>
+<li><a href="#_managing_virtual_machines_from_the_command_line">15.4. Managing virtual machines from the command line</a></li>
+</ul>
+</li>
+<li><a href="#saltstack">16. Automatic provisioning of machines</a>
+<ul class="sectlevel2">
+<li><a href="#_saltstack_installation_automation">16.1. Saltstack installation automation</a></li>
+<li><a href="#_running_saltstack_in_standalone_mode">16.2. Running Saltstack in standalone mode</a></li>
+<li><a href="#_configuration_files_for_automatic_installation">16.3. Configuration files for automatic installation</a></li>
+<li><a href="#_saltstack_commands">16.4. Saltstack commands</a></li>
 </ul>
 </li>
 </ul>
@@ -581,7 +590,7 @@ Hystrix.reset(<span class="integer">1</span>, <span class="predefined-type">Time
         <span class="keyword">if</span> (e.getCause() <span class="keyword">instanceof</span> <span class="exception">InterruptedException</span>) {
             <span class="keyword">throw</span> (<span class="exception">InterruptedException</span>) e.getCause();
         }
-        LOG.error(<span class="string"><span class="delimiter">&quot;</span><span class="content">problem</span><span class="delimiter">&quot;</span></span>, e);
+        LOG.error(<span class="string"><span class="delimiter">&quot;</span><span class="content">problem with command: {}</span><span class="delimiter">&quot;</span></span>, e.getMessage());
         <span class="keyword">return</span> Response.status(Status.SERVICE_UNAVAILABLE).build();
     }
     <span class="local-variable">super</span>.saveToDatabase(account);
@@ -1337,7 +1346,13 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 <p>Please choose <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Hosts</span></span> and you should see the number of Items change for the host <code>hystrix</code>. Please refresh your browser if necessary.</p>
 </div>
 <div class="paragraph">
-<p>Now choose <span class="menuseq"><span class="menu">Monitoring</span>&#160;&#9656; <span class="menuitem">Graphs</span></span> and choose the host <code>hystrix</code> and any of the three graphs. After a few minutes you should see the first graphs appearing.</p>
+<p>Now choose <span class="menuseq"><span class="menu">Monitoring</span>&#160;&#9656; <span class="menuitem">Graphs</span></span> and choose the host <code>hystrix</code> and any of the three graphs. After a few minutes you should see the first graphs appearing. The following screen shows a service that was answering successfully first. After a short time the response time was changed to 250 ms. Soon lots of rejected and timeout requests appear.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="manual/requestcount_zabbix.png" alt="Zabbix counting Hystrix requests">
+</div>
+<div class="title">Figure 8. Zabbix counting Hystrix requests</div>
 </div>
 <div class="paragraph">
 <p>Zabbix polls for the command data every minute. Change the timing in <code>archaius.properties</code> to see information about failed requests.</p>
@@ -1385,12 +1400,150 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 </div>
-<h1 id="_appendix" class="sect0">Appendix</h1>
 <div class="sect1">
-<h2 id="vagrant">14. Running virtual machines for test and development</h2>
+<h2 id="_real_time_monitoring_of_hystrix_metrics">14. Real time monitoring of Hystrix metrics</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_vagrant_manages_virtual_machines">14.1. Vagrant manages virtual machines</h3>
+<h3 id="_riemann_as_cutting_edge_realtime_event_processing">14.1. Riemann as cutting edge realtime event processing</h3>
+<div class="paragraph">
+<p><a href="http://www.riemann.io/" target="_blank">Riemann</a> is a a modern event management system. It has been designed with with performance in mind for montoring complex systems. To process the data fast it keeps the last few minutes of data in memory. All events are processed in a streaming mode.</p>
+</div>
+<div class="paragraph">
+<p>The events can be aggregated and filtered. You can also start actions like notifying IT operations of problems.</p>
+</div>
+<div class="paragraph">
+<p>Riemann comes with its own dashboard that can show you can use to show real time graphs and statistics.</p>
+</div>
+<div class="paragraph">
+<p>So far both the Hystrix Dashboard and Zabbix have been presented. You could consider Riemann for the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Zabbix polls existing metrics from Hystrix. You can aggregate events to deliver your own metrics using Riemann. This all happens outside of the application. This gives you a lot of flexibility.</p>
+</li>
+<li>
+<p>While the Hystrix Dashboard is a great start for a dashboard, it is not configurable.  The Riemann Dashboard is highly configurable (once you understand its keyboard shortcuts) and might delivery you additional insights you might need to administer your cluster.</p>
+</li>
+<li>
+<p>Assuming that Zabbix receives information every minute, this  means that you will receive alerts with a delay of one minute. After a problem disappeared (for example after you have restarted a service, or fixed a configuration problem) you will see this only after a minute or two in the Zabbix graphs. Riemann gives you the options to be notified immediately by a channel of your choice (email, SMS, chat) when the problem occurs and when it is fixed.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Filtered events can be forwarded to systems like InfluxDB to be stored. These can be displayed later using tools like Grafana. But lets start with Riemann first.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_and_running_riemann">14.2. Installing and running Riemann</h3>
+<div class="paragraph">
+<p>The installation has been scripted as a <a href="http://vagrantup.com" target="_blank">Vagrant</a> script. This will first download a linux image of CentOS and spin it up in <a href="http://virtualbox.org/" target="_blank">Virtualbox</a>. Then it will hand over to a provisioner, in our case this is <a href="http://saltstack.com/" target="_blank">Saltstack</a>.</p>
+</div>
+<div class="paragraph">
+<p>To install Vagrant please see <a href="#vagrant">Running virtual machines for test and development</a>. Once it is installed,
+run the follwing command in <code>tools/riemann</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>vagrant up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will take a while to download all the files necessary. Once it is up and running point your browser at your local Riemann installation: <a href="http://localhost:4567/" class="bare">http://localhost:4567/</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_events_are_captures_for_riemann">14.3. How Events are captures for Riemann</h3>
+<div class="paragraph">
+<p>In the example application the <code>HystrixSetupListener</code> registers the class <code>HystrixRiemannEventNotifier</code> with Hystrix. This will be notified with the detailed timinings of each run command and with the outcome of each command (successful, timeout, etc.).</p>
+</div>
+<div class="paragraph">
+<p>These events are queued in a bounded queue. The result will be forwarded to Riemann in batches every 100 ms.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_riemann_server">14.4. Configuring Riemann Server</h3>
+<div class="paragraph">
+<p>In this setup the information about Hystrix commands is forwarded on a level of a single command execution.</p>
+</div>
+<div class="paragraph">
+<p>We can present it on this level, but usually you want to create aggreation on top of the event stream. The first listing aggregates  the timings of the service <code>IBANValidatorCommand</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Percentiles with riemann.config</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="closure">(let [index (index)]
+  (streams
+    (where (and (= service &quot;IBANValidatorCommand&quot;) (not (= metric nil)) )
+
+       ; Now, we'll calculate the 50th, 95th, and 99th percentile for all
+       ; requests in each 5-second interval.
+
+       (percentiles 5 [0.5 0.95 0.99]
+
+           ; Percentiles will emit events like
+           ; {:service &quot;api req 0.5&quot; :metric 0.12}
+                   ; We'll add them to the index, so they can show up
+           ; on our dashboard.
+
+           index)
+    )
+  )
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The second listing counts the different outcomes (SUCCESS, TIMEOUT, etc.) in every five second interval. This statement contains a statement for logging the aggregated events in the Riemann server log.</p>
+</div>
+<div class="listingblock">
+<div class="title">Counting with riemann.config</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="closure">(let [index (index)]
+  (streams
+    (where (and (= service &quot;IBANValidatorCommand&quot;) (= metric nil) )
+
+      (by :state
+        (with :metric 1 (with :service &quot;IBAN Count&quot;
+          (rate 5
+          ; log all events (for debugging)
+          #(info &quot;received event&quot; %)
+            index
+          )
+        ))
+      )
+
+    )
+  )
+)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_riemann_dashboard">14.5. Configuring Riemann Dashboard</h3>
+<div class="paragraph">
+<p>You can configure the frontend of Riemann in your browser. This setup installs a dashboard that shows some useful information about the example application.</p>
+</div>
+<div id="img-riemanndashboard" class="imageblock">
+<div class="content">
+<img src="manual/riemann_dashboard.png" alt="Riemann Dashboard">
+</div>
+<div class="title">Figure 9. Riemann Dashboard</div>
+</div>
+<div class="paragraph">
+<p>In the lower part of the screen you will see a guide how to use keyboard shortcuts to customize the dashboard.</p>
+</div>
+<div class="paragraph">
+<p>As with the Zabbix monitoring, this will only show useful information once some commands are run. Please use the JMeter load test for this.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_appendix" class="sect0">Appendix</h1>
+<div class="sect1">
+<h2 id="vagrant">15. Running virtual machines for test and development</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_vagrant_manages_virtual_machines">15.1. Vagrant manages virtual machines</h3>
 <div class="paragraph">
 <p>Virtual machines make development and test easier, as they can be started and stoped as you need them. You re-use the CPU, RAM and hard disk space on your PC. When you don&#8217;t need them you shut them down and they will use only some hard drive space. Once your test or development are over you can wipe them from your hard disk.</p>
 </div>
@@ -1402,7 +1555,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_vagrant_and_useful_plugins">14.2. Installing Vagrant and useful plugins</h3>
+<h3 id="_installing_vagrant_and_useful_plugins">15.2. Installing Vagrant and useful plugins</h3>
 <div class="paragraph">
 <p>To use Vagrant please use the following steps:</p>
 </div>
@@ -1442,7 +1595,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_proxy_configuration_for_vagrant">14.3. Proxy configuration for Vagrant</h3>
+<h3 id="_proxy_configuration_for_vagrant">15.3. Proxy configuration for Vagrant</h3>
 <div class="paragraph">
 <p>To be able to install any vagrant plugin behind a proxy, set the <code>http_proxy</code> environment variable. The this syntax assumes you are running a Microsoft Windows system:</p>
 </div>
@@ -1492,7 +1645,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_managing_virtual_machines_from_the_command_line">14.4. Managing virtual machines from the command line</h3>
+<h3 id="_managing_virtual_machines_from_the_command_line">15.4. Managing virtual machines from the command line</h3>
 <div class="paragraph">
 <p>You can start a box with:</p>
 </div>
@@ -1532,10 +1685,10 @@ end</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="saltstack">15. Automatic provisioning of machines</h2>
+<h2 id="saltstack">16. Automatic provisioning of machines</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_saltstack_installation_automation">15.1. Saltstack installation automation</h3>
+<h3 id="_saltstack_installation_automation">16.1. Saltstack installation automation</h3>
 <div class="paragraph">
 <p>In order to provide reproducable and easy to setup development and test environments, you can script the installation of the software.</p>
 </div>
@@ -1565,7 +1718,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_saltstack_in_standalone_mode">15.2. Running Saltstack in standalone mode</h3>
+<h3 id="_running_saltstack_in_standalone_mode">16.2. Running Saltstack in standalone mode</h3>
 <div class="paragraph">
 <p>Saltstack can be run in two modes:</p>
 </div>
@@ -1587,13 +1740,13 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_files_for_automatic_installation">15.3. Configuration files for automatic installation</h3>
+<h3 id="_configuration_files_for_automatic_installation">16.3. Configuration files for automatic installation</h3>
 <div class="paragraph">
 <p>You will find the configuration files in <code>salt/roots/salt</code>. They are plain text files. You can open them in a plain text editor to get a first impression. Please refer to the Salstack documentation find out more.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_saltstack_commands">15.4. Saltstack commands</h3>
+<h3 id="_saltstack_commands">16.4. Saltstack commands</h3>
 <div class="paragraph">
 <p>Provisioning via saltstack is run automatically. To run salt stack provisioning manually again (for example after you have changed a configuration file) use the following command as user <code>root</code>:</p>
 </div>
@@ -1611,7 +1764,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-28 14:28:20 MESZ
+Last updated 2014-08-31 14:22:27 Mitteleuropäische Sommerzeit
 </div>
 </div>
 </body>
