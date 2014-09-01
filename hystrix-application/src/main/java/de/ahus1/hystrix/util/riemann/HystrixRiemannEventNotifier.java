@@ -50,11 +50,11 @@ public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
      */
     @Override
     public void markEvent(HystrixEventType eventType, HystrixCommandKey key) {
-        if (started) {
+        if (started && c != null) {
             if (bufferSize.get() < MAX_SIZE_EVENT_QUEUE) {
-                buffer.add(c.event().service(key.name())
-                        .state(eventType.name()).time(
-                                System.currentTimeMillis()).build());
+                buffer.add(c.event().service(key.name()).time(
+                        System.currentTimeMillis() / 1000).state(
+                        eventType.name()).build());
                 bufferSize.incrementAndGet();
             }
         }
@@ -68,10 +68,10 @@ public class HystrixRiemannEventNotifier extends HystrixEventNotifier {
     public void markCommandExecution(HystrixCommandKey key,
             ExecutionIsolationStrategy isolationStrategy, int duration,
             List<HystrixEventType> eventsDuringExecution) {
-        if (started) {
+        if (started && c != null) {
             if (bufferSize.get() < MAX_SIZE_EVENT_QUEUE) {
-                buffer.add(c.event().service(key.name()).metric(duration)
-                        .build());
+                buffer.add(c.event().service(key.name()).metric(duration).time(
+                        System.currentTimeMillis() / 1000).build());
                 bufferSize.incrementAndGet();
             }
         }
