@@ -1,0 +1,85 @@
+{
+  "server": "127.0.0.1:5556",
+  "server_type": "ws",
+  "workspaces": [
+    {
+      "name": "Riemann",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "7fff064a3a9a3b0f32f5b4012ac691fb7c1721a8",
+        "version": 26,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "170f34d010f5b4ae081a056469aaf4307d3994f1",
+          "version": 26,
+          "children": [
+            {
+              "type": "HStack",
+              "weight": 1,
+              "id": "d3270ce28c19785f0e48c781caab19ed0b5a2d5f",
+              "version": 26,
+              "children": [
+                {
+                  "type": "Log",
+                  "weight": 1,
+                  "id": "c01bf747ea8874b01335e5db3bf5eea741fe00c5",
+                  "version": 7,
+                  "title": "Riemann",
+                  "query": "(service = \"IBANValidatorCommand\" and metric = nil)",
+                  "lines": "50"
+                },
+                {
+                  "type": "Flot",
+                  "weight": 1,
+                  "id": "b7b1e435989847d91d3f28356ad9484e03644242",
+                  "version": 7,
+                  "title": "5 sec percentiles",
+                  "query": "(service ~= \"IBANValidatorCommand .*\" and metric != nil)",
+                  "max": null,
+                  "timeRange": 300,
+                  "graphType": "line",
+                  "stackMode": "false"
+                },
+                {
+                  "type": "VStack",
+                  "weight": 1,
+                  "id": "26c22e129d89e8373acfcf7d0a408f16f2b6e8f8",
+                  "version": 2,
+                  "children": [
+                    {
+                      "type": "Grid",
+                      "weight": 1,
+                      "id": "885c1bd19d44c9040014bcd7d2eb657a3d87cc3c",
+                      "version": 11,
+                      "title": "",
+                      "query": "(service = \"IBAN Count\")",
+                      "max": "all",
+                      "rows": "service",
+                      "cols": "state",
+                      "row_sort": "lexical",
+                      "col_sort": "lexical"
+                    },
+                    {
+                      "type": "Gauge",
+                      "weight": 1,
+                      "id": "9956b2bb62422bc22a28a2908723591d59438683",
+                      "version": 1,
+                      "title": "Time (ms)",
+                      "query": "(service = \"IBANValidatorCommand\" and metric != nil)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Help"
+            }
+          ]
+        }
+      },
+      "id": "cd55ccfec88fc1d947ed706dbf8d6fb1d275c0e5"
+    }
+  ]
+}
