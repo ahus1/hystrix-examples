@@ -18,6 +18,9 @@ include:
       {% endfor -%}
       - salt://zabbix/files/default/etc/zabbix/web/zabbix.conf.php.jinja
     - template: jinja
+    - watch_in:
+      - service: apache
+      - service: php5-fpm
     - require:
       - pkg: zabbix-web-mysql
 
