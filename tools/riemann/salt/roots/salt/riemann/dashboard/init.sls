@@ -19,6 +19,7 @@ riemann-dash:
       - salt://riemann/files/default/etc/init.d/riemann-dash
     - require:
       - file: /home/rvm
+      - gem: riemann-dash
 
 /home/rvm:
   file.recurse:

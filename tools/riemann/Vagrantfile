@@ -10,8 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box_url = "https://dl.dropboxusercontent.com/sh/3uo8pfs64u592po/H-23EZHYXg/centos-6_5-1.box"
-  config.vm.box = "centos-6_5-2" 
+  config.vm.box = "chef/centos-6.5" 
   
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
@@ -64,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # https://github.com/dotless-de/vagrant-vbguest
     # set auto_update to false, if you do NOT want to check the correct 
     # additions version when booting this machine
-    config.vbguest.auto_update = true
+    config.vbguest.auto_update = false
 
 	# do NOT download the iso file from a webserver
     config.vbguest.no_remote = true  
