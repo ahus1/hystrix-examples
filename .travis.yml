@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - 1.9.3
+script: ./manual/build.sh
+after_success: ./update-gh-pages.sh
+env:
+  global:
+    secure: XsGE9f9tLzIdqzKVCf6HyULznWPgw2k3Ghve+TAACsmSu1N1CpuNUdjfMS/9IdDncoP+AWV2aYZUAKImE/WyBvvXrgy8n3VpcCe13efU3fEXRkPQNBIZZOL1+/P7jeVTjX4cTe2ptemtJ2d4oFBcslJAX/c4D5HSu2/GMAfhe74=
