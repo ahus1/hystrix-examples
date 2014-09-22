@@ -247,6 +247,10 @@ include::../tools/riemann/README.adoc[]
 
 = Appendix
 
+include::../tools/asciidoctor/README.adoc[]
+
 include::../manual/vagrant.adoc[]
 
 include::../manual/saltstack.adoc[]
+
+include::../tools/travis/README.adoc[]

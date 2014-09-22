@@ -1,0 +1,16 @@
+[[asciidoctor]]
+== Writing an online manual
+
+=== Asciidoctor is a lean tool for technical documentation
+
+This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.
+
+To find out more about Asciidoctor see the http://asciidoctor.org/.  It is a clone of the original Asciidoc using Ruby. Compiled versions are available for Java and JavaScript. This allows you to easily integrate it into your build process.
+
+You can create from a single source of documentation formats like HTML5, PDF and epub.
+
+=== Editors to work on Asciidoctor
+
+Asciidoctor files are plain text files with an easy to learn syntax. You can use any text editor to write the files.
+
+You might want to try the https://github.com/asciidoctor/atom-asciidoc-preview[Asciidoctor preview plugin^] and https://atom.io/packages/language-asciidoc[Asciidoctor language plugin^] for https://atom.io/[GitHub's Atom^] editor. As the time of writing this provides you the best authoring experience.

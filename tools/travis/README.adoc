@@ -1,0 +1,23 @@
+== Building the documentation automatically
+
+=== Things that need maintenance
+
+This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.
+
+This can be done manually by calling `manual/build.bat`. The changes then need to be published to the `gh-pages` branch.
+
+To find out more about Asciidoc and Asciidoctor see see section <<asciidoctor>>. To find out more about GitHub Pages see https://pages.github.com/.
+
+=== Travis CI as a service in the cloud
+
+Travis CI is a build service in the clould that is free to all open source projects. It integrates well with GitHub. A new build is triggered on every push to your repository.
+
+The following bit's and pieces are needed:
+
+. Hook up http://travis-ci.org/ to your repository.
+. Add a file `.travis.yml` to the root of the repository. In our case this indicates to Travis that we want to use Ruby.
+. Add a file `Gemfile` to the root of the repository to specify the dependencies of Asciidoctor.
+. Add a file `manual/build.sh` to the project to copy images in the proper place, and run asciidoctor.
+. Add a file `manual/update-gh-pages.sh` to store the created Asciidoctor output to the repositories GitHub pages branch.
+
+You can see the current status of the build here: https://travis-ci.org/ahus1/hystrix-examples.
