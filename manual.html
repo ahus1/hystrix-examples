@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.0">
+<meta name="generator" content="Asciidoctor 1.5.1">
 <title>Hystrix Examples&#8201;&#8212;&#8201;and a little bit more</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
 <link rel="stylesheet" href="css//asciidoctor.css">
@@ -59,7 +59,7 @@
 <li><a href="#archaius">7. Using runtime configuration</a>
 <ul class="sectlevel2">
 <li><a href="#_runtime_configuration_will_get_you_credits">7.1. Runtime configuration will get you credits</a></li>
-<li><a href="#_netflixx_archaius_to_the_rescue">7.2. Netflixx Archaius to the rescue</a></li>
+<li><a href="#_netflix_archaius_to_the_rescue">7.2. Netflix Archaius to the rescue</a></li>
 <li><a href="#_how_runtime_configuration_works_in_this_project">7.3. How runtime configuration works in this project</a></li>
 <li><a href="#_configuring_the_hystrix_command_via_archaius">7.4. Configuring the Hystrix command via Archaius</a></li>
 </ul>
@@ -745,7 +745,7 @@ a downtime.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_netflixx_archaius_to_the_rescue">7.2. Netflixx Archaius to the rescue</h3>
+<h3 id="_netflix_archaius_to_the_rescue">7.2. Netflix Archaius to the rescue</h3>
 <div class="paragraph">
 <p>Hystrix is integrated already with  <a href="https://github.com/Netflix/archaius" target="_blank">Archaius</a> that handles runtime
 configuration for you. When implementing <code>IBANValidator</code> you&#8217;ve seen the dynamic property being introduced:</p>
@@ -1364,6 +1364,10 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 <div class="sect2">
 <h3 id="_java_classes_to_forward_information_from_hystrix_to_zabbix">13.6. Java classes to forward information from Hystrix to Zabbix</h3>
 <div class="paragraph">
+<p>In order to activate the forwarding of events, you&#8217;ll need to change <code>hystrixdemo.enablezabbix</code> to <code>true</code> in <code>archaius.properties</code>.
+This change will be active immediately.</p>
+</div>
+<div class="paragraph">
 <p>The property <code>hystrixdemo.enablezabbix</code> in <code>archaius.properties</code> is evaluated in the class <code>HystrixSetupListener</code>. When this property is enabled, the Zabbix agent is started.</p>
 </div>
 <div class="paragraph">
@@ -1459,6 +1463,10 @@ run the follwing command in <code>tools/riemann</code>:</p>
 </div>
 <div class="paragraph">
 <p>These events are queued in a bounded queue. The result will be forwarded to Riemann in batches every 100 ms.</p>
+</div>
+<div class="paragraph">
+<p>In order to activate the forwarding of events, you&#8217;ll need to change <code>hystrixdemo.enableriemann</code> to <code>true</code> in <code>archaius.properties</code>.
+This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1764,7 +1772,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-31 14:22:27 Mitteleuropäische Sommerzeit
+Last updated 2014-09-22 08:32:59 UTC
 </div>
 </div>
 </body>
