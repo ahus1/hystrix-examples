@@ -124,20 +124,32 @@
 </li>
 <li><a href="#_appendix">Appendix</a>
 <ul class="sectlevel1">
-<li><a href="#vagrant">15. Running virtual machines for test and development</a>
+<li><a href="#asciidoctor">15. Writing an online manual</a>
 <ul class="sectlevel2">
-<li><a href="#_vagrant_manages_virtual_machines">15.1. Vagrant manages virtual machines</a></li>
-<li><a href="#_installing_vagrant_and_useful_plugins">15.2. Installing Vagrant and useful plugins</a></li>
-<li><a href="#_proxy_configuration_for_vagrant">15.3. Proxy configuration for Vagrant</a></li>
-<li><a href="#_managing_virtual_machines_from_the_command_line">15.4. Managing virtual machines from the command line</a></li>
+<li><a href="#_asciidoctor_is_a_lean_tool_for_technical_documentation">15.1. Asciidoctor is a lean tool for technical documentation</a></li>
+<li><a href="#_editors_to_work_on_asciidoctor">15.2. Editors to work on Asciidoctor</a></li>
 </ul>
 </li>
-<li><a href="#saltstack">16. Automatic provisioning of machines</a>
+<li><a href="#vagrant">16. Running virtual machines for test and development</a>
 <ul class="sectlevel2">
-<li><a href="#_saltstack_installation_automation">16.1. Saltstack installation automation</a></li>
-<li><a href="#_running_saltstack_in_standalone_mode">16.2. Running Saltstack in standalone mode</a></li>
-<li><a href="#_configuration_files_for_automatic_installation">16.3. Configuration files for automatic installation</a></li>
-<li><a href="#_saltstack_commands">16.4. Saltstack commands</a></li>
+<li><a href="#_vagrant_manages_virtual_machines">16.1. Vagrant manages virtual machines</a></li>
+<li><a href="#_installing_vagrant_and_useful_plugins">16.2. Installing Vagrant and useful plugins</a></li>
+<li><a href="#_proxy_configuration_for_vagrant">16.3. Proxy configuration for Vagrant</a></li>
+<li><a href="#_managing_virtual_machines_from_the_command_line">16.4. Managing virtual machines from the command line</a></li>
+</ul>
+</li>
+<li><a href="#saltstack">17. Automatic provisioning of machines</a>
+<ul class="sectlevel2">
+<li><a href="#_saltstack_installation_automation">17.1. Saltstack installation automation</a></li>
+<li><a href="#_running_saltstack_in_standalone_mode">17.2. Running Saltstack in standalone mode</a></li>
+<li><a href="#_configuration_files_for_automatic_installation">17.3. Configuration files for automatic installation</a></li>
+<li><a href="#_saltstack_commands">17.4. Saltstack commands</a></li>
+</ul>
+</li>
+<li><a href="#_building_the_documentation_automatically">18. Building the documentation automatically</a>
+<ul class="sectlevel2">
+<li><a href="#_things_that_need_maintenance">18.1. Things that need maintenance</a></li>
+<li><a href="#_travis_ci_as_a_service_in_the_cloud">18.2. Travis CI as a service in the cloud</a></li>
 </ul>
 </li>
 </ul>
@@ -1548,10 +1560,36 @@ This change will be active immediately.</p>
 </div>
 <h1 id="_appendix" class="sect0">Appendix</h1>
 <div class="sect1">
-<h2 id="vagrant">15. Running virtual machines for test and development</h2>
+<h2 id="asciidoctor">15. Writing an online manual</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_vagrant_manages_virtual_machines">15.1. Vagrant manages virtual machines</h3>
+<h3 id="_asciidoctor_is_a_lean_tool_for_technical_documentation">15.1. Asciidoctor is a lean tool for technical documentation</h3>
+<div class="paragraph">
+<p>This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.</p>
+</div>
+<div class="paragraph">
+<p>To find out more about Asciidoctor see the <a href="http://asciidoctor.org/" class="bare">http://asciidoctor.org/</a>.  It is a clone of the original Asciidoc using Ruby. Compiled versions are available for Java and JavaScript. This allows you to easily integrate it into your build process.</p>
+</div>
+<div class="paragraph">
+<p>You can create from a single source of documentation formats like HTML5, PDF and epub.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_editors_to_work_on_asciidoctor">15.2. Editors to work on Asciidoctor</h3>
+<div class="paragraph">
+<p>Asciidoctor files are plain text files with an easy to learn syntax. You can use any text editor to write the files.</p>
+</div>
+<div class="paragraph">
+<p>You might want to try the <a href="https://github.com/asciidoctor/atom-asciidoc-preview" target="_blank">Asciidoctor preview plugin</a> and <a href="https://atom.io/packages/language-asciidoc" target="_blank">Asciidoctor language plugin</a> for <a href="https://atom.io/" target="_blank">GitHub&#8217;s Atom</a> editor. As the time of writing this provides you the best authoring experience.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vagrant">16. Running virtual machines for test and development</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_vagrant_manages_virtual_machines">16.1. Vagrant manages virtual machines</h3>
 <div class="paragraph">
 <p>Virtual machines make development and test easier, as they can be started and stoped as you need them. You re-use the CPU, RAM and hard disk space on your PC. When you don&#8217;t need them you shut them down and they will use only some hard drive space. Once your test or development are over you can wipe them from your hard disk.</p>
 </div>
@@ -1563,7 +1601,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_vagrant_and_useful_plugins">15.2. Installing Vagrant and useful plugins</h3>
+<h3 id="_installing_vagrant_and_useful_plugins">16.2. Installing Vagrant and useful plugins</h3>
 <div class="paragraph">
 <p>To use Vagrant please use the following steps:</p>
 </div>
@@ -1603,7 +1641,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_proxy_configuration_for_vagrant">15.3. Proxy configuration for Vagrant</h3>
+<h3 id="_proxy_configuration_for_vagrant">16.3. Proxy configuration for Vagrant</h3>
 <div class="paragraph">
 <p>To be able to install any vagrant plugin behind a proxy, set the <code>http_proxy</code> environment variable. The this syntax assumes you are running a Microsoft Windows system:</p>
 </div>
@@ -1653,7 +1691,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_managing_virtual_machines_from_the_command_line">15.4. Managing virtual machines from the command line</h3>
+<h3 id="_managing_virtual_machines_from_the_command_line">16.4. Managing virtual machines from the command line</h3>
 <div class="paragraph">
 <p>You can start a box with:</p>
 </div>
@@ -1693,10 +1731,10 @@ end</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="saltstack">16. Automatic provisioning of machines</h2>
+<h2 id="saltstack">17. Automatic provisioning of machines</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_saltstack_installation_automation">16.1. Saltstack installation automation</h3>
+<h3 id="_saltstack_installation_automation">17.1. Saltstack installation automation</h3>
 <div class="paragraph">
 <p>In order to provide reproducable and easy to setup development and test environments, you can script the installation of the software.</p>
 </div>
@@ -1726,7 +1764,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_saltstack_in_standalone_mode">16.2. Running Saltstack in standalone mode</h3>
+<h3 id="_running_saltstack_in_standalone_mode">17.2. Running Saltstack in standalone mode</h3>
 <div class="paragraph">
 <p>Saltstack can be run in two modes:</p>
 </div>
@@ -1748,13 +1786,13 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_files_for_automatic_installation">16.3. Configuration files for automatic installation</h3>
+<h3 id="_configuration_files_for_automatic_installation">17.3. Configuration files for automatic installation</h3>
 <div class="paragraph">
 <p>You will find the configuration files in <code>salt/roots/salt</code>. They are plain text files. You can open them in a plain text editor to get a first impression. Please refer to the Salstack documentation find out more.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_saltstack_commands">16.4. Saltstack commands</h3>
+<h3 id="_saltstack_commands">17.4. Saltstack commands</h3>
 <div class="paragraph">
 <p>Provisioning via saltstack is run automatically. To run salt stack provisioning manually again (for example after you have changed a configuration file) use the following command as user <code>root</code>:</p>
 </div>
@@ -1769,10 +1807,58 @@ end</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_building_the_documentation_automatically">18. Building the documentation automatically</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_things_that_need_maintenance">18.1. Things that need maintenance</h3>
+<div class="paragraph">
+<p>This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.</p>
+</div>
+<div class="paragraph">
+<p>This can be done manually by calling <code>manual/build.bat</code>. The changes then need to be published to the <code>gh-pages</code> branch.</p>
+</div>
+<div class="paragraph">
+<p>To find out more about Asciidoc and Asciidoctor see see section <a href="#asciidoctor">Writing an online manual</a>. To find out more about GitHub Pages see <a href="https://pages.github.com/" class="bare">https://pages.github.com/</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_travis_ci_as_a_service_in_the_cloud">18.2. Travis CI as a service in the cloud</h3>
+<div class="paragraph">
+<p>Travis CI is a build service in the clould that is free to all open source projects. It integrates well with GitHub. A new build is triggered on every push to your repository.</p>
+</div>
+<div class="paragraph">
+<p>The following bit&#8217;s and pieces are needed:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Hook up <a href="http://travis-ci.org/" class="bare">http://travis-ci.org/</a> to your repository.</p>
+</li>
+<li>
+<p>Add a file <code>.travis.yml</code> to the root of the repository. In our case this indicates to Travis that we want to use Ruby.</p>
+</li>
+<li>
+<p>Add a file <code>Gemfile</code> to the root of the repository to specify the dependencies of Asciidoctor.</p>
+</li>
+<li>
+<p>Add a file <code>manual/build.sh</code> to the project to copy images in the proper place, and run asciidoctor.</p>
+</li>
+<li>
+<p>Add a file <code>manual/update-gh-pages.sh</code> to store the created Asciidoctor output to the repositories GitHub pages branch.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can see the current status of the build here: <a href="https://travis-ci.org/ahus1/hystrix-examples" class="bare">https://travis-ci.org/ahus1/hystrix-examples</a>.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-09-22 08:42:30 UTC
+Last updated 2014-09-22 09:26:42 UTC
 </div>
 </div>
 </body>
