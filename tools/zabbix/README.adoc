@@ -60,7 +60,7 @@ The auto discovery rule is set to run every five seconds. Please note that the a
 
 Please choose menu:Configuration[Hosts] and you should see the number of Items change for the host `hystrix`. Please refresh your browser if necessary.
 
-Now choose menu:Monitoring[Graphs] and choose the host `hystrix` and any of the three graphs. After a few minutes you should see the first graphs appearing. The following screen shows a service that was answering successfully first. After a short time the response time was changed to 250 ms. Soon lots of rejected and timeout requests appear. 
+Now choose menu:Monitoring[Graphs] and choose the host `hystrix` and any of the three graphs. After a few minutes you should see the first graphs appearing. The following screen shows a service that was answering successfully first. After a short time the response time was changed to 250 ms. Soon lots of rejected and timeout requests appear.
 
 .Zabbix counting Hystrix requests
 image::requestcount_zabbix.png[Zabbix counting Hystrix requests]
@@ -70,6 +70,9 @@ Zabbix polls for the command data every minute. Change the timing in `archaius.p
 Click on menu:Monitoring[Latest data] to see the latest values that the agent has sent.
 
 === Java classes to forward information from Hystrix to Zabbix
+
+In order to activate the forwarding of events, you'll need to change `hystrixdemo.enablezabbix` to `true` in `archaius.properties`.
+This change will be active immediately. 
 
 The property `hystrixdemo.enablezabbix` in `archaius.properties` is evaluated in the class `HystrixSetupListener`. When this property is enabled, the Zabbix agent is started.
 

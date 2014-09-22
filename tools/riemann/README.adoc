@@ -40,6 +40,9 @@ In the example application the `HystrixSetupListener` registers the class `Hystr
 
 These events are queued in a bounded queue. The result will be forwarded to Riemann in batches every 100 ms.
 
+In order to activate the forwarding of events, you'll need to change `hystrixdemo.enableriemann` to `true` in `archaius.properties`.
+This change will be active immediately.
+
 === Configuring Riemann Server
 
 In this setup the information about Hystrix commands is forwarded on a level of a single command execution.
