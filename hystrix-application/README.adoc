@@ -1,4 +1,5 @@
 :source-highlighter: coderay
+:javasourcedir: src/main/java
 
 == Writing a real application with JAX-RS
 

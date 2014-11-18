@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import de.ahus1.hystrix.base.AbstractSaveAccount;
 import de.ahus1.hystrix.base.Account;
@@ -20,6 +22,7 @@ import de.ahus1.hystrix.base.IBANValidator;
 import de.ahus1.hystrix.base.ValidationException;
 
 @Path("/hystrix")
+@Api("/hystrix")
 public class HystrixSaveAccount extends AbstractSaveAccount {
 
     private static Logger LOG = LoggerFactory
@@ -27,6 +30,7 @@ public class HystrixSaveAccount extends AbstractSaveAccount {
 
     @GET
     @Produces("text/plain")
+    @ApiOperation("simple hello")
     public Response hello() {
         return Response.status(Status.OK).entity("Hello world").build();
     }
@@ -49,6 +53,7 @@ public class HystrixSaveAccount extends AbstractSaveAccount {
     }
 
     @POST
+    @ApiOperation("save account data")
     public Response save(Account account) throws ValidationException,
             InterruptedException {
         try {
