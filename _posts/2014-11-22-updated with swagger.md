@@ -1,14 +1,14 @@
 ---
 layout: post
-title:  "First Tutorial version online!"
-date:   2014-08-28 21:35:12
-categories: hystrix update
+title:  "Swagger, Riemann, Zabbix added"
+date:   2014-11-22 23:15:12
+categories: swagger 
 ---
 
-The first version is online in the [github repo][hystrixsamples-gh]. You'll see an example application, load tests and a realtime dashboard.
+Some time ago Riemann and Zabbix have been added. Today also Swagger has been added. 
 
-Stay tuned for the integration of Zabbix and Riemann. The code is already there, but I want to add a Vagrant box for each of them soon. 
-
-But now it's time for me to prepare the slides for the upcoming talks... see [this (German) page to list all my talks August to October](http://www.ahus1.de/papers/).
+The the repository for details [github repo][hystrixsamples-gh] and the [manual][hystrixsamples-manual].
 
 [hystrixsamples-gh]: https://github.com/ahus1/hystrix-examples
+
+[hystrixsamples-manual]: http://ahus1.github.io/hystrix-examples/manual.html
