@@ -1,7 +1,7 @@
 # change version number and hash code as shown on Apache download page
 # http://tomcat.apache.org/download-80.cgi
-$version="8.0.9"
-$masterhash = "d419433e3ba8e31f8a8ec61bbac819b1"
+$version="8.0.15"
+$masterhash = "109a2ca339930212afef0050e580e667"
 
 $url = "http://www.eu.apache.org/dist/tomcat/tomcat-8/v$version/bin/apache-tomcat-$version.zip"
 
