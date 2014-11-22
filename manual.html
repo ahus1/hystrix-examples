@@ -50,106 +50,113 @@
 <li><a href="#_wrap_external_interfaces_as_a_hystrix_command">5.2. Wrap external interfaces as a Hystrix Command</a></li>
 </ul>
 </li>
-<li><a href="#_starting_up_the_application_container">6. Starting up the application container</a>
+<li><a href="#_live_api_documentation">6. Live API documentation</a>
 <ul class="sectlevel2">
-<li><a href="#_apache_tomcat_is_is_an_easy_to_use_servlet_container">6.1. Apache Tomcat is is an easy to use servlet container</a></li>
-<li><a href="#_installing_and_running_apache_tomcat">6.2. Installing and running Apache Tomcat</a></li>
+<li><a href="#_swagger_creates_a_live_api_at_runtime">6.1. Swagger creates a live API at runtime</a></li>
+<li><a href="#_adding_swagger">6.2. Adding Swagger</a></li>
+<li><a href="#_accessing_the_live_api">6.3. Accessing the Live API</a></li>
 </ul>
 </li>
-<li><a href="#archaius">7. Using runtime configuration</a>
+<li><a href="#_starting_up_the_application_container">7. Starting up the application container</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_configuration_will_get_you_credits">7.1. Runtime configuration will get you credits</a></li>
-<li><a href="#_netflix_archaius_to_the_rescue">7.2. Netflix Archaius to the rescue</a></li>
-<li><a href="#_how_runtime_configuration_works_in_this_project">7.3. How runtime configuration works in this project</a></li>
-<li><a href="#_configuring_the_hystrix_command_via_archaius">7.4. Configuring the Hystrix command via Archaius</a></li>
+<li><a href="#_apache_tomcat_is_is_an_easy_to_use_servlet_container">7.1. Apache Tomcat is is an easy to use servlet container</a></li>
+<li><a href="#_installing_and_running_apache_tomcat">7.2. Installing and running Apache Tomcat</a></li>
 </ul>
 </li>
-<li><a href="#_building_and_deploying_the_application">8. Building and deploying the application</a>
+<li><a href="#archaius">8. Using runtime configuration</a>
 <ul class="sectlevel2">
-<li><a href="#_build_configuration_based_on_conventions_with_apache_maven">8.1. Build Configuration based on conventions with Apache Maven</a></li>
-<li><a href="#_installing_apache_maven">8.2. Installing Apache Maven</a></li>
-<li><a href="#_packaging_and_deploying_your_application_to_apache_tomcat">8.3. Packaging and deploying your application to Apache Tomcat</a></li>
+<li><a href="#_runtime_configuration_will_get_you_credits">8.1. Runtime configuration will get you credits</a></li>
+<li><a href="#_netflix_archaius_to_the_rescue">8.2. Netflix Archaius to the rescue</a></li>
+<li><a href="#_how_runtime_configuration_works_in_this_project">8.3. How runtime configuration works in this project</a></li>
+<li><a href="#_configuring_the_hystrix_command_via_archaius">8.4. Configuring the Hystrix command via Archaius</a></li>
 </ul>
 </li>
-<li><a href="#jmeter">9. Putting your application under load</a>
+<li><a href="#_building_and_deploying_the_application">9. Building and deploying the application</a>
 <ul class="sectlevel2">
-<li><a href="#_apache_jmeter_is_free_and_open_source_load_testing">9.1. Apache JMeter is free and open source load testing</a></li>
-<li><a href="#_installing_apache_jmeter">9.2. Installing Apache JMeter</a></li>
-<li><a href="#_simulating_multiple_users">9.3. Simulating multiple users</a></li>
+<li><a href="#_build_configuration_based_on_conventions_with_apache_maven">9.1. Build Configuration based on conventions with Apache Maven</a></li>
+<li><a href="#_installing_apache_maven">9.2. Installing Apache Maven</a></li>
+<li><a href="#_packaging_and_deploying_your_application_to_apache_tomcat">9.3. Packaging and deploying your application to Apache Tomcat</a></li>
 </ul>
 </li>
-<li><a href="#_aggregating_hystrix_runtime_information_in_a_cluster">10. Aggregating Hystrix runtime information in a cluster</a>
+<li><a href="#jmeter">10. Putting your application under load</a>
 <ul class="sectlevel2">
-<li><a href="#_turbine_aggregates_runtime_information">10.1. Turbine aggregates runtime information</a></li>
-<li><a href="#_installing_and_running_turbine">10.2. Installing and running Turbine</a></li>
-<li><a href="#_configuration_for_turbine">10.3. Configuration for Turbine</a></li>
+<li><a href="#_apache_jmeter_is_free_and_open_source_load_testing">10.1. Apache JMeter is free and open source load testing</a></li>
+<li><a href="#_installing_apache_jmeter">10.2. Installing Apache JMeter</a></li>
+<li><a href="#_simulating_multiple_users">10.3. Simulating multiple users</a></li>
 </ul>
 </li>
-<li><a href="#_displaying_hystrix_runtime_information_in_a_browser">11. Displaying Hystrix runtime information in a browser</a>
+<li><a href="#_aggregating_hystrix_runtime_information_in_a_cluster">11. Aggregating Hystrix runtime information in a cluster</a>
 <ul class="sectlevel2">
-<li><a href="#_hystrix_dashboard_displays_a_realtime_dashboard">11.1. Hystrix Dashboard displays a Realtime Dashboard</a></li>
-<li><a href="#_installing_and_running_hystrix_dashboard">11.2. Installing and running Hystrix Dashboard</a></li>
+<li><a href="#_turbine_aggregates_runtime_information">11.1. Turbine aggregates runtime information</a></li>
+<li><a href="#_installing_and_running_turbine">11.2. Installing and running Turbine</a></li>
+<li><a href="#_configuration_for_turbine">11.3. Configuration for Turbine</a></li>
 </ul>
 </li>
-<li><a href="#_behaviour_of_hystrix_under_load">12. Behaviour of Hystrix under load</a>
+<li><a href="#_displaying_hystrix_runtime_information_in_a_browser">12. Displaying Hystrix runtime information in a browser</a>
 <ul class="sectlevel2">
-<li><a href="#_introduction_to_load_scenarios_for_hystrix">12.1. Introduction to Load Scenarios for Hystrix</a></li>
-<li><a href="#_a_fast_response_10_ms">12.2. A fast response: 10 ms</a></li>
-<li><a href="#_a_medium_response_70_ms">12.3. A medium response: 70 ms</a></li>
-<li><a href="#_a_late_response_100_ms">12.4. A late response: 100 ms</a></li>
-<li><a href="#_a_critical_response_200_ms">12.5. A critical response: 200 ms</a></li>
-<li><a href="#_an_eternity_1500_ms">12.6. An eternity: 1500 ms</a></li>
-<li><a href="#_hystrix_don_t_waste_resources_by_queueing_requests">12.7. Hystrix: Don&#8217;t waste resources by queueing requests</a></li>
+<li><a href="#_hystrix_dashboard_displays_a_realtime_dashboard">12.1. Hystrix Dashboard displays a Realtime Dashboard</a></li>
+<li><a href="#_installing_and_running_hystrix_dashboard">12.2. Installing and running Hystrix Dashboard</a></li>
 </ul>
 </li>
-<li><a href="#_long_term_monitoring_of_hystrix_metrics">13. Long term monitoring of Hystrix metrics</a>
+<li><a href="#_behaviour_of_hystrix_under_load">13. Behaviour of Hystrix under load</a>
 <ul class="sectlevel2">
-<li><a href="#_zabbix_as_classic_long_term_monitoring_and_notification">13.1. Zabbix as classic long term monitoring and notification</a></li>
-<li><a href="#_installing_and_running_zabbix">13.2. Installing and running Zabbix</a></li>
-<li><a href="#_configuration_of_zabbix">13.3. Configuration of Zabbix</a></li>
-<li><a href="#_configuration_of_the_example_application">13.4. Configuration of the example application</a></li>
-<li><a href="#_zabbix_autodiscovery_at_work">13.5. Zabbix autodiscovery at work</a></li>
-<li><a href="#_java_classes_to_forward_information_from_hystrix_to_zabbix">13.6. Java classes to forward information from Hystrix to Zabbix</a></li>
-<li><a href="#_working_with_templates_in_zabbix">13.7. Working with templates in Zabbix</a></li>
+<li><a href="#_introduction_to_load_scenarios_for_hystrix">13.1. Introduction to Load Scenarios for Hystrix</a></li>
+<li><a href="#_a_fast_response_10_ms">13.2. A fast response: 10 ms</a></li>
+<li><a href="#_a_medium_response_70_ms">13.3. A medium response: 70 ms</a></li>
+<li><a href="#_a_late_response_100_ms">13.4. A late response: 100 ms</a></li>
+<li><a href="#_a_critical_response_200_ms">13.5. A critical response: 200 ms</a></li>
+<li><a href="#_an_eternity_1500_ms">13.6. An eternity: 1500 ms</a></li>
+<li><a href="#_hystrix_don_t_waste_resources_by_queueing_requests">13.7. Hystrix: Don&#8217;t waste resources by queueing requests</a></li>
 </ul>
 </li>
-<li><a href="#_real_time_monitoring_of_hystrix_metrics">14. Real time monitoring of Hystrix metrics</a>
+<li><a href="#_long_term_monitoring_of_hystrix_metrics">14. Long term monitoring of Hystrix metrics</a>
 <ul class="sectlevel2">
-<li><a href="#_riemann_as_cutting_edge_realtime_event_processing">14.1. Riemann as cutting edge realtime event processing</a></li>
-<li><a href="#_installing_and_running_riemann">14.2. Installing and running Riemann</a></li>
-<li><a href="#_how_events_are_captures_for_riemann">14.3. How Events are captures for Riemann</a></li>
-<li><a href="#_configuring_riemann_server">14.4. Configuring Riemann Server</a></li>
-<li><a href="#_configuring_riemann_dashboard">14.5. Configuring Riemann Dashboard</a></li>
+<li><a href="#_zabbix_as_classic_long_term_monitoring_and_notification">14.1. Zabbix as classic long term monitoring and notification</a></li>
+<li><a href="#_installing_and_running_zabbix">14.2. Installing and running Zabbix</a></li>
+<li><a href="#_configuration_of_zabbix">14.3. Configuration of Zabbix</a></li>
+<li><a href="#_configuration_of_the_example_application">14.4. Configuration of the example application</a></li>
+<li><a href="#_zabbix_autodiscovery_at_work">14.5. Zabbix autodiscovery at work</a></li>
+<li><a href="#_java_classes_to_forward_information_from_hystrix_to_zabbix">14.6. Java classes to forward information from Hystrix to Zabbix</a></li>
+<li><a href="#_working_with_templates_in_zabbix">14.7. Working with templates in Zabbix</a></li>
+</ul>
+</li>
+<li><a href="#_real_time_monitoring_of_hystrix_metrics">15. Real time monitoring of Hystrix metrics</a>
+<ul class="sectlevel2">
+<li><a href="#_riemann_as_cutting_edge_realtime_event_processing">15.1. Riemann as cutting edge realtime event processing</a></li>
+<li><a href="#_installing_and_running_riemann">15.2. Installing and running Riemann</a></li>
+<li><a href="#_how_events_are_captures_for_riemann">15.3. How Events are captures for Riemann</a></li>
+<li><a href="#_configuring_riemann_server">15.4. Configuring Riemann Server</a></li>
+<li><a href="#_configuring_riemann_dashboard">15.5. Configuring Riemann Dashboard</a></li>
 </ul>
 </li>
 <li><a href="#_appendix">Appendix</a>
 <ul class="sectlevel1">
-<li><a href="#asciidoctor">15. Writing an online manual</a>
+<li><a href="#asciidoctor">16. Writing an online manual</a>
 <ul class="sectlevel2">
-<li><a href="#_asciidoctor_is_a_lean_tool_for_technical_documentation">15.1. Asciidoctor is a lean tool for technical documentation</a></li>
-<li><a href="#_editors_to_work_on_asciidoctor">15.2. Editors to work on Asciidoctor</a></li>
+<li><a href="#_asciidoctor_is_a_lean_tool_for_technical_documentation">16.1. Asciidoctor is a lean tool for technical documentation</a></li>
+<li><a href="#_editors_to_work_on_asciidoctor">16.2. Editors to work on Asciidoctor</a></li>
 </ul>
 </li>
-<li><a href="#vagrant">16. Running virtual machines for test and development</a>
+<li><a href="#vagrant">17. Running virtual machines for test and development</a>
 <ul class="sectlevel2">
-<li><a href="#_vagrant_manages_virtual_machines">16.1. Vagrant manages virtual machines</a></li>
-<li><a href="#_installing_vagrant_and_useful_plugins">16.2. Installing Vagrant and useful plugins</a></li>
-<li><a href="#_proxy_configuration_for_vagrant">16.3. Proxy configuration for Vagrant</a></li>
-<li><a href="#_managing_virtual_machines_from_the_command_line">16.4. Managing virtual machines from the command line</a></li>
+<li><a href="#_vagrant_manages_virtual_machines">17.1. Vagrant manages virtual machines</a></li>
+<li><a href="#_installing_vagrant_and_useful_plugins">17.2. Installing Vagrant and useful plugins</a></li>
+<li><a href="#_proxy_configuration_for_vagrant">17.3. Proxy configuration for Vagrant</a></li>
+<li><a href="#_managing_virtual_machines_from_the_command_line">17.4. Managing virtual machines from the command line</a></li>
 </ul>
 </li>
-<li><a href="#saltstack">17. Automatic provisioning of machines</a>
+<li><a href="#saltstack">18. Automatic provisioning of machines</a>
 <ul class="sectlevel2">
-<li><a href="#_saltstack_installation_automation">17.1. Saltstack installation automation</a></li>
-<li><a href="#_running_saltstack_in_standalone_mode">17.2. Running Saltstack in standalone mode</a></li>
-<li><a href="#_configuration_files_for_automatic_installation">17.3. Configuration files for automatic installation</a></li>
-<li><a href="#_saltstack_commands">17.4. Saltstack commands</a></li>
+<li><a href="#_saltstack_installation_automation">18.1. Saltstack installation automation</a></li>
+<li><a href="#_running_saltstack_in_standalone_mode">18.2. Running Saltstack in standalone mode</a></li>
+<li><a href="#_configuration_files_for_automatic_installation">18.3. Configuration files for automatic installation</a></li>
+<li><a href="#_saltstack_commands">18.4. Saltstack commands</a></li>
 </ul>
 </li>
-<li><a href="#_building_the_documentation_automatically">18. Building the documentation automatically</a>
+<li><a href="#_building_the_documentation_automatically">19. Building the documentation automatically</a>
 <ul class="sectlevel2">
-<li><a href="#_things_that_need_maintenance">18.1. Things that need maintenance</a></li>
-<li><a href="#_travis_ci_as_a_service_in_the_cloud">18.2. Travis CI as a service in the cloud</a></li>
+<li><a href="#_things_that_need_maintenance">19.1. Things that need maintenance</a></li>
+<li><a href="#_travis_ci_as_a_service_in_the_cloud">19.2. Travis CI as a service in the cloud</a></li>
 </ul>
 </li>
 </ul>
@@ -592,6 +599,7 @@ Hystrix.reset(<span class="integer">1</span>, <span class="predefined-type">Time
 }
 
 <span class="annotation">@POST</span>
+<span class="annotation">@ApiOperation</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">save account data</span><span class="delimiter">&quot;</span></span>)
 <span class="directive">public</span> Response save(Account account) <span class="directive">throws</span> ValidationException,
         <span class="exception">InterruptedException</span> {
     <span class="keyword">try</span> {
@@ -659,10 +667,81 @@ If you want to handle the exceptions of your service as before, you will need to
 </div>
 </div>
 <div class="sect1">
-<h2 id="_starting_up_the_application_container">6. Starting up the application container</h2>
+<h2 id="_live_api_documentation">6. Live API documentation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_apache_tomcat_is_is_an_easy_to_use_servlet_container">6.1. Apache Tomcat is is an easy to use servlet container</h3>
+<h3 id="_swagger_creates_a_live_api_at_runtime">6.1. Swagger creates a live API at runtime</h3>
+<div class="paragraph">
+<p><a href="http://swagger.io/">Swagger</a> allows you to annotate your REST endpoints. The information from the JAX-RS annotation and the Swagger annotations is collected at runtime.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_swagger">6.2. Adding Swagger</h3>
+<div class="paragraph">
+<p>To add Swagger to your project, annotate your REST endpoints with <code>@ApiOperation</code> and <code>@Api</code> annotations.</p>
+</div>
+<div class="paragraph">
+<p>Add the following dependency to your Maven configuration:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>com.wordnik<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>swagger-jaxrs_2.10<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;scope&gt;</span>compile<span class="tag">&lt;/scope&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.3.10<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following snipped is needed in your web configuration:</p>
+</div>
+<div class="listingblock">
+<div class="title">web.xml</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;context-param&gt;</span>
+    <span class="tag">&lt;param-name&gt;</span>resteasy.resources<span class="tag">&lt;/param-name&gt;</span>
+    <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON<span class="tag">&lt;/param-value&gt;</span>
+<span class="tag">&lt;/context-param&gt;</span>
+<span class="tag">&lt;context-param&gt;</span>
+    <span class="tag">&lt;param-name&gt;</span>resteasy.providers<span class="tag">&lt;/param-name&gt;</span>
+    <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.json.JacksonJsonProvider,com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider,com.wordnik.swagger.jaxrs.listing.ResourceListingProvider<span class="tag">&lt;/param-value&gt;</span>
+<span class="tag">&lt;/context-param&gt;</span>
+<span class="tag">&lt;servlet&gt;</span>
+    <span class="tag">&lt;servlet-name&gt;</span>DefaultJaxrsConfig<span class="tag">&lt;/servlet-name&gt;</span>
+    <span class="tag">&lt;servlet-class&gt;</span>com.wordnik.swagger.jaxrs.config.DefaultJaxrsConfig<span class="tag">&lt;/servlet-class&gt;</span>
+    <span class="tag">&lt;init-param&gt;</span>
+        <span class="tag">&lt;param-name&gt;</span>api.version<span class="tag">&lt;/param-name&gt;</span>
+        <span class="tag">&lt;param-value&gt;</span>1.0.0<span class="tag">&lt;/param-value&gt;</span>
+    <span class="tag">&lt;/init-param&gt;</span>
+    <span class="tag">&lt;init-param&gt;</span>
+        <span class="tag">&lt;param-name&gt;</span>swagger.api.basepath<span class="tag">&lt;/param-name&gt;</span>
+        <span class="tag">&lt;param-value&gt;</span>http://localhost:8080/hystrixapp/api<span class="tag">&lt;/param-value&gt;</span>
+    <span class="tag">&lt;/init-param&gt;</span>
+    <span class="tag">&lt;load-on-startup&gt;</span>2<span class="tag">&lt;/load-on-startup&gt;</span>
+<span class="tag">&lt;/servlet&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_the_live_api">6.3. Accessing the Live API</h3>
+<div class="paragraph">
+<p>The Live API will be deployed as part of the application. You can access it with your browser using the following URL: <a href="http://localhost:8080/hystrixapp/swagger/" class="bare">http://localhost:8080/hystrixapp/swagger/</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="manual/swagger.png" alt="Swagger Overview">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starting_up_the_application_container">7. Starting up the application container</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_apache_tomcat_is_is_an_easy_to_use_servlet_container">7.1. Apache Tomcat is is an easy to use servlet container</h3>
 <div class="paragraph">
 <p><a href="http://tomcat.apache.org">Apache Tomcat</a> is a servlet container. It can run JavaEE Web applications like our JAX-RS applications.</p>
 </div>
@@ -672,7 +751,7 @@ the latest APIs.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_and_running_apache_tomcat">6.2. Installing and running Apache Tomcat</h3>
+<h3 id="_installing_and_running_apache_tomcat">7.2. Installing and running Apache Tomcat</h3>
 <div class="paragraph">
 <p>Installation is straight forward: After the download only few
 configuration steps are necessary.</p>
@@ -681,7 +760,7 @@ configuration steps are necessary.</p>
 <p>All of these have been prepared in the script <code>tools/tomcat/run-tomcat.bat</code>. When you start it the first time, the the script will download the installation archive, unzip it and update the configuration.</p>
 </div>
 <div class="sect3">
-<h4 id="_activated_apache_tomcat_features">6.2.1. Activated Apache Tomcat features</h4>
+<h4 id="_activated_apache_tomcat_features">7.2.1. Activated Apache Tomcat features</h4>
 <div class="paragraph">
 <p>The following features are being set up using the automatic installation:</p>
 </div>
@@ -725,7 +804,7 @@ configuration steps are necessary.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_testing_the_apache_tomcat_installation">6.2.2. Testing the Apache Tomcat installation</h4>
+<h4 id="_testing_the_apache_tomcat_installation">7.2.2. Testing the Apache Tomcat installation</h4>
 <div class="paragraph">
 <p>To test the application point your browser at <a href="http://localhost:8080" class="bare">http://localhost:8080</a>. You should see an Apache Tomcat start page with the welcome message (see figure <a href="#img-tomcatwelcome">Apache Tomcat Welcome Message</a>).</p>
 </div>
@@ -743,10 +822,10 @@ configuration steps are necessary.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="archaius">7. Using runtime configuration</h2>
+<h2 id="archaius">8. Using runtime configuration</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_runtime_configuration_will_get_you_credits">7.1. Runtime configuration will get you credits</h3>
+<h3 id="_runtime_configuration_will_get_you_credits">8.1. Runtime configuration will get you credits</h3>
 <div class="paragraph">
 <p>If you would write applications that would require a restart every
 time you change a setting, it will deter your users as you will have
@@ -757,7 +836,7 @@ a downtime.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_netflix_archaius_to_the_rescue">7.2. Netflix Archaius to the rescue</h3>
+<h3 id="_netflix_archaius_to_the_rescue">8.2. Netflix Archaius to the rescue</h3>
 <div class="paragraph">
 <p>Hystrix is integrated already with  <a href="https://github.com/Netflix/archaius" target="_blank">Archaius</a> that handles runtime
 configuration for you. When implementing <code>IBANValidator</code> you&#8217;ve seen the dynamic property being introduced:</p>
@@ -777,7 +856,7 @@ configuration for you. When implementing <code>IBANValidator</code> you&#8217;ve
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_runtime_configuration_works_in_this_project">7.3. How runtime configuration works in this project</h3>
+<h3 id="_how_runtime_configuration_works_in_this_project">8.3. How runtime configuration works in this project</h3>
 <div class="paragraph">
 <p>Archaius supports multiple back ends to store configuration data. In this setup all configuration is stored in a Java properties file. Archaius checks this file every second.</p>
 </div>
@@ -806,7 +885,7 @@ configuration for you. When implementing <code>IBANValidator</code> you&#8217;ve
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuring_the_hystrix_command_via_archaius">7.4. Configuring the Hystrix command via Archaius</h3>
+<h3 id="_configuring_the_hystrix_command_via_archaius">8.4. Configuring the Hystrix command via Archaius</h3>
 <div class="paragraph">
 <p>All Hystrix settings can be configured on default and on command level. Please refer to the <a href="https://github.com/Netflix/Hystrix/wiki/Configuration">Configuration Wiki of Hystrix</a> for an in-depth discussion. This will now show the core parameters and configure them on default level:</p>
 </div>
@@ -842,10 +921,10 @@ hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=5000</code></pr
 </div>
 </div>
 <div class="sect1">
-<h2 id="_building_and_deploying_the_application">8. Building and deploying the application</h2>
+<h2 id="_building_and_deploying_the_application">9. Building and deploying the application</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_build_configuration_based_on_conventions_with_apache_maven">8.1. Build Configuration based on conventions with Apache Maven</h3>
+<h3 id="_build_configuration_based_on_conventions_with_apache_maven">9.1. Build Configuration based on conventions with Apache Maven</h3>
 <div class="paragraph">
 <p><a href="http://maven.apache.org/" target="_blank">Apache Maven</a> as a build system you the following advantages:</p>
 </div>
@@ -864,7 +943,7 @@ hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=5000</code></pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_apache_maven">8.2. Installing Apache Maven</h3>
+<h3 id="_installing_apache_maven">9.2. Installing Apache Maven</h3>
 <div class="paragraph">
 <p>This process has been automated for you. The first time you start <code>tools/maven/run-maven.bat</code> Maven is downloaded and installed.</p>
 </div>
@@ -880,7 +959,7 @@ hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=5000</code></pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="_packaging_and_deploying_your_application_to_apache_tomcat">8.3. Packaging and deploying your application to Apache Tomcat</h3>
+<h3 id="_packaging_and_deploying_your_application_to_apache_tomcat">9.3. Packaging and deploying your application to Apache Tomcat</h3>
 <div class="paragraph">
 <p>To do this run <code>hystrix-application/maven-package-deploy.bat</code>. <strong>Please ensure that your Apache Tomcat is running,</strong> as Maven will deploy your application into the running Apache Tomcat.</p>
 </div>
@@ -915,10 +994,10 @@ You should get the response <code>Hello world</code> to show you that everything
 </div>
 </div>
 <div class="sect1">
-<h2 id="jmeter">9. Putting your application under load</h2>
+<h2 id="jmeter">10. Putting your application under load</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_apache_jmeter_is_free_and_open_source_load_testing">9.1. Apache JMeter is free and open source load testing</h3>
+<h3 id="_apache_jmeter_is_free_and_open_source_load_testing">10.1. Apache JMeter is free and open source load testing</h3>
 <div class="paragraph">
 <p><a href="http://jmeter.apache.org/" target="_blank">Apache JMeter</a> allows you to create
 and run load tests simulating the load of multiple users using
@@ -926,7 +1005,7 @@ a single PC.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_apache_jmeter">9.2. Installing Apache JMeter</h3>
+<h3 id="_installing_apache_jmeter">10.2. Installing Apache JMeter</h3>
 <div class="paragraph">
 <p>This process has been automated for you. The first time you start <code>tools/maven/run-jmeter.bat</code> JMeter is downloaded and installed.</p>
 </div>
@@ -951,7 +1030,7 @@ a single PC.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_simulating_multiple_users">9.3. Simulating multiple users</h3>
+<h3 id="_simulating_multiple_users">10.3. Simulating multiple users</h3>
 <div class="paragraph">
 <p>You can vary the number of simulated users by changing the number of threads. In this script the number of users is configured to be 20.</p>
 </div>
@@ -999,10 +1078,10 @@ When you change the number of users (aka threads) it will become effective only 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_aggregating_hystrix_runtime_information_in_a_cluster">10. Aggregating Hystrix runtime information in a cluster</h2>
+<h2 id="_aggregating_hystrix_runtime_information_in_a_cluster">11. Aggregating Hystrix runtime information in a cluster</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_turbine_aggregates_runtime_information">10.1. Turbine aggregates runtime information</h3>
+<h3 id="_turbine_aggregates_runtime_information">11.1. Turbine aggregates runtime information</h3>
 <div class="paragraph">
 <p><a href="https://github.com/Netflix/Turbine">Netflix Turbine</a> is a web application that connects to instances of your Hystrix application in a cluster and aggregates the information.</p>
 </div>
@@ -1011,7 +1090,7 @@ When you change the number of users (aka threads) it will become effective only 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_and_running_turbine">10.2. Installing and running Turbine</h3>
+<h3 id="_installing_and_running_turbine">11.2. Installing and running Turbine</h3>
 <div class="paragraph">
 <p>The installation has been scripted for you: You need to run <code>tools/turbine/maven-package-deploy.bat</code>.</p>
 </div>
@@ -1023,9 +1102,9 @@ When you change the number of users (aka threads) it will become effective only 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_for_turbine">10.3. Configuration for Turbine</h3>
+<h3 id="_configuration_for_turbine">11.3. Configuration for Turbine</h3>
 <div class="sect3">
-<h4 id="_configuration_turbine_metadata">10.3.1. Configuration Turbine metadata</h4>
+<h4 id="_configuration_turbine_metadata">11.3.1. Configuration Turbine metadata</h4>
 <div class="paragraph">
 <p>Turbine uses the same configuration mechanism as Hystrix: Archaius. See chapter "<a href="#archaius">Using runtime configuration</a> for more information. The following configuration has already been set up for you in <code>archaius.properties</code>:</p>
 </div>
@@ -1044,14 +1123,14 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_preparing_your_application_for_turbine">10.3.2. Preparing your application for Turbine</h4>
+<h4 id="_preparing_your_application_for_turbine">11.3.2. Preparing your application for Turbine</h4>
 <div class="paragraph">
 <p>To have your application publishing the information on the URL suffix above, you&#8217;ll need to add a servlet to your application. This has already been packaged for you. You&#8217;ll just need to include as a dependency of your application in <code>pom.xml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="error">&lt;</span>!- include metrics event stream --<span class="error">&gt;</span>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="comment">&lt;!-- include metrics event stream --&gt;</span>
 <span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>com.netflix.hystrix<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>hystrix-metrics-event-stream<span class="tag">&lt;/artifactId&gt;</span>
@@ -1065,7 +1144,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 <div class="listingblock">
 <div class="title">web.xml</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="error">&lt;</span>!- include metrics event stream --<span class="error">&gt;</span>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="comment">&lt;!-- include metrics event stream --&gt;</span>
 <span class="tag">&lt;servlet&gt;</span>
     <span class="tag">&lt;description&gt;</span><span class="tag">&lt;/description&gt;</span>
     <span class="tag">&lt;display-name&gt;</span>HystrixMetricsStreamServlet<span class="tag">&lt;/display-name&gt;</span>
@@ -1085,16 +1164,16 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_displaying_hystrix_runtime_information_in_a_browser">11. Displaying Hystrix runtime information in a browser</h2>
+<h2 id="_displaying_hystrix_runtime_information_in_a_browser">12. Displaying Hystrix runtime information in a browser</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_hystrix_dashboard_displays_a_realtime_dashboard">11.1. Hystrix Dashboard displays a Realtime Dashboard</h3>
+<h3 id="_hystrix_dashboard_displays_a_realtime_dashboard">12.1. Hystrix Dashboard displays a Realtime Dashboard</h3>
 <div class="paragraph">
 <p><a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard" target="_blank">Hystrix Dashboard</a> is part of the Hystrix distribution. It displays runtime information about every Hystrix command and thread pool for the last few minutes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_and_running_hystrix_dashboard">11.2. Installing and running Hystrix Dashboard</h3>
+<h3 id="_installing_and_running_hystrix_dashboard">12.2. Installing and running Hystrix Dashboard</h3>
 <div class="paragraph">
 <p>The installation has been scripted: you need to run <code>tools/hystrix-dashboard/maven-package-deploy.bat</code>.</p>
 </div>
@@ -1111,10 +1190,10 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_behaviour_of_hystrix_under_load">12. Behaviour of Hystrix under load</h2>
+<h2 id="_behaviour_of_hystrix_under_load">13. Behaviour of Hystrix under load</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_introduction_to_load_scenarios_for_hystrix">12.1. Introduction to Load Scenarios for Hystrix</h3>
+<h3 id="_introduction_to_load_scenarios_for_hystrix">13.1. Introduction to Load Scenarios for Hystrix</h3>
 <div class="paragraph">
 <p>Now we have a complete setup: an application, a driver for the load and a real time dashboard. You are now ready to see the behaviour of Hystrix.</p>
 </div>
@@ -1126,7 +1205,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_fast_response_10_ms">12.2. A fast response: 10 ms</h3>
+<h3 id="_a_fast_response_10_ms">13.2. A fast response: 10 ms</h3>
 <div class="paragraph">
 <p>Starting with a response time of 10 ms we see a very well behaving system: The throughput is about 18 requests per second.</p>
 </div>
@@ -1141,7 +1220,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_medium_response_70_ms">12.3. A medium response: 70 ms</h3>
+<h3 id="_a_medium_response_70_ms">13.3. A medium response: 70 ms</h3>
 <div class="paragraph">
 <p>Now change the delay to 70 ms. Save the file. Archaius will pick up the new value within a second. Our IBAN/BIC service will get slower.</p>
 </div>
@@ -1162,7 +1241,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_late_response_100_ms">12.4. A late response: 100 ms</h3>
+<h3 id="_a_late_response_100_ms">13.4. A late response: 100 ms</h3>
 <div class="paragraph">
 <p>Change the delay to 100 ms. Save the file. You&#8217;ll see the dashboard change.</p>
 </div>
@@ -1186,7 +1265,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_critical_response_200_ms">12.5. A critical response: 200 ms</h3>
+<h3 id="_a_critical_response_200_ms">13.5. A critical response: 200 ms</h3>
 <div class="paragraph">
 <p>Now try 200 ms. Save the file. The dashboard will change again.</p>
 </div>
@@ -1207,7 +1286,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_an_eternity_1500_ms">12.6. An eternity: 1500 ms</h3>
+<h3 id="_an_eternity_1500_ms">13.6. An eternity: 1500 ms</h3>
 <div class="paragraph">
 <p>The final setting: 1500 ms. Save the file. Watch the dashboard.</p>
 </div>
@@ -1222,7 +1301,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hystrix_don_t_waste_resources_by_queueing_requests">12.7. Hystrix: Don&#8217;t waste resources by queueing requests</h3>
+<h3 id="_hystrix_don_t_waste_resources_by_queueing_requests">13.7. Hystrix: Don&#8217;t waste resources by queueing requests</h3>
 <div class="paragraph">
 <p>The examples show that Hystrix does its job very effectively:</p>
 </div>
@@ -1258,10 +1337,10 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_long_term_monitoring_of_hystrix_metrics">13. Long term monitoring of Hystrix metrics</h2>
+<h2 id="_long_term_monitoring_of_hystrix_metrics">14. Long term monitoring of Hystrix metrics</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_zabbix_as_classic_long_term_monitoring_and_notification">13.1. Zabbix as classic long term monitoring and notification</h3>
+<h3 id="_zabbix_as_classic_long_term_monitoring_and_notification">14.1. Zabbix as classic long term monitoring and notification</h3>
 <div class="paragraph">
 <p><a href="http://zabbix.com/" target="_blank">Zabbix</a> is a classic monitoring system. It is stable and it has grown over several iterations. It supports a REST API out of the box.</p>
 </div>
@@ -1273,7 +1352,7 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_and_running_zabbix">13.2. Installing and running Zabbix</h3>
+<h3 id="_installing_and_running_zabbix">14.2. Installing and running Zabbix</h3>
 <div class="paragraph">
 <p>The installation has been scripted as a <a href="http://vagrantup.com" target="_blank">Vagrant</a> script. This will first download a linux image of CentOS and spin it up in <a href="http://virtualbox.org/" target="_blank">Virtualbox</a>. Then it will hand over to a provisioner, in our case this is <a href="http://saltstack.com/" target="_blank">Saltstack</a>.</p>
 </div>
@@ -1294,7 +1373,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_of_zabbix">13.3. Configuration of Zabbix</h3>
+<h3 id="_configuration_of_zabbix">14.3. Configuration of Zabbix</h3>
 <div class="paragraph">
 <p>All configuration items could be automated using the REST API. This will be a future task for this tutorial.</p>
 </div>
@@ -1319,7 +1398,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_of_the_example_application">13.4. Configuration of the example application</h3>
+<h3 id="_configuration_of_the_example_application">14.4. Configuration of the example application</h3>
 <div class="paragraph">
 <p>As default the Zabbix agent in the application is disabled. To enable it, go to the file <code>archaius.properties</code>. Change the <code>hystrixdemo.enablezabbix</code> to be true.</p>
 </div>
@@ -1328,7 +1407,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_zabbix_autodiscovery_at_work">13.5. Zabbix autodiscovery at work</h3>
+<h3 id="_zabbix_autodiscovery_at_work">14.5. Zabbix autodiscovery at work</h3>
 <div class="paragraph">
 <p>The following steps will now happen automatically:</p>
 </div>
@@ -1374,7 +1453,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_java_classes_to_forward_information_from_hystrix_to_zabbix">13.6. Java classes to forward information from Hystrix to Zabbix</h3>
+<h3 id="_java_classes_to_forward_information_from_hystrix_to_zabbix">14.6. Java classes to forward information from Hystrix to Zabbix</h3>
 <div class="paragraph">
 <p>In order to activate the forwarding of events, you&#8217;ll need to change <code>hystrixdemo.enablezabbix</code> to <code>true</code> in <code>archaius.properties</code>.
 This change will be active immediately.</p>
@@ -1403,7 +1482,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_working_with_templates_in_zabbix">13.7. Working with templates in Zabbix</h3>
+<h3 id="_working_with_templates_in_zabbix">14.7. Working with templates in Zabbix</h3>
 <div class="paragraph">
 <p>When you change your template, the changes are applied to all hosts assigned to the template. This makes it easy to ensure a common configuration of all Hystrix commands throughout your infrastructure.</p>
 </div>
@@ -1417,10 +1496,10 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_real_time_monitoring_of_hystrix_metrics">14. Real time monitoring of Hystrix metrics</h2>
+<h2 id="_real_time_monitoring_of_hystrix_metrics">15. Real time monitoring of Hystrix metrics</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_riemann_as_cutting_edge_realtime_event_processing">14.1. Riemann as cutting edge realtime event processing</h3>
+<h3 id="_riemann_as_cutting_edge_realtime_event_processing">15.1. Riemann as cutting edge realtime event processing</h3>
 <div class="paragraph">
 <p><a href="http://www.riemann.io/" target="_blank">Riemann</a> is a a modern event management system. It has been designed with with performance in mind for montoring complex systems. To process the data fast it keeps the last few minutes of data in memory. All events are processed in a streaming mode.</p>
 </div>
@@ -1451,7 +1530,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_and_running_riemann">14.2. Installing and running Riemann</h3>
+<h3 id="_installing_and_running_riemann">15.2. Installing and running Riemann</h3>
 <div class="paragraph">
 <p>The installation has been scripted as a <a href="http://vagrantup.com" target="_blank">Vagrant</a> script. This will first download a linux image of CentOS and spin it up in <a href="http://virtualbox.org/" target="_blank">Virtualbox</a>. Then it will hand over to a provisioner, in our case this is <a href="http://saltstack.com/" target="_blank">Saltstack</a>.</p>
 </div>
@@ -1469,7 +1548,7 @@ run the follwing command in <code>tools/riemann</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_events_are_captures_for_riemann">14.3. How Events are captures for Riemann</h3>
+<h3 id="_how_events_are_captures_for_riemann">15.3. How Events are captures for Riemann</h3>
 <div class="paragraph">
 <p>In the example application the <code>HystrixSetupListener</code> registers the class <code>HystrixRiemannEventNotifier</code> with Hystrix. This will be notified with the detailed timinings of each run command and with the outcome of each command (successful, timeout, etc.).</p>
 </div>
@@ -1482,7 +1561,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuring_riemann_server">14.4. Configuring Riemann Server</h3>
+<h3 id="_configuring_riemann_server">15.4. Configuring Riemann Server</h3>
 <div class="paragraph">
 <p>In this setup the information about Hystrix commands is forwarded on a level of a single command execution.</p>
 </div>
@@ -1539,7 +1618,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuring_riemann_dashboard">14.5. Configuring Riemann Dashboard</h3>
+<h3 id="_configuring_riemann_dashboard">15.5. Configuring Riemann Dashboard</h3>
 <div class="paragraph">
 <p>You can configure the frontend of Riemann in your browser. This setup installs a dashboard that shows some useful information about the example application.</p>
 </div>
@@ -1560,10 +1639,10 @@ This change will be active immediately.</p>
 </div>
 <h1 id="_appendix" class="sect0">Appendix</h1>
 <div class="sect1">
-<h2 id="asciidoctor">15. Writing an online manual</h2>
+<h2 id="asciidoctor">16. Writing an online manual</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_asciidoctor_is_a_lean_tool_for_technical_documentation">15.1. Asciidoctor is a lean tool for technical documentation</h3>
+<h3 id="_asciidoctor_is_a_lean_tool_for_technical_documentation">16.1. Asciidoctor is a lean tool for technical documentation</h3>
 <div class="paragraph">
 <p>This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.</p>
 </div>
@@ -1575,7 +1654,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_editors_to_work_on_asciidoctor">15.2. Editors to work on Asciidoctor</h3>
+<h3 id="_editors_to_work_on_asciidoctor">16.2. Editors to work on Asciidoctor</h3>
 <div class="paragraph">
 <p>Asciidoctor files are plain text files with an easy to learn syntax. You can use any text editor to write the files.</p>
 </div>
@@ -1586,10 +1665,10 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="vagrant">16. Running virtual machines for test and development</h2>
+<h2 id="vagrant">17. Running virtual machines for test and development</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_vagrant_manages_virtual_machines">16.1. Vagrant manages virtual machines</h3>
+<h3 id="_vagrant_manages_virtual_machines">17.1. Vagrant manages virtual machines</h3>
 <div class="paragraph">
 <p>Virtual machines make development and test easier, as they can be started and stoped as you need them. You re-use the CPU, RAM and hard disk space on your PC. When you don&#8217;t need them you shut them down and they will use only some hard drive space. Once your test or development are over you can wipe them from your hard disk.</p>
 </div>
@@ -1601,7 +1680,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_vagrant_and_useful_plugins">16.2. Installing Vagrant and useful plugins</h3>
+<h3 id="_installing_vagrant_and_useful_plugins">17.2. Installing Vagrant and useful plugins</h3>
 <div class="paragraph">
 <p>To use Vagrant please use the following steps:</p>
 </div>
@@ -1641,7 +1720,7 @@ This change will be active immediately.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_proxy_configuration_for_vagrant">16.3. Proxy configuration for Vagrant</h3>
+<h3 id="_proxy_configuration_for_vagrant">17.3. Proxy configuration for Vagrant</h3>
 <div class="paragraph">
 <p>To be able to install any vagrant plugin behind a proxy, set the <code>http_proxy</code> environment variable. The this syntax assumes you are running a Microsoft Windows system:</p>
 </div>
@@ -1691,7 +1770,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_managing_virtual_machines_from_the_command_line">16.4. Managing virtual machines from the command line</h3>
+<h3 id="_managing_virtual_machines_from_the_command_line">17.4. Managing virtual machines from the command line</h3>
 <div class="paragraph">
 <p>You can start a box with:</p>
 </div>
@@ -1731,10 +1810,10 @@ end</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="saltstack">17. Automatic provisioning of machines</h2>
+<h2 id="saltstack">18. Automatic provisioning of machines</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_saltstack_installation_automation">17.1. Saltstack installation automation</h3>
+<h3 id="_saltstack_installation_automation">18.1. Saltstack installation automation</h3>
 <div class="paragraph">
 <p>In order to provide reproducable and easy to setup development and test environments, you can script the installation of the software.</p>
 </div>
@@ -1764,7 +1843,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_saltstack_in_standalone_mode">17.2. Running Saltstack in standalone mode</h3>
+<h3 id="_running_saltstack_in_standalone_mode">18.2. Running Saltstack in standalone mode</h3>
 <div class="paragraph">
 <p>Saltstack can be run in two modes:</p>
 </div>
@@ -1786,13 +1865,13 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_files_for_automatic_installation">17.3. Configuration files for automatic installation</h3>
+<h3 id="_configuration_files_for_automatic_installation">18.3. Configuration files for automatic installation</h3>
 <div class="paragraph">
 <p>You will find the configuration files in <code>salt/roots/salt</code>. They are plain text files. You can open them in a plain text editor to get a first impression. Please refer to the Salstack documentation find out more.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_saltstack_commands">17.4. Saltstack commands</h3>
+<h3 id="_saltstack_commands">18.4. Saltstack commands</h3>
 <div class="paragraph">
 <p>Provisioning via saltstack is run automatically. To run salt stack provisioning manually again (for example after you have changed a configuration file) use the following command as user <code>root</code>:</p>
 </div>
@@ -1808,10 +1887,10 @@ end</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_building_the_documentation_automatically">18. Building the documentation automatically</h2>
+<h2 id="_building_the_documentation_automatically">19. Building the documentation automatically</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_things_that_need_maintenance">18.1. Things that need maintenance</h3>
+<h3 id="_things_that_need_maintenance">19.1. Things that need maintenance</h3>
 <div class="paragraph">
 <p>This manual is written in Asciidoc format. Asciidoctor is used to create an online documentation from it.</p>
 </div>
@@ -1823,7 +1902,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_travis_ci_as_a_service_in_the_cloud">18.2. Travis CI as a service in the cloud</h3>
+<h3 id="_travis_ci_as_a_service_in_the_cloud">19.2. Travis CI as a service in the cloud</h3>
 <div class="paragraph">
 <p>Travis CI is a build service in the clould that is free to all open source projects. It integrates well with GitHub. A new build is triggered on every push to your repository.</p>
 </div>
@@ -1858,7 +1937,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-09-22 09:26:42 UTC
+Last updated 2014-11-22 22:15:01 UTC
 </div>
 </div>
 </body>
