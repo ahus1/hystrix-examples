@@ -1,5 +1,6 @@
 :source-highlighter: coderay
 :javasourcedir: src/main/java
+:imagesdir: manual
 
 == Writing a real application with JAX-RS
 
@@ -113,3 +114,35 @@ When there is a problem with the Hystrix command there will be a `HystrixRuntime
 
 [TIP]
 If you want to handle the exceptions of your service as before, you will need to unwrap them.
+
+== Live API documentation
+
+=== Swagger creates a live API at runtime
+
+http://swagger.io/[Swagger] allows you to annotate your REST endpoints. The information from the JAX-RS annotation and the Swagger annotations is collected at runtime.
+
+=== Adding Swagger
+
+To add Swagger to your project, annotate your REST endpoints with `@ApiOperation` and `@Api` annotations.
+
+Add the following dependency to your Maven configuration:
+
+[source,xml,indent=0]
+.pom.xml
+----
+include::pom.xml[tags=swagger]
+----
+
+The following snipped is needed in your web configuration:
+
+[source,xml,indent=0]
+.web.xml
+----
+include::src/main/webapp/WEB-INF/web.xml[tags=swagger]
+----
+
+=== Accessing the Live API
+
+The Live API will be deployed as part of the application. You can access it with your browser using the following URL: http://localhost:8080/hystrixapp/swagger/
+
+image::swagger.png[Swagger Overview]

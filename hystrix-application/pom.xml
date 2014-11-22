@@ -64,12 +64,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- tag::swagger[] -->
 		<dependency>
 			<groupId>com.wordnik</groupId>
 			<artifactId>swagger-jaxrs_2.10</artifactId>
 			<scope>compile</scope>
 			<version>1.3.10</version>
 		</dependency>
+		<!-- end::swagger[] -->
 
 		<dependency>
 			<groupId>com.quigley</groupId>
