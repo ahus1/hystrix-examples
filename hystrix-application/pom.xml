@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
-		<hystrix>1.3.18</hystrix>
+		<hystrix>1.4.0</hystrix>
 	</properties>
 
 	<repositories>
@@ -42,6 +42,16 @@
 			<artifactId>hystrix-core</artifactId>
 			<version>${hystrix}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.netflix.archaius</groupId>
+			<artifactId>archaius-core</artifactId>
+			<version>0.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>1.0.7</version>
+		</dependency>
 
 		<!-- tag::turbine[] -->
 		<!-- include metrics event stream -->
@@ -52,11 +62,6 @@
 		</dependency>
 		<!-- end::turbine[] -->
 
-		<dependency>
-			<groupId>com.netflix.hystrix</groupId>
-			<artifactId>hystrix-metrics-event-stream</artifactId>
-			<version>${hystrix}</version>
-		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
