@@ -12,12 +12,12 @@
 			<groupId>com.netflix.turbine</groupId>
 			<artifactId>turbine-web</artifactId>
 			<type>war</type>
-			<version>0.4</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.netflix.turbine</groupId>
 			<artifactId>turbine-core</artifactId>
-			<version>0.4</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<artifactId>servlet-api</artifactId>
@@ -80,6 +80,8 @@
 								<excludes>
 									<!-- it violates the JEE spec to include this -->
 									<exclude>WEB-INF/lib/servlet-api-2.5.jar</exclude>
+									<!-- has too many settings in here -->
+									<exclude>WEB-INF/classes/config.properties</exclude>
 								</excludes>
 							</overlay>
 						</overlays>
