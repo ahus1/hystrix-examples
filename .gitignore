@@ -1,1 +1,8 @@
 .vagrant
+/eclipse
+/workspace
+/vagrant
+.classpath
+.project
+.settings
+.idea
