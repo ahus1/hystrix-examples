@@ -1112,7 +1112,8 @@ When you change the number of users (aka threads) it will become effective only 
 <div class="title">archaius.properties</div>
 <div class="content">
 <pre class="CodeRay highlight"><code>turbine.instanceUrlSuffix=:8080/hystrixapp/hystrix.stream
-turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
+turbine.ConfigPropertyBasedDiscovery.default.instances=localhost
+turbine.ConfigPropertyBasedDiscovery.localhost.instances=localhost</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1176,9 +1177,6 @@ turbine.ConfigPropertyBasedDiscovery.default.instances=localhost</code></pre>
 <h3 id="_installing_and_running_hystrix_dashboard">12.2. Installing and running Hystrix Dashboard</h3>
 <div class="paragraph">
 <p>The installation has been scripted: you need to run <code>tools/hystrix-dashboard/maven-package-deploy.bat</code>.</p>
-</div>
-<div class="paragraph">
-<p>The current installation will re-package the 1.3.16 version of Hystrix dashboard and add to it the latest (yet unreleased) changes to allow running it without an internet connection. Please have a look into <code>pom.xml</code> to see how you can adopt an already packaged WAR file to your environment.</p>
 </div>
 <div class="paragraph">
 <p>Open your browser on <a href="http://localhost:8080/hystrix-dashboard/" class="bare">http://localhost:8080/hystrix-dashboard/</a>. Press <b class="button">Monitor Stream</b> with the default setting to display the aggregated stream from the Turbine dashboard.</p>
@@ -1937,7 +1935,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-09 11:26:34 UTC
+Last updated 2015-03-14 00:01:11 UTC
 </div>
 </div>
 </body>
