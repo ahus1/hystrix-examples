@@ -71,14 +71,14 @@ public class HystrixObservableSaveAccount extends AbstractSaveAccount {
         Observable<Boolean> result =
                 new IBANValidatorCommand(accounts).observe();
 
-        result.forEach(new Action1<Boolean>() {
+        result.subscribe(new Action1<Boolean>() {
             @Override
             public void call(Boolean b) {
                 LOG.info("say hi to b:" + b);
             }
         });
 
-        result.forEach(b -> LOG.info("say hi to b:" + b));
+        result.subscribe(b -> LOG.info("say hi to b:" + b));
 
         return Response.status(Status.OK).build();
     }
