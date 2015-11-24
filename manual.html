@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="generator" content="Asciidoctor 1.5.3">
 <title>Hystrix Examples&#8201;&#8212;&#8201;and a little bit more</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <link rel="stylesheet" href="css//asciidoctor.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="css//coderay-asciidoctor.css">
 </head>
 <body class="book toc2 toc-left">
@@ -701,25 +701,25 @@ If you want to handle the exceptions of your service as before, you will need to
 <div class="title">web.xml</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;context-param&gt;</span>
-    <span class="tag">&lt;param-name&gt;</span>resteasy.resources<span class="tag">&lt;/param-name&gt;</span>
-    <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON<span class="tag">&lt;/param-value&gt;</span>
+        <span class="tag">&lt;param-name&gt;</span>resteasy.resources<span class="tag">&lt;/param-name&gt;</span>
+        <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON<span class="tag">&lt;/param-value&gt;</span>
 <span class="tag">&lt;/context-param&gt;</span>
 <span class="tag">&lt;context-param&gt;</span>
-    <span class="tag">&lt;param-name&gt;</span>resteasy.providers<span class="tag">&lt;/param-name&gt;</span>
-    <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.json.JacksonJsonProvider,com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider,com.wordnik.swagger.jaxrs.listing.ResourceListingProvider<span class="tag">&lt;/param-value&gt;</span>
+        <span class="tag">&lt;param-name&gt;</span>resteasy.providers<span class="tag">&lt;/param-name&gt;</span>
+        <span class="tag">&lt;param-value&gt;</span>com.wordnik.swagger.jaxrs.json.JacksonJsonProvider,com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider,com.wordnik.swagger.jaxrs.listing.ResourceListingProvider<span class="tag">&lt;/param-value&gt;</span>
 <span class="tag">&lt;/context-param&gt;</span>
 <span class="tag">&lt;servlet&gt;</span>
-    <span class="tag">&lt;servlet-name&gt;</span>DefaultJaxrsConfig<span class="tag">&lt;/servlet-name&gt;</span>
-    <span class="tag">&lt;servlet-class&gt;</span>com.wordnik.swagger.jaxrs.config.DefaultJaxrsConfig<span class="tag">&lt;/servlet-class&gt;</span>
-    <span class="tag">&lt;init-param&gt;</span>
-        <span class="tag">&lt;param-name&gt;</span>api.version<span class="tag">&lt;/param-name&gt;</span>
-        <span class="tag">&lt;param-value&gt;</span>1.0.0<span class="tag">&lt;/param-value&gt;</span>
-    <span class="tag">&lt;/init-param&gt;</span>
-    <span class="tag">&lt;init-param&gt;</span>
-        <span class="tag">&lt;param-name&gt;</span>swagger.api.basepath<span class="tag">&lt;/param-name&gt;</span>
-        <span class="tag">&lt;param-value&gt;</span>http://localhost:8080/hystrixapp/api<span class="tag">&lt;/param-value&gt;</span>
-    <span class="tag">&lt;/init-param&gt;</span>
-    <span class="tag">&lt;load-on-startup&gt;</span>2<span class="tag">&lt;/load-on-startup&gt;</span>
+        <span class="tag">&lt;servlet-name&gt;</span>DefaultJaxrsConfig<span class="tag">&lt;/servlet-name&gt;</span>
+        <span class="tag">&lt;servlet-class&gt;</span>com.wordnik.swagger.jaxrs.config.DefaultJaxrsConfig<span class="tag">&lt;/servlet-class&gt;</span>
+        <span class="tag">&lt;init-param&gt;</span>
+                <span class="tag">&lt;param-name&gt;</span>api.version<span class="tag">&lt;/param-name&gt;</span>
+                <span class="tag">&lt;param-value&gt;</span>1.0.0<span class="tag">&lt;/param-value&gt;</span>
+        <span class="tag">&lt;/init-param&gt;</span>
+        <span class="tag">&lt;init-param&gt;</span>
+                <span class="tag">&lt;param-name&gt;</span>swagger.api.basepath<span class="tag">&lt;/param-name&gt;</span>
+                <span class="tag">&lt;param-value&gt;</span>http://localhost:8080/hystrixapp/api<span class="tag">&lt;/param-value&gt;</span>
+        <span class="tag">&lt;/init-param&gt;</span>
+        <span class="tag">&lt;load-on-startup&gt;</span>2<span class="tag">&lt;/load-on-startup&gt;</span>
 <span class="tag">&lt;/servlet&gt;</span></code></pre>
 </div>
 </div>
@@ -941,23 +941,13 @@ hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=5000</code></pr
 <div class="sect2">
 <h3 id="_installing_apache_maven">9.2. Installing Apache Maven</h3>
 <div class="paragraph">
-<p>This process has been automated for you. The first time you start <code>tools/maven/run-maven.bat</code> Maven is downloaded and installed.</p>
-</div>
-<div class="paragraph">
-<p>The following configuration is applied:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>All dependencies will be downloaded to the folder <code>tools/maven/m2</code>. This folder will be used as a cache: All dependencies will be only downloaded once.</p>
-</li>
-</ol>
+<p>This process has been automated for you, as all projects include <a href="https://github.com/takari/maven-wrapper" target="_blank">Maven Wrapper</a>. This will download and install maven automatically.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_packaging_and_deploying_your_application_to_apache_tomcat">9.3. Packaging and deploying your application to Apache Tomcat</h3>
 <div class="paragraph">
-<p>To do this run <code>hystrix-application/maven-package-deploy.bat</code>. <strong>Please ensure that your Apache Tomcat is running,</strong> as Maven will deploy your application into the running Apache Tomcat.</p>
+<p>To do this run <code>hystrix-application/maven-package-deploy</code>. <strong>Please ensure that your Apache Tomcat is running,</strong> as Maven will deploy your application into the running Apache Tomcat.</p>
 </div>
 <div class="paragraph">
 <p>The steps executed by Maven <code>mvn clean package cargo:redeploy</code> included in the Batch-file:</p>
@@ -1143,10 +1133,10 @@ turbine.ConfigPropertyBasedDiscovery.localhost.instances=localhost</code></pre>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="comment">&lt;!-- include metrics event stream --&gt;</span>
 <span class="tag">&lt;servlet&gt;</span>
-    <span class="tag">&lt;description&gt;</span><span class="tag">&lt;/description&gt;</span>
-    <span class="tag">&lt;display-name&gt;</span>HystrixMetricsStreamServlet<span class="tag">&lt;/display-name&gt;</span>
-    <span class="tag">&lt;servlet-name&gt;</span>HystrixMetricsStreamServlet<span class="tag">&lt;/servlet-name&gt;</span>
-    <span class="tag">&lt;servlet-class&gt;</span>com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet<span class="tag">&lt;/servlet-class&gt;</span>
+        <span class="tag">&lt;description&gt;</span><span class="tag">&lt;/description&gt;</span>
+        <span class="tag">&lt;display-name&gt;</span>HystrixMetricsStreamServlet<span class="tag">&lt;/display-name&gt;</span>
+        <span class="tag">&lt;servlet-name&gt;</span>HystrixMetricsStreamServlet<span class="tag">&lt;/servlet-name&gt;</span>
+        <span class="tag">&lt;servlet-class&gt;</span>com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet<span class="tag">&lt;/servlet-class&gt;</span>
 <span class="tag">&lt;/servlet&gt;</span></code></pre>
 </div>
 </div>
@@ -1172,7 +1162,7 @@ turbine.ConfigPropertyBasedDiscovery.localhost.instances=localhost</code></pre>
 <div class="sect2">
 <h3 id="_installing_and_running_hystrix_dashboard">12.2. Installing and running Hystrix Dashboard</h3>
 <div class="paragraph">
-<p>The installation has been scripted: you need to run <code>tools/hystrix-dashboard/maven-package-deploy.bat</code>.</p>
+<p>The installation has been scripted: you need to run <code>tools/hystrix-dashboard/maven-package-deploy</code>.</p>
 </div>
 <div class="paragraph">
 <p>Open your browser on <a href="http://localhost:8080/hystrix-dashboard/" class="bare">http://localhost:8080/hystrix-dashboard/</a>. Press <b class="button">Monitor Stream</b> with the default setting to display the aggregated stream from the Turbine dashboard.</p>
@@ -1360,7 +1350,7 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: <a href="http://localhost:2280/" class="bare">http://localhost:2280/</a>.</p>
+<p>This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: <a href="http://localhost:2280/zabbix" class="bare">http://localhost:2280/zabbix</a>.</p>
 </div>
 <div class="paragraph">
 <p>Use Username <code>Admin</code> password <code>zabbix</code> to log in (please not the capital <strong>A</strong> in the user name)</p>
@@ -1377,13 +1367,13 @@ run the follwing command in <code>tools/zabbix</code>:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Host</span></span> click on <b class="button">Create Host</b>. Enter <code>hystrix</code> as host name here. Pick <code>Discovered Hosts</code> as the Host group. Now <b class="button">Save</b>.</p>
-</li>
-<li>
 <p>In <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Templates</span></span> click on <b class="button">Import</b>. Pick the file <code>hystrix_template.xml</code> from <code>tools\zabbix</code>. Click on <b class="button">Import</b>.</p>
 </li>
 <li>
 <p>Choose <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Templates</span></span> again. You see a <code>hystrixTemplate</code> here. Click on this template to edit it. Include the host <code>hystrix</code> in group <code>Discovered Hosts</code> in the shuttle view to put it on the left side. This will apply the template to the host. Click on <b class="button">Save</b>.</p>
+</li>
+<li>
+<p>In <span class="menuseq"><span class="menu">Configuration</span>&#160;&#9656; <span class="menuitem">Host</span></span> click on <b class="button">Create Host</b>. Enter <code>hystrix</code> as host name here. Pick <code>Discovered Hosts</code> as the Host group. Now <b class="button">Save</b>.</p>
 </li>
 </ol>
 </div>
@@ -1931,7 +1921,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-13 20:08:40 UTC
+Last updated 2015-11-24 21:49:02 UTC
 </div>
 </div>
 </body>
