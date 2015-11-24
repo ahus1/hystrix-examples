@@ -40,6 +40,7 @@ public class HystrixZabbixMetricsPublisher extends HystrixMetricsPublisher {
     public HystrixZabbixMetricsPublisher() throws Exception {
         agent = new ZabbixAgent();
         agent.setEnableActive(true);
+        agent.setRefreshInterval(10);
         agent.setEnablePassive(false);
         agent.setHostName("hystrix");
         agent.setServerAddress(InetAddress.getByName("127.0.0.1"));

@@ -22,7 +22,7 @@ run the follwing command in `tools/zabbix`:
 vagrant up
 ----
 
-This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: http://localhost:2280/.
+This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: http://localhost:2280/zabbix.
 
 Use Username `Admin` password `zabbix` to log in (please not the capital *A* in the user name)
 
@@ -34,9 +34,9 @@ All configuration items could be automated using the REST API. This will be a fu
 
 For now these are the manual steps:
 
-. In menu:Configuration[Host] click on btn:[Create Host]. Enter `hystrix` as host name here. Pick `Discovered Hosts` as the Host group. Now btn:[Save].
 . In menu:Configuration[Templates] click on btn:[Import]. Pick the file `hystrix_template.xml` from `tools\zabbix`. Click on btn:[Import].
 . Choose menu:Configuration[Templates] again. You see a `hystrixTemplate` here. Click on this template to edit it. Include the host `hystrix` in group `Discovered Hosts` in the shuttle view to put it on the left side. This will apply the template to the host. Click on btn:[Save].
+. In menu:Configuration[Host] click on btn:[Create Host]. Enter `hystrix` as host name here. Pick `Discovered Hosts` as the Host group. Now btn:[Save].
 
 This is all configuration that is needed: You have created a host, and you have associated it with a template that will autodiscover all Hystrix comamnds.
 
@@ -72,7 +72,7 @@ Click on menu:Monitoring[Latest data] to see the latest values that the agent ha
 === Java classes to forward information from Hystrix to Zabbix
 
 In order to activate the forwarding of events, you'll need to change `hystrixdemo.enablezabbix` to `true` in `archaius.properties`.
-This change will be active immediately. 
+This change will be active immediately.
 
 The property `hystrixdemo.enablezabbix` in `archaius.properties` is evaluated in the class `HystrixSetupListener`. When this property is enabled, the Zabbix agent is started.
 

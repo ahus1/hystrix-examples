@@ -10,8 +10,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "chef/centos-6.5" 
-  
+  config.vm.box = "bento/centos-6.7"
+
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
   end
@@ -21,11 +21,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.box_url = "http://domain.com/path/to/above.box"
 
   # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. 
+  # within the machine from a port on the host machine.
 
-  # Zabbix web frontend  
+  # Zabbix web frontend
   config.vm.network :forwarded_port, guest: 80, host: 2280
-  
+
   # Zabbix agent port
   config.vm.network :forwarded_port, guest: 10051, host: 10051
 
@@ -58,20 +58,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if Vagrant.has_plugin?("vagrant-vbguest")
     # https://github.com/dotless-de/vagrant-vbguest
-    # set auto_update to false, if you do NOT want to check the correct 
+    # set auto_update to false, if you do NOT want to check the correct
     # additions version when booting this machine
     config.vbguest.auto_update = false
 
 	# do NOT download the iso file from a webserver
-    config.vbguest.no_remote = true  
+    config.vbguest.no_remote = true
   end
 
   ## For masterless, mount your salt file root
   config.vm.synced_folder "salt/roots/", "/srv/"
-  
+
   config.vm.provision :salt do |salt|
     salt.minion_config = "salt/minion"
     salt.run_highstate = true
+    # https://github.com/mitchellh/vagrant/issues/5973
+    # "Failed to upload a file to the guest VM..."
+    salt.bootstrap_options = '-F -c /tmp/ -P'
   end
 
 end
