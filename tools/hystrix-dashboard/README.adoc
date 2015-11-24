@@ -6,7 +6,7 @@ https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard[Hystrix Dashboa
 
 === Installing and running Hystrix Dashboard
 
-The installation has been scripted: you need to run `tools/hystrix-dashboard/maven-package-deploy.bat`.
+The installation has been scripted: you need to run `tools/hystrix-dashboard/maven-package-deploy`.
 
 Open your browser on http://localhost:8080/hystrix-dashboard/. Press btn:[Monitor Stream] with the default setting to display the aggregated stream from the Turbine dashboard.
 

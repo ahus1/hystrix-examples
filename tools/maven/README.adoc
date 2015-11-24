@@ -11,15 +11,11 @@ http://maven.apache.org/[Apache Maven^] as a build system you the following adva
 
 === Installing Apache Maven
 
-This process has been automated for you. The first time you start `tools/maven/run-maven.bat` Maven is downloaded and installed.
-
-The following configuration is applied:
-
-. All dependencies will be downloaded to the folder `tools/maven/m2`. This folder will be used as a cache: All dependencies will be only downloaded once.
+This process has been automated for you, as all projects include https://github.com/takari/maven-wrapper[Maven Wrapper^]. This will download and install maven automatically.
 
 === Packaging and deploying your application to Apache Tomcat
 
-To do this run `hystrix-application/maven-package-deploy.bat`. *Please ensure that your Apache Tomcat is running,* as Maven will deploy your application into the running Apache Tomcat.
+To do this run `hystrix-application/maven-package-deploy`. *Please ensure that your Apache Tomcat is running,* as Maven will deploy your application into the running Apache Tomcat.
 
 The steps executed by Maven `mvn clean package cargo:redeploy` included in the Batch-file:
 

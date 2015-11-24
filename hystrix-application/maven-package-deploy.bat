@@ -1,1 +1,1 @@
-call %~dp0../tools/maven/run-maven.bat clean package cargo:redeploy
+call %~dp0mvnw clean package cargo:redeploy
