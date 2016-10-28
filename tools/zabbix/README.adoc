@@ -24,7 +24,7 @@ vagrant up
 
 This will take a while to download all the files necessary. Once it is up and running point your browser at your local Zabbix installation: http://localhost:2280/zabbix.
 
-Use Username `Admin` password `zabbix` to log in (please not the capital *A* in the user name)
+Use Username `Admin` password `zabbix` to log in (please note the capital *A* in the user name)
 
 === Configuration of Zabbix
 
