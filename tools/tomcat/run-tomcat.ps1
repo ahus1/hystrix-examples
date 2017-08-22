@@ -1,7 +1,7 @@
 # change version number and hash code as shown on Apache download page
 # http://tomcat.apache.org/download-80.cgi
-$version="8.0.15"
-$masterhash = "109a2ca339930212afef0050e580e667"
+$version="8.0.45"
+$masterhash = "ffa9b438c8b74d03aa6fd5255e80bbc9"
 
 $url = "http://www.eu.apache.org/dist/tomcat/tomcat-8/v$version/bin/apache-tomcat-$version.zip"
 
@@ -55,6 +55,7 @@ $xml.Context.SetAttribute("antiResourceLocking", "true")
 $xml.Save("./apache-tomcat-$version/conf/context.xml")
 
 "starting tomcat"
+cp "files/index.jsp" "apache-tomcat-$version/webapps/root"
 cd "apache-tomcat-$version/bin"
 start-process startup.bat
 

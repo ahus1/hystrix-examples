@@ -7,7 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
-        <hystrix>1.4.0</hystrix>
+        <hystrix>1.5.12</hystrix>
         <resteasy>3.0.12.Final</resteasy>
     </properties>
 
@@ -87,6 +87,27 @@
             <version>0.2.10</version>
         </dependency>
 
+        <dependency>
+            <groupId>de.ahus1.prometheus.hystrix</groupId>
+            <artifactId>prometheus-hystrix</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_servlet</artifactId>
+            <version>0.0.21</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient</artifactId>
+            <version>0.0.21</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_hotspot</artifactId>
+            <version>0.0.21</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -123,9 +144,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!-- ================= -->
-            <!-- = deploy Tomcat = -->
-            <!-- ================= -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>

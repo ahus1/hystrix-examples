@@ -3,7 +3,7 @@
 $version="2.11"
 $masterhash = "14b6dfc04f912e45b482e4563fdf1c3a"
 
-$url = "http://www.eu.apache.org/dist/jmeter/binaries/apache-jmeter-$version.zip"
+$url = "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-$version.zip"
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 

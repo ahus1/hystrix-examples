@@ -1,43 +1,30 @@
 package de.ahus1.hystrix.util;
 
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.util.concurrent.TimeUnit;
-
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-import javax.management.StandardMBean;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-
-import org.apache.commons.configuration.AbstractConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.netflix.config.ConcurrentCompositeConfiguration;
-import com.netflix.config.ConfigurationManager;
-import com.netflix.config.DynamicBooleanProperty;
-import com.netflix.config.DynamicConfiguration;
-import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.*;
 import com.netflix.config.jmx.BaseConfigMBean;
 import com.netflix.config.jmx.ConfigMBean;
 import com.netflix.hystrix.Hystrix;
 import com.netflix.hystrix.strategy.HystrixPlugins;
-
+import com.soundcloud.prometheus.hystrix.HystrixPrometheusMetricsPublisher;
 import de.ahus1.hystrix.util.riemann.HystrixRiemannEventNotifier;
 import de.ahus1.hystrix.util.zabbix.HystrixZabbixMetricsPublisher;
 import de.ahus1.hystrix.util.zabbix.ZabbixCommandMetricsProvider;
+import org.apache.commons.configuration.AbstractConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.management.*;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Setup and teardown of Hystrix configuration at start/end of application
  * lifecycle.
- * 
+ *
  * @author Alexander Schwartz (msg systems ag) 2014
  * @version 3.3
  */
@@ -47,11 +34,15 @@ public class HystrixSetupListener implements ServletContextListener {
     private static Logger LOG = LoggerFactory
             .getLogger(ZabbixCommandMetricsProvider.class);
 
-    /** for register and un-register. */
+    /**
+     * for register and un-register.
+     */
     static final String OBJ_NAME_LOG4J_BEAN =
             "de.ahus1.archaius:type=ArchaiusMBean";
 
-    /** Object name for JMX binding. */
+    /**
+     * Object name for JMX binding.
+     */
     private ObjectName name;
 
     private final static DynamicBooleanProperty enablezabbix =
@@ -68,9 +59,8 @@ public class HystrixSetupListener implements ServletContextListener {
 
     /**
      * Setup Servo and other Hystrix elements, and JMX Registration of Archaius.
-     * 
-     * @param sce
-     *            servlet context event
+     *
+     * @param sce servlet context event
      */
     public void contextInitialized(ServletContextEvent sce) {
         AbstractConfiguration conf = ConfigurationManager.getConfigInstance();
@@ -98,6 +88,12 @@ public class HystrixSetupListener implements ServletContextListener {
 
         setupRiemann();
 
+        setupPrometheus();
+
+    }
+
+    private void setupPrometheus() {
+        HystrixPrometheusMetricsPublisher.register("exampleapp");
     }
 
     private void setupRiemann() {
@@ -171,9 +167,8 @@ public class HystrixSetupListener implements ServletContextListener {
 
     /**
      * Cleanup JMX Registration of Archaius.
-     * 
-     * @param sce
-     *            servlet context event
+     *
+     * @param sce servlet context event
      */
     public void contextDestroyed(ServletContextEvent sce) {
 
