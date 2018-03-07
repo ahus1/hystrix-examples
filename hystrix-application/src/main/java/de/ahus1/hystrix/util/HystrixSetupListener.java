@@ -93,7 +93,9 @@ public class HystrixSetupListener implements ServletContextListener {
     }
 
     private void setupPrometheus() {
-        HystrixPrometheusMetricsPublisher.register("exampleapp");
+        HystrixPrometheusMetricsPublisher.builder()
+                .shouldExportDeprecatedMetrics(false)
+                .buildAndRegister();
     }
 
     private void setupRiemann() {
